@@ -20,6 +20,8 @@ console.log('2/4 Préparation de la branche gh-pages...');
 fs.cpSync(distDir, tmpDir, { recursive: true });
 
 execSync('git init', { cwd: tmpDir, stdio: 'inherit' });
+execSync('git config user.name "VivreleHpi"', { cwd: tmpDir, stdio: 'inherit' });
+execSync('git config user.email "VivreleHpi@users.noreply.github.com"', { cwd: tmpDir, stdio: 'inherit' });
 execSync('git checkout -b gh-pages', { cwd: tmpDir, stdio: 'inherit' });
 execSync('git add -A', { cwd: tmpDir, stdio: 'inherit' });
 execSync('git commit -m "Deploy GitHub Pages"', { cwd: tmpDir, stdio: 'inherit' });
