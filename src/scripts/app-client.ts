@@ -426,14 +426,12 @@ export function initAppClient() {
       const id = card.getAttribute('data-badge-card') || '';
       const unlocked = state.unlockedBadges.includes(id);
       card.setAttribute('data-unlocked', unlocked ? 'true' : 'false');
-      card.className = `badge-card-item relative flex items-start gap-3.5 p-4 rounded-card border-2 transition-all ${
-        unlocked ? 'bg-gold-light border-gold shadow-card' : 'bg-paper border-line'
-      }`;
+      card.className = `badge-card-item relative flex items-start gap-3.5 p-4 rounded-card border-2 transition-all ${unlocked ? 'bg-gold-light border-gold shadow-card' : 'bg-paper border-line'
+        }`;
       const medal = card.querySelector('.badge-medal');
       if (medal) {
-        medal.className = `badge-medal w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 shadow-sm transition-colors ${
-          unlocked ? 'bg-gold text-ink border-ink/20' : 'bg-surface text-ink-muted border-line'
-        }`;
+        medal.className = `badge-medal w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 shadow-sm transition-colors ${unlocked ? 'bg-gold text-ink border-ink/20' : 'bg-surface text-ink-muted border-line'
+          }`;
       }
       const pill = card.querySelector('.badge-status-pill');
       if (pill && unlocked) {
@@ -1077,7 +1075,7 @@ export function initAppClient() {
       navigator.serviceWorker
         .register('/sw.js')
         .then((reg) => reg.update())
-        .catch(() => {});
+        .catch(() => { });
     });
   }
 }

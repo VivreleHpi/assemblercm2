@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ETAPES, PARCOURS_STATS, getPhotoById } from '../data';
+import { ETAPES, PARCOURS_STATS, GLOSSAIRE, getPhotoById } from '../data';
 import Avatar from '../components/ui/Avatar.astro';
 import Icon from '../components/ui/Icon.astro';
 
@@ -237,7 +237,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
           </h3>
         </div>
         <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-velvet border border-line">
-          5 médailles à gagner
+          4 médailles à gagner
         </span>
       </div>
 
@@ -303,9 +303,14 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
             🎓 Vidéos, Carte mentale, Mini-jeux & Diplôme de Député Junior
           </h3>
         </div>
-        <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-ink border border-gold">
-          Grand Quiz + Diplôme A4
-        </span>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-ink border border-gold">
+            2 médailles à gagner (9 et 11)
+          </span>
+          <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-ink border border-gold">
+            Grand Quiz + Diplôme A4
+          </span>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -391,7 +396,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
             class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-paper hover:bg-republic-100 text-republic-900 border border-line font-display font-bold text-xs sm:text-sm min-h-[44px]"
           >
             <Icon name="BookOpen" size={16} />
-            <span>Ouvrir le Glossaire des 25 mots</span>
+            <span>Ouvrir le Glossaire des {GLOSSAIRE.length} mots</span>
           </a>
           <a
             href="/credits/"
@@ -417,7 +422,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
           <ul class="space-y-1.5 text-xs sm:text-sm text-ink font-medium">
             <li>✓ <strong>Mode Classe / TBI</strong> (dans le menu Réglages en haut à droite).</li>
             <li>✓ <strong>Fiches récapitulatives & corrigés imprimables</strong> sur la page Enseignants.</li>
-            <li>✓ <strong>Zéro compte élève, zéro donnée collectée</strong> (conforme RGPD / cadre scolaire).</li>
+            <li>✓ <strong>Zéro compte élève, zéro profilage publicitaire</strong> (sauvegarde locale dans le navigateur).</li>
           </ul>
         </div>
 

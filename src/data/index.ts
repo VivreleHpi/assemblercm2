@@ -609,9 +609,9 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
     dateLabel: '21 mars 1804 & travaux 1806–1810',
     title: 'Le Code civil (21 mars 1804) et la façade aux 12 colonnes (1806–1810)',
     shortDescription:
-      'Napoléon Ier promulgue le Code civil le 21 mars 1804, puis fait édifier la colonnade du Palais Bourbon entre 1806 et 1810.',
+      'Le Code civil est promulgué le 21 mars 1804 sous le Consulat de Napoléon Bonaparte, qui fait ensuite édifier la colonnade du Palais Bourbon (1806–1810).',
     description:
-      "Le 21 mars 1804, Napoléon promulgue le Code civil des Français (2 281 articles) qui unifie les règles du droit civil dans tout le pays. Il confie ensuite à l'architecte Bernard Poyet la construction de la célèbre façade néoclassique à 12 colonnes du Palais Bourbon, dont les travaux s'étendent de 1806 à 1810 face à l'église de la Madeleine.",
+      "Le 21 mars 1804, le Code civil des Français (2 281 articles) est promulgué sous le Consulat de Napoléon Bonaparte (qui devient empereur sous le nom de Napoléon Ier le 18 mai 1804). Il unifie les règles de la vie civile dans tout le pays. Napoléon confie ensuite à l'architecte Bernard Poyet la construction de la célèbre façade néoclassique à 12 colonnes du Palais Bourbon, dont les travaux s'étendent de 1806 à 1810 face à l'église de la Madeleine.",
     whyImportantToday:
       "Le Code civil règle toujours notre vie quotidienne (famille, contrats, propriété), et les 12 colonnes bâties de 1806 à 1810 sont devenues le symbole visuel de l'Assemblée nationale.",
     keyFigureOrDoc: 'Document & Architecture : Code civil (21 mars 1804) et Colonnade de Poyet (1806–1810)',

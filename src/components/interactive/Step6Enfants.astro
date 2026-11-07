@@ -180,7 +180,7 @@ const themes = [
           Je prends la parole à la Tribune en 60 ou 90 secondes !
         </h3>
         <p class="text-xs sm:text-sm text-ink-muted mt-0.5">
-          Préparez votre intervention à deux avec la trame officielle des orateurs de l’Assemblée, puis lancez le chronomètre de la Tribune !
+          Préparez votre intervention à deux avec une trame pédagogique inspirée des débats parlementaires, puis lancez le chronomètre de la Tribune !
         </p>
       </div>
 
@@ -251,7 +251,7 @@ const themes = [
       <div class="p-4 rounded-card bg-paper border border-line space-y-2">
         <div class="flex items-center justify-between">
           <span class="px-2.5 py-0.5 rounded-full bg-republic-900 text-white text-xs font-bold">
-            Étape 1 · Saluer l’Assemblée (10s)
+            Étape 1 · Saluer l’Assemblée (<span data-step-timing="1">10s</span>)
           </span>
           <span class="text-xs font-bold text-ink-muted">Orateur A</span>
         </div>
@@ -269,7 +269,7 @@ const themes = [
       <div class="p-4 rounded-card bg-paper border border-line space-y-2">
         <div class="flex items-center justify-between">
           <span class="px-2.5 py-0.5 rounded-full bg-republic-900 text-white text-xs font-bold">
-            Étape 2 · Notre constat (20s)
+            Étape 2 · Notre constat (<span data-step-timing="2">15s</span>)
           </span>
           <span class="text-xs font-bold text-ink-muted">Orateur A</span>
         </div>
@@ -287,7 +287,7 @@ const themes = [
       <div class="p-4 rounded-card bg-paper border border-line space-y-2">
         <div class="flex items-center justify-between">
           <span class="px-2.5 py-0.5 rounded-full bg-velvet text-white text-xs font-bold">
-            Étape 3 · Notre Article 1er & argument (30s)
+            Étape 3 · Notre Article 1er & argument (<span data-step-timing="3">25s</span>)
           </span>
           <span class="text-xs font-bold text-ink-muted">Orateur B</span>
         </div>
@@ -305,7 +305,7 @@ const themes = [
       <div class="p-4 rounded-card bg-paper border border-line space-y-2">
         <div class="flex items-center justify-between">
           <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
-            Étape 4 · Répondre à une objection (15s)
+            Étape 4 · Répondre à une objection (<span data-step-timing="4">10s</span>)
           </span>
           <span class="text-xs font-bold text-ink-muted">Orateur B</span>
         </div>
@@ -403,6 +403,13 @@ const themes = [
           b.className = active
             ? 'tribune-dur-btn px-3 py-1.5 rounded-btn bg-gold text-ink font-display font-bold text-xs min-h-[38px]'
             : 'tribune-dur-btn px-3 py-1.5 rounded-btn bg-white/15 text-white border border-white/30 font-display font-bold text-xs min-h-[38px]';
+        });
+        const timings = totalSeconds === 90
+          ? { 1: '15s', 2: '20s', 3: '35s', 4: '20s' }
+          : { 1: '10s', 2: '15s', 3: '25s', 4: '10s' };
+        document.querySelectorAll<HTMLElement>('[data-step-timing]').forEach((el) => {
+          const step = el.getAttribute('data-step-timing') as '1' | '2' | '3' | '4';
+          if (step && timings[step]) el.textContent = timings[step];
         });
         if (statusEl) statusEl.textContent = `Format ${totalSeconds}s sélectionné`;
         renderTimer();

@@ -1,4 +1,5 @@
 ---
+import { GLOSSAIRE } from '../../data';
 import Icon from '../ui/Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 ---
@@ -61,7 +62,7 @@ import Avatar from '../ui/Avatar.astro';
           </li>
           <li>
             <a href="/glossaire/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
-              Glossaire civique (23 mots expliqués)
+              Glossaire civique ({GLOSSAIRE.length} mots expliqués)
             </a>
           </li>
           <li>
@@ -85,7 +86,7 @@ import Avatar from '../ui/Avatar.astro';
       </p>
       <div class="flex items-center gap-2 shrink-0 px-3 py-1.5 rounded-full bg-white/10 text-white">
         <Icon name="Shield" size={14} />
-        <span>Aucune donnée ne quitte ton appareil</span>
+        <span>Sauvegarde locale sur ton appareil (sans compte ni profilage)</span>
       </div>
     </div>
   </div>

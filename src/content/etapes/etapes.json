@@ -270,7 +270,7 @@
     },
     "keyPoints": [
       "En 1789, l'Assemblée nationale se constitue le 17 juin, prête le Serment du Jeu de paume le 20 juin et vote la Déclaration des droits le 26 août ; la première salle des séances du Palais Bourbon est inaugurée le 21 janvier 1798.",
-      "Le 21 mars 1804, Napoléon promulgue le Code civil, puis fait bâtir la façade aux 12 colonnes du Palais Bourbon entre 1806 et 1810.",
+      "Le 21 mars 1804, le Code civil est promulgué sous le Consulat de Napoléon Bonaparte (empereur le 18 mai 1804), qui fait ensuite bâtir la façade aux 12 colonnes du Palais Bourbon entre 1806 et 1810.",
       "En 1848 sont instaurés le suffrage universel masculin (5 mars) et l'abolition de l'esclavage (27 avril) ; l'ordonnance du 21 avril 1944 accorde le droit de vote et d'éligibilité aux femmes (premier vote en 1945)."
     ],
     "microQuiz": [
@@ -419,11 +419,11 @@
     "partLabel": "Partie 3 • S'entraîner & Sources",
     "title": "Les 4 Capsules Vidéo Vérifiées",
     "shortTitle": "8. Vidéos",
-    "subtitle": "Regarde les 4 dessins animés de la collection « 1 jour, 1 question » (1 min 42 chacun) pour tout revoir en images.",
-    "duration": "5 min",
-    "durationMinutes": 5,
+    "subtitle": "Regarde les 4 dessins animés de la collection « 1 jour, 1 question » (1 min 42 chacun). Visionne au moins une capsule pour ton parcours ou explore les 4 pour tout savoir !",
+    "duration": "10 min",
+    "durationMinutes": 10,
     "readingMinutes": 2,
-    "activityMinutes": 3,
+    "activityMinutes": 8,
     "xpReward": 20,
     "badgeId": null,
     "heroPhotoId": "palais-bourbon",
@@ -431,7 +431,7 @@
       "heading": "Comprendre le Parlement en 4 dessins animés",
       "lead": "Dessinées avec humour par Jacques Azam pour France Télévisions et Milan Presse, les capsules « 1 jour, 1 question » résument l'essentiel en moins de deux minutes.",
       "paragraphs": [
-        "Pour respecter ta vie privée, aucune connexion vers YouTube n'est lancée automatiquement : clique sur le bouton « Lancer la vidéo » de la capsule de ton choix pour démarrer le lecteur sans cookie (youtube-nocookie).",
+        "Pour respecter ta vie privée, aucune connexion vers YouTube n'est lancée automatiquement : clique sur le bouton « Lancer la vidéo » de la capsule de ton choix pour démarrer le lecteur sans cookie publicitaire (youtube-nocookie). Une seule capsule (1 min 42) suffit pour valider la séance, mais tu peux regarder les 4 vidéos (environ 7 minutes de visionnage au total) pour approfondir !",
         "Après ton visionnage, réponds aux 3 questions du mini-quiz en bas de page pour valider tes 20 XP !"
       ],
       "glossaryIds": ["parlement", "projet-proposition", "navette"]
@@ -696,7 +696,7 @@
         "q": "Où est enregistré ton prénom lorsque tu l'écris pour ton Diplôme sur ce site ?",
         "options": ["Uniquement dans la mémoire locale de ton navigateur, sur ton appareil", "Sur un serveur publicitaire à l'étranger", "Dans le journal télévisé"],
         "correct": 0,
-        "exp": "Parfait ! Aucune donnée ne quitte ton appareil, et tu peux tout effacer à tout moment avec le bouton « Tout effacer »."
+        "exp": "Parfait ! Ta progression reste stockée localement dans ton navigateur sans compte élève, et tu peux tout effacer à tout moment avec le bouton « Tout effacer »."
       }
     ],
     "teacherObjective": "EMI & EMC Cycle 3 — Comprendre le droit d'auteur, les licences Creative Commons, la vérification des sources et la protection des données personnelles."
