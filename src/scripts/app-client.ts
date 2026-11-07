@@ -382,13 +382,16 @@ export function initAppClient() {
       profileInput.value = state.userName;
     }
 
+    const onboardingInput = document.getElementById('onboarding-name-input') as HTMLInputElement | null;
+    if (onboardingInput && document.activeElement !== onboardingInput) {
+      onboardingInput.value = state.userName;
+    }
+
     document.querySelectorAll<HTMLButtonElement>('[data-select-avatar]').forEach((btn) => {
       const isSelected = btn.getAttribute('data-select-avatar') === activeAvatar;
       btn.setAttribute('aria-pressed', String(isSelected));
-      btn.classList.toggle('border-2', isSelected);
       btn.classList.toggle('border-gold', isSelected);
       btn.classList.toggle('bg-gold-light', isSelected);
-      btn.classList.toggle('border', !isSelected);
       btn.classList.toggle('border-line', !isSelected);
       btn.classList.toggle('bg-surface', !isSelected);
     });
@@ -396,11 +399,26 @@ export function initAppClient() {
     document.querySelectorAll<HTMLButtonElement>('[data-onboarding-avatar]').forEach((btn) => {
       const isSelected = btn.getAttribute('data-onboarding-avatar') === activeAvatar;
       btn.setAttribute('aria-pressed', String(isSelected));
-      btn.classList.toggle('border-2', isSelected);
       btn.classList.toggle('border-gold', isSelected);
       btn.classList.toggle('bg-gold-light', isSelected);
       btn.classList.toggle('border-line', !isSelected);
       btn.classList.toggle('bg-paper', !isSelected);
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-avatar-pill]').forEach((pill) => {
+      const target = pill.getAttribute('data-avatar-pill');
+      const isSelected = target === activeAvatar;
+      const isFemale = target === 'deputee';
+      pill.textContent = isSelected
+        ? isFemale
+          ? 'Fille · Sélectionnée ✓'
+          : 'Garçon · Sélectionné ✓'
+        : isFemale
+          ? 'Fille'
+          : 'Garçon';
+      pill.className = isSelected
+        ? 'inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gold text-ink'
+        : 'inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-surface text-ink-muted border border-line';
     });
 
     // Badges cards across page & modal
@@ -819,18 +837,18 @@ export function initAppClient() {
       });
     });
 
-    // Onboarding Modal (triggered by #open-onboarding-btn or customizable)
+    // Onboarding Modal (Passeport Citoyen : 1. Fille/Garçon + Prénom -> 2. Mission)
     let onboardingStep = 1;
     const updateOnboardingScreen = () => {
       document.querySelectorAll<HTMLElement>('[data-onboarding-screen]').forEach((el) => {
         el.classList.toggle('hidden', Number(el.getAttribute('data-onboarding-screen')) !== onboardingStep);
       });
       const ind = document.getElementById('onboarding-step-indicator');
-      if (ind) ind.textContent = `Bienvenue · Écran ${onboardingStep} / 3`;
+      if (ind) ind.textContent = `Passeport Citoyen · Étape ${onboardingStep} / 2`;
       const prev = document.getElementById('onboarding-prev-btn');
       if (prev) prev.classList.toggle('invisible', onboardingStep === 1);
       const next = document.getElementById('onboarding-next-btn');
-      if (next) next.textContent = onboardingStep === 3 ? 'C’est parti ! 🚀' : 'Continuer →';
+      if (next) next.textContent = onboardingStep === 2 ? 'Commencer l’aventure ! 🚀' : 'Valider & Continuer →';
     };
 
     document.querySelectorAll<HTMLElement>('[data-open-onboarding]').forEach((btn) => {
@@ -859,12 +877,10 @@ export function initAppClient() {
       if (nameInput && nameInput.value.trim()) {
         state.userName = nameInput.value.trim();
       }
-      if (onboardingStep < 3) {
+      if (onboardingStep < 2) {
         onboardingStep++;
+        saveState();
         updateOnboardingScreen();
-        if (onboardingStep === 2) {
-          setTimeout(() => nameInput?.focus(), 50);
-        }
       } else {
         state.onboardingDone = true;
         saveState();

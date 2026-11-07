@@ -13,209 +13,66 @@ const {
   class: className = ''
 } = Astro.props;
 
-const widthPx = character === 'duo' ? Math.round(size * 1.45) : size;
+const isDuo = character === 'duo';
+const widthPx = isDuo ? Math.round(size * 1.25) : size;
 const heightPx = size;
+
+const META: Record<
+  AvatarCharacter,
+  {
+    webp: string;
+    png: string;
+    alt: string;
+    ringClass: string;
+  }
+> = {
+  deputee: {
+    webp: '/img/avatars/avatar-deputee.webp',
+    png: '/img/avatars/avatar-deputee.png',
+    alt: 'Future Députée Junior CM2 (Fille)',
+    ringClass: 'rounded-full border-2 border-gold bg-paper shadow-sm'
+  },
+  depute: {
+    webp: '/img/avatars/avatar-depute.webp',
+    png: '/img/avatars/avatar-depute.png',
+    alt: 'Futur Député Junior CM2 (Garçon)',
+    ringClass: 'rounded-full border-2 border-republic-900 bg-paper shadow-sm'
+  },
+  malik: {
+    webp: '/img/avatars/avatar-malik.webp',
+    png: '/img/avatars/avatar-malik.png',
+    alt: 'Malik, élève de CM2',
+    ringClass: 'rounded-full border-2 border-republic-900 bg-paper shadow-sm'
+  },
+  papa: {
+    webp: '/img/avatars/avatar-papa.webp',
+    png: '/img/avatars/avatar-papa.png',
+    alt: 'Le Papa de Malik',
+    ringClass: 'rounded-full border-2 border-velvet bg-paper shadow-sm'
+  },
+  duo: {
+    webp: '/img/avatars/avatar-duo.webp',
+    png: '/img/avatars/avatar-duo.png',
+    alt: 'Malik et son Papa',
+    ringClass: 'rounded-2xl border-2 border-gold bg-paper shadow-sm'
+  }
+};
+
+const current = META[character] || META.deputee;
 ---
 
-{character === 'deputee' && (
-  <svg
-    viewBox="0 0 80 80"
+<picture
+  class={`inline-block shrink-0 overflow-hidden select-none ${current.ringClass} ${className}`}
+  style={`width:${widthPx}px;height:${heightPx}px;`}
+>
+  <source srcset={current.webp} type="image/webp" />
+  <img
+    src={current.png}
+    alt={current.alt}
     width={widthPx}
     height={heightPx}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class={`shrink-0 ${className}`}
-    role="img"
-    aria-label="Avatar Députée Junior CM2 (Fille)"
-  >
-    <!-- Fond médaillon républicain doré & bleu -->
-    <circle cx="40" cy="40" r="38" fill="#FAF7F0" stroke="#E8B21A" stroke-width="3" />
-    <circle cx="40" cy="40" r="34.5" fill="#DBE4F3" />
-
-    <!-- Cheveux longs (arrière) -->
-    <path
-      d="M20 34C18 46 19 57 24 63H56C61 57 62 46 60 34C58 20 50 13 40 13C30 13 22 20 20 34Z"
-      fill="#3B2314"
-    />
-
-    <!-- Veste de Députée Junior bleu républicain -->
-    <path d="M15 73C17 57 26 51 40 51C54 51 63 57 65 73" fill="#002654" />
-    <!-- Chemise blanche & col -->
-    <polygon points="40,51 32,64 48,64" fill="#FFFFFF" />
-    <path d="M33 51L40 59L47 51" stroke="#E5E1D8" stroke-width="1.5" fill="none" />
-
-    <!-- Écharpe tricolore de Députée (Bleu, Blanc, Rouge + frange Or) -->
-    <path d="M25 53L46 73H52L30 51.5Z" fill="#1E3A8A" />
-    <path d="M29 51.5L51 73H56L34 51Z" fill="#FFFFFF" />
-    <path d="M33 51L55 73H61L38 51Z" fill="#CE1126" />
-    <line x1="25" y1="53" x2="46" y2="73" stroke="#E8B21A" stroke-width="1.2" />
-
-    <!-- Cocarde parlementaire dorée -->
-    <circle cx="27" cy="62" r="4.2" fill="#E8B21A" stroke="#FFFFFF" stroke-width="1.3" />
-    <circle cx="27" cy="62" r="1.8" fill="#002654" />
-
-    <!-- Cou et visage -->
-    <rect x="35" y="43" width="10" height="10" rx="4" fill="#F1C29B" />
-    <circle cx="40" cy="33.5" r="14.5" fill="#F6CBA6" />
-
-    <!-- Joues rosées -->
-    <circle cx="30.5" cy="37" r="2.6" fill="#F48FB1" fill-opacity="0.45" />
-    <circle cx="49.5" cy="37" r="2.6" fill="#F48FB1" fill-opacity="0.45" />
-
-    <!-- Frange & coiffure avec serre-tête doré -->
-    <path
-      d="M24.5 31C25 19.5 32 14.5 40 14.5C48 14.5 55 19.5 55.5 31C52 25 46.5 23.5 40 23.5C33.5 23.5 28 25 24.5 31Z"
-      fill="#3B2314"
-    />
-    <path
-      d="M26 25C30 19 50 19 54 25"
-      stroke="#E8B21A"
-      stroke-width="2.5"
-      stroke-linecap="round"
-    />
-
-    <!-- Yeux et sourire -->
-    <circle cx="34.5" cy="33.5" r="2.1" fill="#0F172A" />
-    <circle cx="45.5" cy="33.5" r="2.1" fill="#0F172A" />
-    <circle cx="35.2" cy="32.8" r="0.7" fill="#FFFFFF" />
-    <circle cx="46.2" cy="32.8" r="0.7" fill="#FFFFFF" />
-    <path d="M35 40.2C37 42.8 43 42.8 45 40.2" stroke="#0F172A" stroke-width="2.1" stroke-linecap="round" />
-  </svg>
-)}
-
-{character === 'depute' && (
-  <svg
-    viewBox="0 0 80 80"
-    width={widthPx}
-    height={heightPx}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class={`shrink-0 ${className}`}
-    role="img"
-    aria-label="Avatar Député Junior CM2 (Garçon)"
-  >
-    <!-- Fond médaillon républicain doré & bleu -->
-    <circle cx="40" cy="40" r="38" fill="#FAF7F0" stroke="#002654" stroke-width="3" />
-    <circle cx="40" cy="40" r="34.5" fill="#DBE4F3" />
-
-    <!-- Veste de Député Junior bleu républicain -->
-    <path d="M15 73C17 57 26 51 40 51C54 51 63 57 65 73" fill="#002654" />
-    <!-- Chemise blanche & cravate velours -->
-    <polygon points="40,51 32,65 48,65" fill="#FFFFFF" />
-    <polygon points="38.5,53 41.5,53 42.5,64 40,66.5 37.5,64" fill="#8B1E2D" />
-
-    <!-- Écharpe tricolore de Député (Bleu, Blanc, Rouge + frange Or) -->
-    <path d="M25 53L46 73H52L30 51.5Z" fill="#1E3A8A" />
-    <path d="M29 51.5L51 73H56L34 51Z" fill="#FFFFFF" />
-    <path d="M33 51L55 73H61L38 51Z" fill="#CE1126" />
-    <line x1="25" y1="53" x2="46" y2="73" stroke="#E8B21A" stroke-width="1.2" />
-
-    <!-- Cocarde parlementaire dorée -->
-    <circle cx="27" cy="62" r="4.2" fill="#E8B21A" stroke="#FFFFFF" stroke-width="1.3" />
-    <circle cx="27" cy="62" r="1.8" fill="#CE1126" />
-
-    <!-- Cou et visage -->
-    <rect x="35" y="43" width="10" height="10" rx="4" fill="#E5B089" />
-    <circle cx="40" cy="33.5" r="14.5" fill="#F0BE98" />
-
-    <!-- Coupe de cheveux garçon -->
-    <path
-      d="M25 31C24.5 20 31.5 14.5 40 14.5C49 14.5 55.5 20 55 31C52.5 25.5 47 23.5 40 23.5C33 23.5 27.5 25.5 25 31Z"
-      fill="#2B1B12"
-    />
-    <path d="M33 15.5C36 12.5 43 12.5 47 15.5" stroke="#2B1B12" stroke-width="3" stroke-linecap="round" />
-
-    <!-- Yeux et sourire -->
-    <circle cx="34.5" cy="33.5" r="2.1" fill="#0F172A" />
-    <circle cx="45.5" cy="33.5" r="2.1" fill="#0F172A" />
-    <circle cx="35.2" cy="32.8" r="0.7" fill="#FFFFFF" />
-    <circle cx="46.2" cy="32.8" r="0.7" fill="#FFFFFF" />
-    <path d="M35 40.5C36.8 43 43.2 43 45 40.5" stroke="#0F172A" stroke-width="2.1" stroke-linecap="round" />
-  </svg>
-)}
-
-{character === 'malik' && (
-  <svg
-    viewBox="0 0 80 80"
-    width={widthPx}
-    height={heightPx}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class={`shrink-0 ${className}`}
-    role="img"
-    aria-label="Illustration de Malik, élève de CM2"
-  >
-    <circle cx="40" cy="40" r="38" fill="#DBE4F3" stroke="#002654" stroke-width="2.5" />
-    <path d="M16 72C18 57 27 52 40 52C53 52 62 57 64 72" fill="#002654" />
-    <path d="M27 53L48 72H56L34 52Z" fill="#CE1126" />
-    <path d="M31 52L52 72H55L34 52Z" fill="#FFFFFF" />
-    <rect x="35" y="44" width="10" height="10" rx="4" fill="#D99B72" />
-    <circle cx="40" cy="34" r="15" fill="#E6AC84" />
-    <path d="M24 31C23 21 31 15 40 15C50 15 57 21 56 31C53 26 47 24 40 24C33 24 27 26 24 31Z" fill="#2A1B12" />
-    <circle cx="27" cy="24" r="4.5" fill="#2A1B12" />
-    <circle cx="35" cy="19" r="5" fill="#2A1B12" />
-    <circle cx="45" cy="19" r="5" fill="#2A1B12" />
-    <circle cx="53" cy="24" r="4.5" fill="#2A1B12" />
-    <circle cx="34.5" cy="34" r="2.2" fill="#0F172A" />
-    <circle cx="45.5" cy="34" r="2.2" fill="#0F172A" />
-    <path d="M35 41C36.8 43.5 43.2 43.5 45 41" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round" />
-    <circle cx="29" cy="61" r="4" fill="#E8B21A" stroke="#FFFFFF" stroke-width="1.2" />
-  </svg>
-)}
-
-{character === 'papa' && (
-  <svg
-    viewBox="0 0 80 80"
-    width={widthPx}
-    height={heightPx}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class={`shrink-0 ${className}`}
-    role="img"
-    aria-label="Illustration du Papa de Malik"
-  >
-    <circle cx="40" cy="40" r="38" fill="#FEF3C7" stroke="#8B1E2D" stroke-width="2.5" />
-    <path d="M14 72C17 56 26 51 40 51C54 51 63 56 66 72" fill="#8B1E2D" />
-    <polygon points="40,51 33,66 47,66" fill="#FAF7F0" />
-    <rect x="34" y="43" width="12" height="10" rx="4" fill="#C98A63" />
-    <circle cx="40" cy="32" r="15.5" fill="#DC9E76" />
-    <path d="M24 29C24 18 31 14 40 14C49 14 56 18 56 29C53 23 47 21 40 21C33 21 27 23 24 29Z" fill="#1E1610" />
-    <path d="M27 36C28 44 34 48 40 48C46 48 52 44 53 36C50 40 45 42 40 42C35 42 30 40 27 36Z" fill="#2A1B12" />
-    <rect x="29" y="28.5" width="9" height="6.5" rx="2" stroke="#002654" stroke-width="2" fill="#FFFFFF" fill-opacity="0.35" />
-    <rect x="42" y="28.5" width="9" height="6.5" rx="2" stroke="#002654" stroke-width="2" fill="#FFFFFF" fill-opacity="0.35" />
-    <line x1="38" y1="31.5" x2="42" y2="31.5" stroke="#002654" stroke-width="2" />
-    <circle cx="33.5" cy="31.8" r="1.7" fill="#0F172A" />
-    <circle cx="46.5" cy="31.8" r="1.7" fill="#0F172A" />
-    <path d="M36 39.5C38 41.2 42 41.2 44 39.5" stroke="#FAF7F0" stroke-width="2" stroke-linecap="round" />
-    <circle cx="51" cy="60" r="3.5" fill="#E8B21A" />
-  </svg>
-)}
-
-{character === 'duo' && (
-  <svg
-    viewBox="0 0 120 80"
-    width={widthPx}
-    height={heightPx}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class={`shrink-0 ${className}`}
-    role="img"
-    aria-label="Illustration de Malik et son Papa"
-  >
-    <circle cx="42" cy="40" r="34" fill="#FEF3C7" stroke="#002654" stroke-width="2.5" />
-    <path d="M18 69C21 55 29 50 42 50C55 50 63 55 66 69" fill="#002654" />
-    <circle cx="42" cy="33" r="14" fill="#DC9E76" />
-    <path d="M28 30C28 20 34 16 42 16C50 16 56 20 56 30C53 25 48 23 42 23C36 23 31 25 28 30Z" fill="#1E1610" />
-    <rect x="32" y="30" width="8" height="5.5" rx="1.5" stroke="#0F172A" stroke-width="1.8" fill="#FFFFFF" fill-opacity="0.3" />
-    <rect x="44" y="30" width="8" height="5.5" rx="1.5" stroke="#0F172A" stroke-width="1.8" fill="#FFFFFF" fill-opacity="0.3" />
-    <line x1="40" y1="32.5" x2="44" y2="32.5" stroke="#0F172A" stroke-width="1.8" />
-    <path d="M37 41C39 43 45 43 47 41" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
-    <circle cx="80" cy="42" r="32" fill="#DBE4F3" stroke="#E8B21A" stroke-width="2.5" />
-    <path d="M58 69C60 57 68 53 80 53C92 53 100 57 102 69" fill="#8B1E2D" />
-    <circle cx="80" cy="36" r="13" fill="#E6AC84" />
-    <path d="M67 33C67 24 73 20 80 20C87 20 93 24 93 33C90 29 85 27 80 27C75 27 70 29 67 33Z" fill="#2A1B12" />
-    <circle cx="75.5" cy="36" r="1.9" fill="#0F172A" />
-    <circle cx="84.5" cy="36" r="1.9" fill="#0F172A" />
-    <path d="M75.5 42C77.5 44.2 82.5 44.2 84.5 42" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
-  </svg>
-)}
+    loading="eager"
+    decoding="async"
+    class="w-full h-full object-cover object-top block"
+  />
+</picture>

@@ -153,74 +153,97 @@ const searchIndex = [
     </div>
 
     <div class="p-5 sm:p-6 space-y-6 max-h-[78vh] overflow-y-auto">
-      <!-- Personalization & XP Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-paper p-4 sm:p-5 rounded-card border border-line">
-        <div class="md:col-span-7 space-y-3.5">
-          <div class="space-y-2">
-            <span class="block text-xs font-bold uppercase tracking-wider text-ink-muted">
-              1. Tu es un(e) futur(e) Député(e) Junior : Fille ou Garçon ?
+      <!-- Top Stats Row (XP, Steps, Badges) -->
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div class="p-3.5 rounded-card bg-paper border-2 border-line shadow-sm">
+          <span id="modal-xp-total" class="font-display font-bold text-2xl sm:text-3xl text-republic-900 block">0</span>
+          <span class="text-xs text-ink-muted font-bold">Points XP</span>
+        </div>
+        <div class="p-3.5 rounded-card bg-paper border-2 border-line shadow-sm">
+          <span id="modal-steps-done" class="font-display font-bold text-2xl sm:text-3xl text-success block">0/12</span>
+          <span class="text-xs text-ink-muted font-bold">Étapes réussies</span>
+        </div>
+        <div class="p-3.5 rounded-card bg-paper border-2 border-line shadow-sm">
+          <span id="modal-badges-done" class="font-display font-bold text-2xl sm:text-3xl text-ink block">0/9</span>
+          <span class="text-xs text-ink-muted font-bold">Médailles</span>
+        </div>
+      </div>
+
+      <!-- Full-width Passeport Député(e) Junior CM2 (1. Fille/Garçon -> 2. Prénom) -->
+      <div class="bg-paper p-5 sm:p-6 rounded-card border-2 border-gold/60 space-y-5 shadow-sm">
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-republic-900">
+              1. Choisis ton personnage : Future Députée Junior (Fille) ou Futur Député Junior (Garçon)
             </span>
-            <div class="grid grid-cols-2 gap-2.5">
-              <button
-                type="button"
-                data-select-avatar="deputee"
-                class="avatar-choice-btn flex items-center gap-2.5 p-2.5 rounded-xl border border-line bg-surface text-left text-xs font-bold text-ink transition min-h-[54px]"
-              >
-                <Avatar character="deputee" size={40} />
-                <div>
-                  <span class="block font-display text-xs sm:text-sm text-ink">Future Députée Junior</span>
-                  <span class="block text-[11px] text-ink-muted font-normal">Fille · Écharpe tricolore</span>
-                </div>
-              </button>
-              <button
-                type="button"
-                data-select-avatar="depute"
-                class="avatar-choice-btn flex items-center gap-2.5 p-2.5 rounded-xl border-2 border-gold bg-gold-light text-left text-xs font-bold text-ink transition min-h-[54px]"
-              >
-                <Avatar character="depute" size={40} />
-                <div>
-                  <span class="block font-display text-xs sm:text-sm text-ink">Futur Député Junior</span>
-                  <span class="block text-[11px] text-ink-muted font-normal">Garçon · Écharpe tricolore</span>
-                </div>
-              </button>
-            </div>
           </div>
 
-          <div>
-            <label for="profile-name-input" class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">
-              2. Ton prénom (affiché sur ton profil et ton diplôme)
-            </label>
-            <div class="flex flex-wrap items-center gap-2">
-              <input
-                type="text"
-                id="profile-name-input"
-                maxlength="28"
-                placeholder="Ex : Inès, Malik, Lucas, Léa..."
-                class="flex-1 min-w-[160px] px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-bold text-sm"
-              />
-              <button
-                type="button"
-                id="profile-save-btn"
-                class="px-4 py-2.5 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-xs sm:text-sm min-h-[42px]"
-              >
-                Enregistrer
-              </button>
-            </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <button
+              type="button"
+              data-select-avatar="deputee"
+              class="avatar-choice-btn group flex items-center gap-3.5 p-3.5 rounded-card border-2 border-line bg-surface hover:border-gold text-left transition shadow-sm"
+            >
+              <Avatar character="deputee" size={68} />
+              <div class="min-w-0 flex-1 space-y-1">
+                <span
+                  data-avatar-pill="deputee"
+                  class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-paper text-ink-muted border border-line"
+                >
+                  Fille
+                </span>
+                <span class="block font-display font-bold text-base text-ink leading-snug">
+                  Future Députée Junior
+                </span>
+                <span class="block text-xs text-ink-muted">
+                  Veste bleue & écharpe tricolore
+                </span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              data-select-avatar="depute"
+              class="avatar-choice-btn group flex items-center gap-3.5 p-3.5 rounded-card border-2 border-gold bg-gold-light text-left transition shadow-sm"
+            >
+              <Avatar character="depute" size={68} />
+              <div class="min-w-0 flex-1 space-y-1">
+                <span
+                  data-avatar-pill="depute"
+                  class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gold text-ink"
+                >
+                  Garçon · Sélectionné ✓
+                </span>
+                <span class="block font-display font-bold text-base text-ink leading-snug">
+                  Futur Député Junior
+                </span>
+                <span class="block text-xs text-ink-muted">
+                  Veste bleue & écharpe tricolore
+                </span>
+              </div>
+            </button>
           </div>
         </div>
 
-        <div class="md:col-span-5 grid grid-cols-3 gap-2 text-center">
-          <div class="p-3 rounded-xl bg-surface border border-line">
-            <span id="modal-xp-total" class="font-display font-bold text-2xl text-republic-900 block">0</span>
-            <span class="text-xs text-ink-muted font-bold">Points XP</span>
-          </div>
-          <div class="p-3 rounded-xl bg-surface border border-line">
-            <span id="modal-steps-done" class="font-display font-bold text-2xl text-success block">0/12</span>
-            <span class="text-xs text-ink-muted font-bold">Étapes</span>
-          </div>
-          <div class="p-3 rounded-xl bg-surface border border-line">
-            <span id="modal-badges-done" class="font-display font-bold text-2xl text-ink block">0/9</span>
-            <span class="text-xs text-ink-muted font-bold">Badges</span>
+        <div class="pt-4 border-t border-line">
+          <label for="profile-name-input" class="block text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-republic-900 mb-2">
+            2. Ensuite, écris ton prénom (affiché en haut du site et sur ton Diplôme CM2)
+          </label>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <input
+              type="text"
+              id="profile-name-input"
+              maxlength="28"
+              placeholder="Tape ton prénom ici (ex : Inès, Malik, Léa, Lucas...)"
+              class="flex-1 px-4 py-3 rounded-btn bg-surface border-2 border-line focus:border-republic-900 text-ink font-bold text-base outline-none"
+            />
+            <button
+              type="button"
+              id="profile-save-btn"
+              class="px-5 py-3 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-sm shadow-sm transition min-h-[48px] shrink-0"
+            >
+              Enregistrer mon profil ✓
+            </button>
           </div>
         </div>
       </div>
@@ -346,118 +369,124 @@ const searchIndex = [
   </div>
 </div>
 
-<!-- 5. Onboarding Modal (3 screens maximum, skippable) -->
+<!-- 5. Onboarding Modal (Passeport Député Junior CM2 : 1. Fille/Garçon + 2. Prénom) -->
 <div
   id="onboarding-modal"
   role="dialog"
   aria-modal="true"
   aria-labelledby="onboarding-title"
-  class="fixed inset-0 z-50 hidden items-center justify-center bg-night/80 backdrop-blur-sm p-4 no-print"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-night/80 backdrop-blur-sm p-4 overflow-y-auto no-print"
 >
-  <div class="surface-card w-full max-w-lg overflow-hidden border-2 border-gold shadow-elevated">
-    <div class="px-5 py-4 bg-night text-white flex items-center justify-between border-b-2 border-gold">
-      <span id="onboarding-step-indicator" class="text-xs font-bold uppercase tracking-wider text-gold">
-        Bienvenue · Écran 1 / 3
-      </span>
+  <div class="surface-card w-full max-w-xl overflow-hidden border-2 border-gold shadow-elevated my-auto">
+    <div class="px-5 sm:px-6 py-4 bg-night text-white flex items-center justify-between border-b-4 border-gold">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-gold" aria-hidden="true"></span>
+        <span id="onboarding-step-indicator" class="text-xs font-bold uppercase tracking-wider text-gold">
+          Passeport Citoyen · Étape 1 / 2
+        </span>
+      </div>
       <button
         type="button"
         id="onboarding-skip-btn"
         class="text-xs font-bold text-white/85 hover:text-gold underline py-1 px-2"
       >
-        Passer l’introduction →
+        Passer →
       </button>
     </div>
 
-    <div class="p-6 space-y-5">
-      <!-- Screen 1: Future Députée Junior (Fille) ou Futur Député Junior (Garçon) -->
-      <div data-onboarding-screen="1" class="space-y-4">
+    <div class="p-5 sm:p-6 space-y-5">
+      <!-- Screen 1: 1. Fille ou Garçon + 2. Prénom together -->
+      <div data-onboarding-screen="1" class="space-y-5">
         <div class="space-y-1">
           <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
-            Étape 1 · Ton rôle à l’Assemblée
+            1. Ton rôle à l’Assemblée nationale
           </span>
-          <h2 id="onboarding-title" class="font-display font-bold text-2xl text-ink">
-            Es-tu une future Députée Junior (Fille) ou un futur Député Junior (Garçon) ?
+          <h2 id="onboarding-title" class="font-display font-bold text-xl sm:text-2xl text-ink leading-snug">
+            Es-tu une future Députée Junior ou un futur Député Junior ?
           </h2>
-          <p class="text-sm text-ink-muted">
-            Choisis ton personnage avec l’écharpe tricolore avant d’écrire ton prénom :
-          </p>
         </div>
 
         <div class="grid grid-cols-2 gap-3.5">
           <button
             type="button"
             data-onboarding-avatar="deputee"
-            class="p-4 rounded-card border-2 border-line bg-paper hover:bg-republic-100/50 flex flex-col items-center gap-2 text-center transition"
+            class="p-4 rounded-card border-2 border-line bg-paper hover:border-gold flex flex-col items-center gap-2.5 text-center transition shadow-sm"
           >
-            <Avatar character="deputee" size={76} />
-            <span class="font-display font-bold text-base text-ink">Future Députée Junior</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-surface border border-line text-xs font-bold text-republic-900">
-              Fille 👧🏻
-            </span>
+            <Avatar character="deputee" size={88} />
+            <div class="space-y-1">
+              <span class="font-display font-bold text-sm sm:text-base text-ink block leading-snug">
+                Future Députée Junior
+              </span>
+              <span
+                data-avatar-pill="deputee"
+                class="inline-block px-3 py-0.5 rounded-full bg-surface border border-line text-xs font-bold text-ink-muted"
+              >
+                Fille
+              </span>
+            </div>
           </button>
+
           <button
             type="button"
             data-onboarding-avatar="depute"
-            class="p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2 text-center transition"
+            class="p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2.5 text-center transition shadow-sm"
           >
-            <Avatar character="depute" size={76} />
-            <span class="font-display font-bold text-base text-ink">Futur Député Junior</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-surface border border-line text-xs font-bold text-republic-900">
-              Garçon 👦🏻
-            </span>
+            <Avatar character="depute" size={88} />
+            <div class="space-y-1">
+              <span class="font-display font-bold text-sm sm:text-base text-ink block leading-snug">
+                Futur Député Junior
+              </span>
+              <span
+                data-avatar-pill="depute"
+                class="inline-block px-3 py-0.5 rounded-full bg-gold text-ink text-xs font-bold"
+              >
+                Garçon · Sélectionné ✓
+              </span>
+            </div>
           </button>
         </div>
-      </div>
 
-      <!-- Screen 2: Prénom -->
-      <div data-onboarding-screen="2" class="hidden space-y-4">
-        <div class="flex items-center gap-3.5">
-          <span id="onboarding-preview-deputee" class="hidden shrink-0">
-            <Avatar character="deputee" size={68} />
-          </span>
-          <span id="onboarding-preview-depute" class="shrink-0">
-            <Avatar character="depute" size={68} />
-          </span>
-          <div>
-            <span id="onboarding-role-pill" class="px-2.5 py-0.5 rounded-full bg-gold-light border border-gold text-ink text-xs font-bold">
-              Futur Député Junior (Garçon)
-            </span>
-            <h2 class="font-display font-bold text-2xl text-ink mt-1">
-              Maintenant, comment t’appelles-tu ?
-            </h2>
-            <p class="text-sm text-ink-muted">
-              Ton prénom sera inscrit en grand sur ton Diplôme de Député(e) Junior CM2 !
-            </p>
-          </div>
-        </div>
-        <div>
-          <label for="onboarding-name-input" class="block text-xs font-bold uppercase text-ink-muted mb-1.5">
-            Ton prénom
+        <!-- 2. Prénom right below Fille/Garçon -->
+        <div class="p-4 rounded-card bg-paper border-2 border-line space-y-2">
+          <label for="onboarding-name-input" class="block text-xs sm:text-sm font-display font-bold uppercase tracking-wider text-republic-900">
+            2. Ensuite, quel est ton prénom ?
           </label>
           <input
             type="text"
             id="onboarding-name-input"
             maxlength="28"
-            placeholder="Tape ton prénom ici..."
-            class="w-full px-4 py-3 rounded-btn bg-paper border-2 border-line focus:border-republic-900 text-ink font-bold text-base outline-none"
+            placeholder="Tape ton prénom ici (ex : Inès, Malik, Léa, Lucas...)"
+            class="w-full px-4 py-3 rounded-btn bg-surface border-2 border-line focus:border-republic-900 text-ink font-bold text-base outline-none"
           />
+          <p class="text-xs text-ink-muted">
+            Ton prénom sera inscrit en grand sur ton <strong>Diplôme de Député(e) Junior CM2</strong> !
+          </p>
         </div>
       </div>
 
-      <!-- Screen 3: Overview -->
-      <div data-onboarding-screen="3" class="hidden space-y-4">
-        <div class="flex items-center gap-3.5">
-          <Avatar character="duo" size={68} />
-          <div>
-            <h2 class="font-display font-bold text-2xl text-ink">
-              Voici ta mission en 12 étapes !
+      <!-- Screen 2: Mission Overview with Malik & Papa -->
+      <div data-onboarding-screen="2" class="hidden space-y-4">
+        <div class="flex items-center gap-4 p-4 rounded-card bg-paper border border-line">
+          <span id="onboarding-preview-deputee" class="hidden shrink-0">
+            <Avatar character="deputee" size={72} />
+          </span>
+          <span id="onboarding-preview-depute" class="shrink-0">
+            <Avatar character="depute" size={72} />
+          </span>
+          <div class="min-w-0">
+            <span id="onboarding-role-pill" class="inline-block px-2.5 py-0.5 rounded-full bg-gold-light border border-gold text-ink text-xs font-bold">
+              Futur Député Junior (Garçon)
+            </span>
+            <h2 class="font-display font-bold text-xl sm:text-2xl text-ink mt-1 leading-snug">
+              Prêt(e) pour ta mission en 12 étapes !
             </h2>
-            <p class="text-sm text-ink-muted">
+            <p class="text-xs sm:text-sm text-ink-muted mt-0.5">
               Chaque étape dure 4 à 6 minutes et se termine par un mini-quiz de 3 questions.
             </p>
           </div>
         </div>
-        <ul class="space-y-2 text-sm text-ink bg-paper p-4 rounded-xl border border-line">
+
+        <ul class="space-y-2.5 text-sm text-ink bg-paper p-4 rounded-card border border-line">
           <li>🏛️ <strong>Partie 1 (Étapes 1 à 3) :</strong> Explorer le Palais Bourbon et l’Hémicycle.</li>
           <li>⚖️ <strong>Partie 2 (Étapes 4 à 7) :</strong> Comprendre la Constitution, les tribunaux et le Sénat.</li>
           <li>🎓 <strong>Partie 3 (Étapes 8 à 12) :</strong> Vidéos, mini-jeux, Grand Quiz et Diplôme imprimable !</li>
@@ -465,7 +494,7 @@ const searchIndex = [
       </div>
 
       <!-- Navigation buttons -->
-      <div class="flex items-center justify-between pt-2">
+      <div class="flex items-center justify-between pt-2 border-t border-line">
         <button
           type="button"
           id="onboarding-prev-btn"
@@ -476,9 +505,9 @@ const searchIndex = [
         <button
           type="button"
           id="onboarding-next-btn"
-          class="px-5 py-2.5 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-sm shadow-sm min-h-[44px]"
+          class="px-6 py-3 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-sm sm:text-base shadow-sm min-h-[48px]"
         >
-          Continuer →
+          Valider & Continuer →
         </button>
       </div>
     </div>

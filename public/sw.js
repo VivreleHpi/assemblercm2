@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'assemblee-cm2-';
-const CACHE_NAME = 'assemblee-cm2-v3';
+const CACHE_NAME = 'assemblee-cm2-v4';
 const PRECACHE_URLS = [
   '/',
   '/etape/1-hemicycle/',
@@ -23,7 +23,12 @@ const PRECACHE_URLS = [
   '/fonts/fredoka-600.woff2',
   '/fonts/fredoka-700.woff2',
   '/fonts/atkinson-400.woff2',
-  '/fonts/atkinson-700.woff2'
+  '/fonts/atkinson-700.woff2',
+  '/img/avatars/avatar-deputee.webp',
+  '/img/avatars/avatar-depute.webp',
+  '/img/avatars/avatar-malik.webp',
+  '/img/avatars/avatar-papa.webp',
+  '/img/avatars/avatar-duo.webp'
 ];
 
 self.addEventListener('install', (event) => {

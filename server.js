@@ -31,7 +31,10 @@ const MIME_TYPES = {
 const server = http.createServer((req, res) => {
   try {
     const parsedUrl = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
-    const pathname = decodeURIComponent(parsedUrl.pathname);
+    let pathname = decodeURIComponent(parsedUrl.pathname);
+    if (pathname === '/assemblercm2' || pathname.startsWith('/assemblercm2/')) {
+      pathname = pathname.slice('/assemblercm2'.length) || '/';
+    }
 
     // Prevent directory traversal
     const safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');

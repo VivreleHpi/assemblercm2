@@ -20,22 +20,19 @@ const { badge, unlocked = false } = Astro.props;
   data-unlocked={unlocked ? 'true' : 'false'}
 >
   <div
-    class={`badge-medal w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 shadow-sm transition-colors ${
+    class={`badge-medal w-11 h-11 rounded-full flex items-center justify-center shrink-0 border-2 shadow-sm transition-colors ${
       unlocked
         ? 'bg-gold text-ink border-ink/20'
         : 'bg-surface text-ink-muted border-line'
     }`}
     aria-hidden="true"
   >
-    <Icon name={badge.icon} size={24} />
+    <Icon name={badge.icon} size={22} />
   </div>
-  <div class="min-w-0 flex-1">
-    <div class="flex items-center justify-between gap-2">
-      <h4 class="font-display font-bold text-base text-ink leading-snug">
-        {badge.title}
-      </h4>
+  <div class="min-w-0 flex-1 space-y-1">
+    <div class="flex items-center gap-1.5">
       <span
-        class={`badge-status-pill text-xs font-bold px-2 py-0.5 rounded-full shrink-0 ${
+        class={`badge-status-pill text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
           unlocked
             ? 'bg-success-light text-success border border-success/30'
             : 'bg-surface text-ink-muted border border-line'
@@ -44,9 +41,11 @@ const { badge, unlocked = false } = Astro.props;
         {unlocked ? 'Débloqué ✓' : `Étape ${badge.step}`}
       </span>
     </div>
-    <p class="text-xs text-ink-muted mt-1 leading-relaxed">
+    <h4 class="font-display font-bold text-sm sm:text-base text-ink leading-snug">
+      {badge.title}
+    </h4>
+    <p class="text-xs text-ink-muted leading-relaxed">
       {badge.description}
     </p>
   </div>
 </div>
-
