@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'assemblee-cm2-';
-const CACHE_NAME = 'assemblee-cm2-v4';
+const CACHE_NAME = 'assemblee-cm2-v5';
 const PRECACHE_URLS = [
   '/',
   '/etape/1-hemicycle/',
@@ -54,6 +54,27 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
+  const acceptHeader = event.request.headers.get('accept') || '';
+  const isHtmlNavigation =
+    event.request.mode === 'navigate' || acceptHeader.includes('text/html');
+
+  if (isHtmlNavigation) {
+    // Network-First for HTML pages so new deployments and styles are always up-to-date
+    event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          if (res && res.status === 200) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-First with background refresh for static assets (images, fonts, scripts)
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const fetchPromise = fetch(event.request)
