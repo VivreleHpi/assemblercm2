@@ -1,0 +1,437 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ETAPES, getPhotoById } from '../data';
+import Avatar from '../components/ui/Avatar.astro';
+import Icon from '../components/ui/Icon.astro';
+
+const hemicyclePhoto = getPhotoById('hemicycle')!;
+const part1Steps = ETAPES.filter((e) => e.partNumber === 1);
+const part2Steps = ETAPES.filter((e) => e.partNumber === 2);
+const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
+---
+
+<BaseLayout title="Entre dans l’Assemblée nationale ! — Le parcours CM2 de Malik & son Papa">
+  <!-- 1. HERO PLEIN ÉCRAN SOUS VOILE NIGHT -->
+  <section class="relative overflow-hidden bg-night text-white border-b-4 border-gold">
+    <!-- Background Picture (LCP optimized: eager + high fetchpriority) -->
+    <div class="absolute inset-0 z-0">
+      <picture class="block w-full h-full">
+        <source
+          type="image/avif"
+          srcset="/img/hemicycle-480.avif 480w, /img/hemicycle-960.avif 960w, /img/hemicycle-1600.avif 1600w"
+          sizes="100vw"
+        />
+        <source
+          type="image/webp"
+          srcset="/img/hemicycle-480.webp 480w, /img/hemicycle-960.webp 960w, /img/hemicycle-1600.webp 1600w"
+          sizes="100vw"
+        />
+        <img
+          src="/img/hemicycle.jpg"
+          alt={hemicyclePhoto.alt}
+          width={hemicyclePhoto.width}
+          height={hemicyclePhoto.height}
+          loading="eager"
+          fetchpriority="high"
+          decoding="sync"
+          class="w-full h-full object-cover object-center opacity-35"
+        />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-night via-night/80 to-night/65"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-5">
+          <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 border border-gold/50 text-gold text-xs sm:text-sm font-bold backdrop-blur-sm">
+            <span>🇫🇷 Parcours Citoyen CM2 (9-11 ans)</span>
+            <span aria-hidden="true">·</span>
+            <span>12 étapes · Gratuit & sans publicité</span>
+          </div>
+
+          <h1 class="font-display font-bold text-3xl sm:text-5xl lg:text-[3.35rem] text-white leading-[1.12]">
+            Entre dans l’Assemblée nationale !
+          </h1>
+
+          <p class="text-base sm:text-xl text-white/95 max-w-2xl leading-relaxed font-medium">
+            Suis Malik (élève de CM2) et son papa dans les coulisses du Palais Bourbon pour comprendre qui vote les lois et comment fonctionne notre République.
+          </p>
+
+          <!-- Primary Gold CTA + Secondary Map/Onboarding CTAs -->
+          <div class="flex flex-wrap items-center gap-3.5 pt-2">
+            <a
+              id="home-hero-primary-cta"
+              href="/etape/1-hemicycle/"
+              class="inline-flex items-center gap-2.5 px-6 py-4 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-base sm:text-lg shadow-elevated transition min-h-[54px]"
+            >
+              <span id="home-hero-primary-cta-text">Commencer le parcours (Étape 1)</span>
+              <Icon name="ArrowRight" size={20} />
+            </a>
+
+            <button
+              type="button"
+              data-open-onboarding="true"
+              class="inline-flex items-center gap-2 px-5 py-3.5 rounded-btn bg-white/15 hover:bg-white/25 text-white border border-white/30 font-display font-bold text-sm sm:text-base transition min-h-[54px]"
+            >
+              <Icon name="Sparkles" size={18} />
+              <span>Choisir mon prénom & avatar</span>
+            </button>
+
+            <a
+              href="#carte-parcours"
+              class="inline-flex items-center gap-2 px-4 py-3.5 rounded-btn text-gold hover:underline font-display font-bold text-sm sm:text-base min-h-[48px]"
+            >
+              <Icon name="Compass" size={18} />
+              <span>Voir la carte des 12 étapes ↓</span>
+            </a>
+          </div>
+
+          <!-- Quick Reassurance Pills -->
+          <div class="pt-3 flex flex-wrap items-center gap-4 text-xs sm:text-sm text-white/85">
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="Clock" size={15} class="text-gold" />
+              <span>45 min au total (ou 5 min par étape)</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="Award" size={15} class="text-gold" />
+              <span>9 médailles & 1 Diplôme imprimable</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="Volume2" size={15} class="text-gold" />
+              <span>Lecture audio intégrée</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Malik & Papa Character Welcome Card -->
+        <div class="lg:col-span-4">
+          <div class="p-6 rounded-card bg-surface text-ink border-4 border-gold shadow-elevated space-y-4">
+            <div class="flex items-center gap-3.5">
+              <Avatar character="duo" size={76} class="shrink-0" />
+              <div>
+                <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+                  Tes 2 guides
+                </span>
+                <h2 class="font-display font-bold text-xl text-ink mt-1">
+                  Salut, c’est Malik & Papa !
+                </h2>
+              </div>
+            </div>
+            <p class="text-sm text-ink leading-relaxed">
+              « Pour réviser mon cours d’EMC de CM2, j’ai posé plein de questions à mon papa : pourquoi il y a <strong>577 fauteuils rouges</strong> ? Qui a construit les <strong>12 colonnes</strong> ? Comment une idée devient une vraie <strong>loi</strong> ? On a préparé 12 étapes avec des mini-quiz pour tout comprendre ! »
+            </p>
+            <div class="pt-2 border-t border-line flex items-center justify-between text-xs text-ink-muted">
+              <span>📸 Photo : {hemicyclePhoto.author} ({hemicyclePhoto.license})</span>
+              <a href="/credits/" class="font-bold text-republic-900 underline">Crédits</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. LA CARTE DU PARCOURS (12 ÉTAPES EN 3 GRANDES PARTIES) -->
+  <section id="carte-parcours" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-line pb-6">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
+          Carnet de voyage républicain
+        </span>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-ink mt-1">
+          La Carte des 12 Étapes du Parcours
+        </h2>
+        <p class="text-base text-ink-muted mt-1 max-w-2xl">
+          Avance étape par étape dans l’ordre ou clique directement sur le sujet que tu veux étudier en classe. Chaque étape réussie te rapporte des points XP !
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
+        <span class="px-3 py-1.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          1. Le Palais (1–3)
+        </span>
+        <span class="px-3 py-1.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
+          2. Les Institutions (4–7)
+        </span>
+        <span class="px-3 py-1.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+          3. S’entraîner & Diplôme (8–12)
+        </span>
+      </div>
+    </div>
+
+    <!-- PARTIE 1 : LE PALAIS BOURBON (Couleur : Republic Blue) -->
+    <div class="space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 bg-republic-100/70 p-4 rounded-card border-l-8 border-l-republic-900">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-republic-900">
+            Partie 1 · Étapes 1 à 3 (~13 minutes)
+          </span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-ink">
+            🏛️ Découvrir le Palais Bourbon et l’Hémicycle
+          </h3>
+        </div>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-republic-900 border border-line">
+          3 médailles à gagner
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {part1Steps.map((step) => {
+          const photo = getPhotoById(step.heroPhoto);
+          const baseName = photo ? photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '') : 'hemicycle';
+          return (
+            <a
+              href={`/etape/${step.slug}/`}
+              data-map-step-card={step.number}
+              class="group surface-card overflow-hidden border-2 border-line hover:border-republic-900 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div class="relative aspect-[16/9] bg-night overflow-hidden border-b border-line">
+                  <img
+                    src={`/img/${baseName}-480.webp`}
+                    alt={photo?.alt || step.title}
+                    loading="lazy"
+                    style={`object-position: ${photo?.objectPosition || 'center center'};`}
+                    class="w-full h-full object-cover photo-warm group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-republic-900 text-white font-display font-bold text-xs shadow-sm">
+                    Étape {step.number} / 12
+                  </span>
+                  <span class="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-night/85 text-gold text-xs font-bold">
+                    +{step.xp} XP
+                  </span>
+                </div>
+                <div class="p-5 space-y-2">
+                  <div class="flex items-center justify-between text-xs text-ink-muted font-bold">
+                    <span>⏱️ {step.duration}</span>
+                    <span data-map-step-pill class="text-xs font-bold px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold">
+                      Disponible →
+                    </span>
+                  </div>
+                  <h4 class="font-display font-bold text-xl text-ink group-hover:text-republic-900 leading-snug">
+                    {step.title}
+                  </h4>
+                  <p class="text-sm text-ink-muted line-clamp-2 leading-relaxed">
+                    {step.subtitle}
+                  </p>
+                </div>
+              </div>
+              <div class="px-5 py-3 bg-paper border-t border-line flex items-center justify-between text-xs font-bold text-republic-900">
+                <span>Ouvrir l’étape {step.number}</span>
+                <Icon name="ArrowRight" size={16} />
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- PARTIE 2 : LES INSTITUTIONS (Couleur : Velvet) -->
+    <div class="space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 bg-velvet-light p-4 rounded-card border-l-8 border-l-velvet">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-velvet">
+            Partie 2 · Étapes 4 à 7 (~20 minutes)
+          </span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-ink">
+            ⚖️ Comprendre la Constitution, l’Histoire, la Justice et le Sénat
+          </h3>
+        </div>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-velvet border border-line">
+          5 médailles à gagner
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {part2Steps.map((step) => {
+          const photo = getPhotoById(step.heroPhoto);
+          const baseName = photo ? photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '') : 'palais-bourbon';
+          return (
+            <a
+              href={`/etape/${step.slug}/`}
+              data-map-step-card={step.number}
+              class="group surface-card overflow-hidden border-2 border-line hover:border-velvet transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div class="relative aspect-[16/9] bg-night overflow-hidden border-b border-line">
+                  <img
+                    src={`/img/${baseName}-480.webp`}
+                    alt={photo?.alt || step.title}
+                    loading="lazy"
+                    style={`object-position: ${photo?.objectPosition || 'center center'};`}
+                    class="w-full h-full object-cover photo-warm group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-velvet text-white font-display font-bold text-xs shadow-sm">
+                    Étape {step.number} / 12
+                  </span>
+                  <span class="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-night/85 text-gold text-xs font-bold">
+                    +{step.xp} XP
+                  </span>
+                </div>
+                <div class="p-4 sm:p-5 space-y-2">
+                  <div class="flex items-center justify-between text-xs text-ink-muted font-bold">
+                    <span>⏱️ {step.duration}</span>
+                    <span data-map-step-pill class="text-xs font-bold px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold">
+                      Disponible →
+                    </span>
+                  </div>
+                  <h4 class="font-display font-bold text-lg text-ink group-hover:text-velvet leading-snug">
+                    {step.title}
+                  </h4>
+                  <p class="text-xs sm:text-sm text-ink-muted line-clamp-2 leading-relaxed">
+                    {step.subtitle}
+                  </p>
+                </div>
+              </div>
+              <div class="px-4 py-3 bg-paper border-t border-line flex items-center justify-between text-xs font-bold text-velvet">
+                <span>Ouvrir l’étape {step.number}</span>
+                <Icon name="ArrowRight" size={16} />
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- PARTIE 3 : S'ENTRAÎNER & DIPLÔME (Couleur : Gold) -->
+    <div class="space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 bg-gold-light p-4 rounded-card border-l-8 border-l-gold">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-ink">
+            Partie 3 · Étapes 8 à 12 (~22 minutes)
+          </span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-ink">
+            🎓 Vidéos, Carte mentale, Mini-jeux & Diplôme de Député Junior
+          </h3>
+        </div>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface text-ink border border-gold">
+          Grand Quiz + Diplôme A4
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {part3Steps.map((step) => {
+          const photo = getPhotoById(step.heroPhoto);
+          const baseName = photo ? photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '') : 'hemicycle';
+          return (
+            <a
+              href={`/etape/${step.slug}/`}
+              data-map-step-card={step.number}
+              class="group surface-card overflow-hidden border-2 border-line hover:border-gold transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div class="relative aspect-[16/9] bg-night overflow-hidden border-b border-line">
+                  <img
+                    src={`/img/${baseName}-480.webp`}
+                    alt={photo?.alt || step.title}
+                    loading="lazy"
+                    style={`object-position: ${photo?.objectPosition || 'center center'};`}
+                    class="w-full h-full object-cover photo-warm group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-gold text-ink font-display font-bold text-xs shadow-sm">
+                    Étape {step.number}
+                  </span>
+                  <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-night/85 text-gold text-[11px] font-bold">
+                    +{step.xp} XP
+                  </span>
+                </div>
+                <div class="p-4 space-y-2">
+                  <div class="flex items-center justify-between text-xs text-ink-muted font-bold">
+                    <span>⏱️ {step.duration}</span>
+                    <span data-map-step-pill class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gold-light text-ink border border-gold">
+                      Disponible
+                    </span>
+                  </div>
+                  <h4 class="font-display font-bold text-base sm:text-lg text-ink group-hover:text-republic-900 leading-snug">
+                    {step.shortTitle}
+                  </h4>
+                  <p class="text-xs text-ink-muted line-clamp-2 leading-relaxed">
+                    {step.subtitle}
+                  </p>
+                </div>
+              </div>
+              <div class="px-4 py-2.5 bg-paper border-t border-line flex items-center justify-between text-xs font-bold text-ink">
+                <span>Explorer</span>
+                <Icon name="ArrowRight" size={15} />
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. POURQUOI ON A FAIT CE SITE + BLOC ENSEIGNANTS -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <!-- Story of Malik & Papa -->
+      <div class="lg:col-span-6 surface-card p-6 sm:p-8 border-2 border-gold/60 flex flex-col justify-between gap-4">
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <Avatar character="duo" size={64} />
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
+                L’histoire du projet
+              </span>
+              <h2 class="font-display font-bold text-2xl text-ink">
+                Pourquoi on a créé ce site tous les deux ?
+              </h2>
+            </div>
+          </div>
+          <p class="text-sm sm:text-base text-ink leading-relaxed">
+            Quand Malik a commencé à étudier la République et l’Assemblée nationale en CM2, les sites pour adultes étaient remplis de mots compliqués (<em>bicamérisme, promulgation, motion de censure, navette</em>).
+          </p>
+          <p class="text-sm sm:text-base text-ink leading-relaxed">
+            Alors, un week-end, on a ouvert un grand cahier et on a imaginé le site dont Malik rêvait pour sa classe : des photos légendées, des anecdotes vraies, des mini-quiz expliqués et un glossaire à hauteur d’enfant de 10 ans !
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 pt-2">
+          <a
+            href="/glossaire/"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-paper hover:bg-republic-100 text-republic-900 border border-line font-display font-bold text-xs sm:text-sm min-h-[44px]"
+          >
+            <Icon name="BookOpen" size={16} />
+            <span>Ouvrir le Glossaire des 23 mots</span>
+          </a>
+          <a
+            href="/credits/"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-paper hover:bg-republic-100 text-ink border border-line font-bold text-xs sm:text-sm min-h-[44px]"
+          >
+            <span>Voir nos sources & crédits photos</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Teacher & Parents Callout -->
+      <div class="lg:col-span-6 surface-card p-6 sm:p-8 border-2 border-republic-900/20 bg-republic-100/35 flex flex-col justify-between gap-4">
+        <div class="space-y-3">
+          <span class="inline-block px-3 py-1 rounded-full bg-republic-900 text-white text-xs font-bold">
+            👩‍🏫 Espace Enseignants & Parents (Cycle 3)
+          </span>
+          <h2 class="font-display font-bold text-2xl text-ink">
+            Utiliser le parcours en classe sur TBI ou en séance d’EMC
+          </h2>
+          <p class="text-sm sm:text-base text-ink leading-relaxed">
+            Chaque étape possède sa propre URL directe, une durée calibrée (4 à 6 minutes), 3 phrases de trace écrite (« Je retiens ») à recopier dans le cahier d’EMC et un mini-quiz d’évaluation formative.
+          </p>
+          <ul class="space-y-1.5 text-xs sm:text-sm text-ink font-medium">
+            <li>✓ <strong>Mode Classe / TBI</strong> (dans le menu Réglages en haut à droite).</li>
+            <li>✓ <strong>Fiches récapitulatives & corrigés imprimables</strong> sur la page Enseignants.</li>
+            <li>✓ <strong>Zéro compte élève, zéro donnée collectée</strong> (conforme RGPD / cadre scolaire).</li>
+          </ul>
+        </div>
+
+        <div class="pt-2">
+          <a
+            href="/enseignants/"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-sm shadow-sm transition min-h-[48px]"
+          >
+            <Icon name="GraduationCap" size={18} />
+            <span>Accéder à l’Espace Enseignants & Fiches PDF</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

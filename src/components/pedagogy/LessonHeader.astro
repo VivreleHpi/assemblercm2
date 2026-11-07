@@ -1,0 +1,97 @@
+---
+import type { EtapeItem } from '../../data';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  etape: EtapeItem;
+}
+
+const { etape } = Astro.props;
+
+const accentStyles = {
+  republic: {
+    pill: 'bg-republic-100 text-republic-900 border-republic-700/20',
+    border: 'border-t-4 border-t-republic-900'
+  },
+  velvet: {
+    pill: 'bg-velvet-light text-velvet border-velvet/20',
+    border: 'border-t-4 border-t-velvet'
+  },
+  gold: {
+    pill: 'bg-gold-light text-ink border-gold',
+    border: 'border-t-4 border-t-gold'
+  }
+}[etape.partColor];
+
+const speechText = `${etape.title}. ${etape.subtitle}. ${etape.discoverText.join(' ')} Points à retenir : ${etape.keyPoints.join(' ')}`;
+---
+
+<header class={`surface-card p-6 sm:p-8 mb-8 ${accentStyles.border}`}>
+  <!-- Breadcrumb -->
+  <nav aria-label="Fil d'Ariane" class="mb-4 no-print">
+    <ol class="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm text-ink-muted font-medium">
+      <li>
+        <a href="/#carte-parcours" class="hover:text-republic-900 underline decoration-line underline-offset-4 inline-flex items-center gap-1 py-1">
+          <Icon name="Compass" size={15} />
+          <span>Carte du parcours</span>
+        </a>
+      </li>
+      <li aria-hidden="true" class="text-ink-muted/60">/</li>
+      <li>
+        <span class="text-ink font-semibold">Partie {etape.partNumber} · {etape.partTitle}</span>
+      </li>
+      <li aria-hidden="true" class="text-ink-muted/60">/</li>
+      <li aria-current="page" class="text-republic-900 font-bold">
+        Étape {etape.number} sur 12
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Badges row -->
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${accentStyles.pill}`}>
+        <span>Étape {etape.number} / 12</span>
+        <span aria-hidden="true">·</span>
+        <span>{etape.partTitle}</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-paper text-ink-muted border border-line">
+        <Icon name="Clock" size={14} />
+        <span>Durée : {etape.duration}</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gold-light text-ink border border-gold">
+        <Icon name="Award" size={14} />
+        <span>+{etape.xp} XP à gagner</span>
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2 no-print">
+      <span
+        data-step-status-badge={etape.number}
+        class="hidden items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-success-light text-success border border-success/30"
+      >
+        <Icon name="CheckCircle" size={14} />
+        <span>Étape validée ✓</span>
+      </span>
+
+      <button
+        type="button"
+        class="tts-button inline-flex items-center gap-2 px-3.5 py-2 rounded-btn bg-republic-100 hover:bg-republic-900 text-republic-900 hover:text-white text-xs sm:text-sm font-bold transition min-h-[42px]"
+        data-tts-text={speechText}
+        aria-label="Écouter la leçon à voix haute"
+      >
+        <Icon name="Volume2" size={16} />
+        <span>Écouter la leçon</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Title & Subtitle -->
+  <h1 class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.6rem] text-ink leading-[1.15] mb-3">
+    {etape.title}
+  </h1>
+  <p class="text-base sm:text-lg text-ink-muted max-w-reading leading-relaxed">
+    {etape.subtitle}
+  </p>
+</header>
+

@@ -1,0 +1,66 @@
+---
+import { PHOTOS } from '../../data';
+import ResponsivePicture from '../ui/ResponsivePicture.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-republic-900/15">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
+        Visite guidée · Étape 2
+      </span>
+      <h2 class="font-display font-bold text-2xl text-ink">
+        Les 8 grandes photos du Palais Bourbon & de la République
+      </h2>
+    </div>
+    <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-paper border border-line text-ink-muted">
+      Clique sur « Agrandir » pour ouvrir le diaporama
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {PHOTOS.map((photo, idx) => (
+      <article class="rounded-card bg-paper border border-line overflow-hidden flex flex-col justify-between shadow-sm">
+        <div>
+          <ResponsivePicture
+            photoId={photo.id}
+            aspect="4/3"
+            class="rounded-none border-0 border-b border-line"
+            sizes="(max-width: 768px) 100vw, 520px"
+          />
+          <div class="p-5">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900">
+                Photo {idx + 1} / {PHOTOS.length}
+              </span>
+              <span class="text-xs text-ink-muted font-medium">
+                {photo.license}
+              </span>
+            </div>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-ink mb-2">
+              {photo.title}
+            </h3>
+            <p class="text-sm text-ink leading-relaxed">
+              {photo.caption}
+            </p>
+          </div>
+        </div>
+
+        <div class="px-5 py-3 bg-surface border-t border-line flex items-center justify-between gap-2 text-xs text-ink-muted">
+          <span class="truncate">Auteur : {photo.author}</span>
+          <a
+            href={photo.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 font-bold text-republic-900 hover:underline shrink-0"
+          >
+            <span>Wikimedia</span>
+            <Icon name="ExternalLink" size={13} />
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+

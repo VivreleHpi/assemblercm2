@@ -1,0 +1,327 @@
+---
+import { FINAL_QUIZ_QUESTIONS } from '../../data';
+import Icon from '../ui/Icon.astro';
+import Avatar from '../ui/Avatar.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-gold space-y-8">
+  <!-- Part 1: Grand Quiz 8 Questions -->
+  <div class="no-print space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-line">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+          Épreuve finale du parcours · Étape 11
+        </span>
+        <h2 class="font-display font-bold text-2xl text-ink mt-1">
+          Le Grand Quiz des 8 questions (Score requis : 6 / 8)
+        </h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="final-quiz-score-pill" class="px-3.5 py-1.5 rounded-full bg-gold-light text-ink border-2 border-gold font-display font-bold text-sm">
+          Bonnes réponses : 0 / 8
+        </span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {FINAL_QUIZ_QUESTIONS.map((q, idx) => (
+        <div
+          class="final-q-card p-5 rounded-card bg-paper border border-line flex flex-col justify-between gap-3"
+          data-fq-index={idx}
+          data-fq-correct={q.correctIndex}
+          data-fq-exp={q.explanation}
+        >
+          <div class="space-y-3">
+            <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+              Question {idx + 1} / 8
+            </span>
+            <p class="font-display font-bold text-base text-ink leading-snug">
+              {q.question}
+            </p>
+            <div class="space-y-2">
+              {q.options.map((opt, oIdx) => (
+                <button
+                  type="button"
+                  data-fq-opt={oIdx}
+                  class="fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-surface hover:bg-republic-100 border-2 border-line text-ink font-medium text-xs sm:text-sm transition min-h-[46px]"
+                >
+                  <strong class="mr-1.5 text-republic-900">{String.fromCharCode(65 + oIdx)}.</strong> {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div class="fq-feedback hidden p-3 rounded-xl text-xs font-medium leading-relaxed" aria-live="polite"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Part 2: Diploma Section (Locked until score >= 6/8) -->
+  <div class="pt-6 border-t-2 border-line space-y-5">
+    <!-- Lock Banner -->
+    <div
+      id="diploma-lock-banner"
+      aria-live="polite"
+      class="no-print p-5 rounded-card bg-paper border-2 border-gold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+    >
+      <div class="flex items-center gap-3.5">
+        <span class="w-12 h-12 rounded-full bg-gold text-ink flex items-center justify-center shrink-0">
+          <Icon name="GraduationCap" size={26} />
+        </span>
+        <div>
+          <h3 id="diploma-lock-title" class="font-display font-bold text-lg text-ink">
+            🔒 Réponds à au moins 6 questions sur 8 ci-dessus pour débloquer ton Diplôme !
+          </h3>
+          <p id="diploma-lock-desc" class="text-xs sm:text-sm text-ink-muted mt-0.5">
+            Dès que tu atteins 6/8, tu pourras écrire ton prénom et imprimer ton Diplôme de Député Junior CM2 en A4 paysage.
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="teacher-unlock-diploma-btn"
+        class="px-3.5 py-2 rounded-btn bg-surface hover:bg-republic-100 text-ink-muted hover:text-ink border border-line text-xs font-bold shrink-0 min-h-[40px]"
+      >
+        Accès direct Enseignant / Impression
+      </button>
+    </div>
+
+    <!-- Customization Controls (shown when unlocked) -->
+    <div id="diploma-controls-bar" class="hidden no-print p-5 rounded-card bg-gold-light border-2 border-gold flex flex-wrap items-end justify-between gap-4">
+      <div class="flex flex-wrap items-end gap-3 flex-1">
+        <div class="min-w-[200px] flex-1">
+          <label for="diploma-student-name" class="block text-xs font-bold uppercase text-ink mb-1">
+            Prénom et Nom de l’élève (CM2)
+          </label>
+          <input
+            type="text"
+            id="diploma-student-name"
+            maxlength="36"
+            placeholder="Tape ton prénom ici..."
+            class="w-full px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-bold text-sm"
+          />
+        </div>
+        <div class="min-w-[180px]">
+          <label for="diploma-school-name" class="block text-xs font-bold uppercase text-ink mb-1">
+            Classe / École (facultatif)
+          </label>
+          <input
+            type="text"
+            id="diploma-school-name"
+            maxlength="40"
+            placeholder="Ex : Classe de CM2..."
+            class="w-full px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-medium text-sm"
+          />
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="print-diploma-btn"
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-sm shadow-sm transition min-h-[48px]"
+      >
+        <Icon name="Printer" size={18} />
+        <span>Imprimer mon Diplôme (A4)</span>
+      </button>
+    </div>
+
+    <!-- Printable Diploma Card (Cinzel Typography) -->
+    <div
+      id="diploma-printable-card"
+      class="pointer-events-none transition-all duration-300 relative rounded-card bg-surface p-6 sm:p-10 border-8 border-double border-gold shadow-elevated text-center space-y-5"
+    >
+      <!-- Top Tricolor Bar -->
+      <div class="h-2 w-48 mx-auto flex rounded-full overflow-hidden" aria-hidden="true">
+        <div class="w-1/3 bg-republic-900"></div>
+        <div class="w-1/3 bg-paper border-y border-line"></div>
+        <div class="w-1/3 bg-marianne"></div>
+      </div>
+
+      <div class="space-y-1">
+        <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-republic-900">
+          Parcours Citoyen Cycle 3 · Enseignement Moral et Civique
+        </p>
+        <h3 class="font-diploma font-bold text-2xl sm:text-4xl text-ink tracking-wide">
+          DIPLÔME DE DÉPUTÉ JUNIOR CM2
+        </h3>
+      </div>
+
+      <p class="text-sm sm:text-base text-ink-muted italic">
+        Décerné avec les félicitations de Malik & son Papa à :
+      </p>
+
+      <div class="py-2">
+        <span
+          id="diploma-rendered-name"
+          class="inline-block font-display font-bold text-2xl sm:text-4xl text-republic-900 border-b-2 border-gold px-6 pb-1"
+        >
+          Jeune Citoyen(ne) de CM2
+        </span>
+        <p id="diploma-rendered-school" class="text-xs sm:text-sm font-semibold text-ink-muted mt-1.5">
+          Parcours complet des 12 étapes sur l’Assemblée nationale
+        </p>
+      </div>
+
+      <p class="text-xs sm:text-sm text-ink max-w-2xl mx-auto leading-relaxed">
+        Pour avoir exploré le Palais Bourbon et l’Hémicycle des 577 députés, compris la Constitution de 1958, la séparation des pouvoirs, l’organisation de la Justice et le vote de la loi par la navette parlementaire.
+      </p>
+
+      <div class="pt-4 grid grid-cols-3 gap-4 items-center text-xs text-ink border-t border-line max-w-2xl mx-auto">
+        <div class="text-left">
+          <strong class="block text-republic-900">Score au Grand Quiz :</strong>
+          <span id="diploma-rendered-score">Validé avec succès ✓</span>
+        </div>
+        <div class="flex justify-center">
+          <div class="w-16 h-16 rounded-full bg-gold text-ink border-2 border-republic-900 flex flex-col items-center justify-center font-display font-bold text-[10px] leading-tight shadow-sm">
+            <span>🏅</span>
+            <span>577</span>
+            <span>CM2</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <strong class="block text-republic-900">Signatures :</strong>
+          <span>Malik (CM2) & Papa</span>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-ink-muted pt-2">
+        Projet pédagogique indépendant « Le parcours de Malik & son Papa » — Document éducatif de classe (non affilié à l’Assemblée nationale).
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initStep11() {
+    const correctQuestions = new Set<number>();
+    const scorePill = document.getElementById('final-quiz-score-pill');
+    const lockBanner = document.getElementById('diploma-lock-banner');
+    const lockTitle = document.getElementById('diploma-lock-title');
+    const lockDesc = document.getElementById('diploma-lock-desc');
+    const controlsBar = document.getElementById('diploma-controls-bar');
+    const diplomaCard = document.getElementById('diploma-printable-card');
+    const nameInput = document.getElementById('diploma-student-name') as HTMLInputElement | null;
+    const schoolInput = document.getElementById('diploma-school-name') as HTMLInputElement | null;
+    const renderedName = document.getElementById('diploma-rendered-name');
+    const renderedSchool = document.getElementById('diploma-rendered-school');
+    const renderedScore = document.getElementById('diploma-rendered-score');
+
+    const unlockDiplomaUI = (scoreLabel: string) => {
+      controlsBar?.classList.remove('hidden');
+      controlsBar?.classList.add('flex');
+      diplomaCard?.classList.remove('opacity-50', 'pointer-events-none');
+      if (lockBanner) {
+        lockBanner.className =
+          'no-print p-5 rounded-card bg-success-light border-2 border-success flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4';
+      }
+      if (lockTitle) {
+        lockTitle.textContent = '🎓 Bravo ! Ton Diplôme de Député Junior CM2 est débloqué !';
+        lockTitle.className = 'font-display font-bold text-lg text-success';
+      }
+      if (lockDesc) {
+        lockDesc.textContent = 'Écris ton prénom ci-dessous puis clique sur « Imprimer mon Diplôme (A4) ».';
+      }
+      if (renderedScore) renderedScore.textContent = scoreLabel;
+
+      const app = (window as unknown as {
+        ANApp?: {
+          getState: () => { userName: string };
+          unlockBadge: (id: string, r: string) => void;
+          completeStep: (s: number, xp: number, b: string) => void;
+          setFinalQuizScore: (n: number) => void;
+        };
+      }).ANApp;
+
+      const savedName = app?.getState()?.userName;
+      if (savedName && nameInput && !nameInput.value) {
+        nameInput.value = savedName;
+        if (renderedName) renderedName.textContent = savedName;
+      }
+    };
+
+    // Check if already unlocked in localStorage
+    const appInit = (window as unknown as {
+      ANApp?: { getState: () => { finalQuizBestScore: number; userName: string } };
+    }).ANApp;
+    if (appInit?.getState()?.finalQuizBestScore && appInit.getState().finalQuizBestScore >= 6) {
+      unlockDiplomaUI(`${appInit.getState().finalQuizBestScore} / 8 au Grand Quiz`);
+    }
+
+    document.querySelectorAll<HTMLElement>('.final-q-card').forEach((card) => {
+      const qIdx = Number(card.getAttribute('data-fq-index'));
+      const correctIdx = Number(card.getAttribute('data-fq-correct'));
+      const exp = card.getAttribute('data-fq-exp') || '';
+      const feed = card.querySelector<HTMLElement>('.fq-feedback');
+      const btns = card.querySelectorAll<HTMLButtonElement>('.fq-opt-btn');
+
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const chosen = Number(btn.getAttribute('data-fq-opt'));
+          if (chosen === correctIdx) {
+            correctQuestions.add(qIdx);
+            const count = correctQuestions.size;
+            if (scorePill) scorePill.textContent = `Bonnes réponses : ${count} / 8`;
+
+            btns.forEach((b) => {
+              const i = Number(b.getAttribute('data-fq-opt'));
+              b.className =
+                i === correctIdx
+                  ? 'fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-success-light border-2 border-success text-success font-bold text-xs sm:text-sm min-h-[46px]'
+                  : 'fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-surface opacity-55 border border-line text-ink-muted text-xs sm:text-sm min-h-[46px]';
+            });
+
+            if (feed) {
+              feed.className = 'fq-feedback p-3 rounded-xl bg-success-light border border-success/40 text-ink text-xs font-medium leading-relaxed';
+              feed.innerHTML = `<strong class="text-success">✓ Exact !</strong> ${exp}`;
+            }
+
+            if (count >= 6) {
+              const app = (window as unknown as {
+                ANApp?: {
+                  completeStep: (s: number, xp: number, b: string) => void;
+                  setFinalQuizScore: (n: number) => void;
+                };
+              }).ANApp;
+              app?.setFinalQuizScore(count);
+              app?.completeStep(11, 50, 'quiz');
+              unlockDiplomaUI(`${count} / 8 au Grand Quiz`);
+            }
+          } else {
+            btn.className =
+              'fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-error-light border-2 border-error text-error font-bold text-xs sm:text-sm min-h-[46px]';
+            if (feed) {
+              feed.className = 'fq-feedback p-3 rounded-xl bg-error-light border border-error/40 text-ink text-xs font-medium leading-relaxed';
+              feed.innerHTML = `<strong class="text-error">Essaie encore :</strong> ${exp}`;
+            }
+          }
+        });
+      });
+    });
+
+    // Teacher direct unlock button
+    document.getElementById('teacher-unlock-diploma-btn')?.addEventListener('click', () => {
+      unlockDiplomaUI('Validé en classe ✓');
+    });
+
+    // Live update Diploma Name & School
+    nameInput?.addEventListener('input', () => {
+      if (renderedName) {
+        renderedName.textContent = nameInput.value.trim() || 'Jeune Citoyen(ne) de CM2';
+      }
+    });
+
+    schoolInput?.addEventListener('input', () => {
+      if (renderedSchool) {
+        renderedSchool.textContent =
+          schoolInput.value.trim() || 'Parcours complet des 12 étapes sur l’Assemblée nationale';
+      }
+    });
+
+    document.getElementById('print-diploma-btn')?.addEventListener('click', () => {
+      window.print();
+    });
+  }
+
+  initStep11();
+</script>

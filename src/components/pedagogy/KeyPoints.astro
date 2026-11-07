@@ -1,0 +1,65 @@
+---
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  points: string[];
+  stepNumber: number;
+}
+
+const { points, stepNumber } = Astro.props;
+const fullText = `À retenir pour l'étape ${stepNumber}. ` + points.map((p, i) => `Point ${i + 1} : ${p}`).join(' ');
+---
+
+<section
+  aria-labelledby={`keypoints-title-${stepNumber}`}
+  class="rounded-card bg-surface border-2 border-marianne/30 border-l-8 border-l-marianne p-6 sm:p-7 my-8 shadow-card"
+>
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <div class="flex items-center gap-2.5">
+      <span class="w-9 h-9 rounded-lg bg-marianne-light text-marianne flex items-center justify-center shrink-0">
+        <Icon name="BookOpen" size={20} />
+      </span>
+      <div>
+        <span class="text-xs font-bold text-marianne uppercase tracking-wider block">
+          Mémo CM2 · Trace écrite
+        </span>
+        <h2 id={`keypoints-title-${stepNumber}`} class="font-display font-bold text-xl sm:text-2xl text-ink">
+          Je retiens l’essentiel (3 phrases)
+        </h2>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 no-print">
+      <button
+        type="button"
+        class="copy-keypoints-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-paper hover:bg-republic-100 text-ink border border-line text-xs font-bold transition min-h-[38px]"
+        data-copy-text={points.map((p, i) => `${i + 1}. ${p}`).join('\n')}
+      >
+        <Icon name="FileText" size={14} />
+        <span>Copier pour mon cahier</span>
+      </button>
+      <button
+        type="button"
+        class="tts-button inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-paper hover:bg-republic-100 text-ink border border-line text-xs font-bold transition min-h-[38px]"
+        data-tts-text={fullText}
+      >
+        <Icon name="Volume2" size={14} />
+        <span>Écouter</span>
+      </button>
+    </div>
+  </div>
+
+  <ol class="space-y-3.5 mt-4">
+    {points.map((point, index) => (
+      <li class="flex items-start gap-3.5 p-3.5 rounded-xl bg-paper border border-line">
+        <span class="w-7 h-7 rounded-full bg-marianne text-white font-display font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+          {index + 1}
+        </span>
+        <p class="text-ink font-medium text-base leading-relaxed max-w-reading">
+          {point}
+        </p>
+      </li>
+    ))}
+  </ol>
+</section>
+

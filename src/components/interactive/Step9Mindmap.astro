@@ -1,0 +1,143 @@
+---
+import { MINDMAP_BRANCHES } from '../../data';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-gold/50 space-y-6">
+  <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-line">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+        Outil de mémorisation visuelle · Étape 9
+      </span>
+      <h2 class="font-display font-bold text-2xl text-ink mt-1">
+        La Carte Mentale de l’Assemblée nationale (6 branches)
+      </h2>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2.5 no-print">
+      <button
+        type="button"
+        id="mindmap-hide-toggle"
+        aria-pressed="false"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-xs sm:text-sm shadow-sm transition min-h-[46px]"
+      >
+        <Icon name="Sparkles" size={16} />
+        <span id="mindmap-hide-label">Activer le Mode Cache-Cache 🙈</span>
+      </button>
+
+      <button
+        type="button"
+        id="mindmap-print-btn"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-paper hover:bg-republic-100 text-ink border border-line font-bold text-xs sm:text-sm transition min-h-[46px]"
+      >
+        <Icon name="Printer" size={16} />
+        <span>Imprimer le schéma</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Central Node -->
+  <div class="p-4 rounded-card bg-night text-white border-2 border-gold text-center max-w-xl mx-auto shadow-sm">
+    <span class="text-xs font-bold uppercase tracking-wider text-gold block">Cœur du schéma</span>
+    <h3 class="font-display font-bold text-xl sm:text-2xl text-white">
+      🏛️ L’ASSEMBLÉE NATIONALE (Ve République)
+    </h3>
+    <p class="text-xs sm:text-sm text-white/85 mt-1">
+      Tout retenir en 6 questions clés : Qui ? Où ? Quoi ? Comment ? Avec qui ? Et nous ?
+    </p>
+  </div>
+
+  <!-- 6 Branches Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {MINDMAP_BRANCHES.map((branch, idx) => {
+      const headerColors =
+        branch.accent === 'republic'
+          ? 'bg-republic-900 text-white'
+          : branch.accent === 'velvet'
+          ? 'bg-velvet text-white'
+          : 'bg-gold text-ink';
+      return (
+        <article class="rounded-card bg-paper border-2 border-line overflow-hidden flex flex-col justify-between shadow-sm">
+          <div>
+            <div class={`px-4 py-3 ${headerColors} flex items-center justify-between`}>
+              <h4 class="font-display font-bold text-base sm:text-lg">
+                {branch.title}
+              </h4>
+              <span class="text-xs font-bold opacity-85">Branche {idx + 1}/6</span>
+            </div>
+
+            <ul class="p-4 space-y-2.5">
+              {branch.items.map((item) => (
+                <li class="mindmap-item-row">
+                  <button
+                    type="button"
+                    class="mindmap-item-btn w-full text-left p-3 rounded-xl bg-surface border border-line text-ink text-xs sm:text-sm font-medium leading-relaxed transition min-h-[46px] flex items-center justify-between gap-2"
+                    data-revealed="true"
+                  >
+                    <span class="mindmap-item-text">{item}</span>
+                    <span class="mindmap-item-mask hidden text-republic-900 font-bold">
+                      ❓ Devine puis clique pour vérifier
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<script>
+  function initStep9() {
+    let cacheMode = false;
+    const toggleBtn = document.getElementById('mindmap-hide-toggle');
+    const toggleLabel = document.getElementById('mindmap-hide-label');
+    const itemBtns = document.querySelectorAll<HTMLButtonElement>('.mindmap-item-btn');
+
+    const applyCacheMode = (hideAll: boolean) => {
+      itemBtns.forEach((btn) => {
+        const textSpan = btn.querySelector('.mindmap-item-text');
+        const maskSpan = btn.querySelector('.mindmap-item-mask');
+        btn.setAttribute('data-revealed', String(!hideAll));
+        textSpan?.classList.toggle('hidden', hideAll);
+        maskSpan?.classList.toggle('hidden', !hideAll);
+        btn.classList.toggle('bg-gold-light', hideAll);
+        btn.classList.toggle('border-gold', hideAll);
+      });
+    };
+
+    toggleBtn?.addEventListener('click', () => {
+      cacheMode = !cacheMode;
+      toggleBtn.setAttribute('aria-pressed', String(cacheMode));
+      if (toggleLabel) {
+        toggleLabel.textContent = cacheMode
+          ? 'Afficher toutes les réponses 👀'
+          : 'Activer le Mode Cache-Cache 🙈';
+      }
+      applyCacheMode(cacheMode);
+    });
+
+    itemBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!cacheMode) return;
+        const currentlyRevealed = btn.getAttribute('data-revealed') === 'true';
+        const nextRevealed = !currentlyRevealed;
+        btn.setAttribute('data-revealed', String(nextRevealed));
+        btn.querySelector('.mindmap-item-text')?.classList.toggle('hidden', !nextRevealed);
+        btn.querySelector('.mindmap-item-mask')?.classList.toggle('hidden', nextRevealed);
+        btn.classList.toggle('bg-gold-light', !nextRevealed);
+        btn.classList.toggle('border-gold', !nextRevealed);
+      });
+    });
+
+    document.getElementById('mindmap-print-btn')?.addEventListener('click', () => {
+      applyCacheMode(false);
+      window.print();
+    });
+  }
+
+  initStep9();
+</script>
+

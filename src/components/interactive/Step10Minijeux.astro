@@ -1,0 +1,405 @@
+---
+import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-gold/50 space-y-6">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+        Salle d’entraînement · Étape 10
+      </span>
+      <h2 class="font-display font-bold text-2xl text-ink mt-1">
+        Les 3 Mini-Jeux du Député Junior
+      </h2>
+    </div>
+    <span class="px-3 py-1.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+      Choisis un jeu ci-dessous 👇
+    </span>
+  </div>
+
+  <!-- 3 Game Tabs -->
+  <div
+    role="tablist"
+    aria-label="Sélection du mini-jeu"
+    class="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-paper p-2 rounded-card border border-line"
+  >
+    <button
+      type="button"
+      role="tab"
+      aria-selected="true"
+      data-game-tab="voter-loi"
+      class="game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]"
+    >
+      Jeu 1 · Fais voter ta loi 📜
+    </button>
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      data-game-tab="qui-fait-quoi"
+      class="game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
+    >
+      Jeu 2 · Qui fait quoi ? 🏛️
+    </button>
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      data-game-tab="vrai-faux"
+      class="game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
+    >
+      Jeu 3 · Vrai ou Faux (6) ⚡
+    </button>
+  </div>
+
+  <!-- GAME 1: Fais voter ta loi en 4 étapes -->
+  <div data-game-panel="voter-loi" class="space-y-5">
+    <div class="p-5 rounded-card bg-paper border border-line space-y-4">
+      <div class="flex items-center justify-between">
+        <span id="law-rpg-step-pill" class="px-2.5 py-1 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          Étape 1 sur 4 · Ton initiative
+        </span>
+        <button
+          type="button"
+          id="law-rpg-reset"
+          class="text-xs font-bold text-republic-900 underline py-1 px-2"
+        >
+          Recommencer l’aventure ↺
+        </button>
+      </div>
+
+      <h3 id="law-rpg-title" class="font-display font-bold text-xl text-ink">
+        Tu es député(e) ! Tu déposes une proposition de loi pour installer des fontaines à eau fraîche dans toutes les écoles. Que fais-tu en premier ?
+      </h3>
+
+      <div id="law-rpg-choices" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Populated by script -->
+      </div>
+
+      <div
+        id="law-rpg-feedback"
+        aria-live="polite"
+        class="hidden p-4 rounded-xl text-sm font-medium leading-relaxed"
+      ></div>
+    </div>
+  </div>
+
+  <!-- GAME 2: Qui fait quoi ? (5 rôles) -->
+  <div data-game-panel="qui-fait-quoi" class="hidden space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-2 bg-paper p-4 rounded-card border border-line">
+      <p class="text-sm font-medium text-ink">
+        Associe chacune des <strong>5 missions républicaines</strong> au bon acteur :
+      </p>
+      <span id="roles-score-pill" class="px-3 py-1 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+        Score : 0 / 5
+      </span>
+    </div>
+
+    <div class="space-y-3.5">
+      {ROLES_GAME_DATA.map((item, idx) => (
+        <div
+          class="role-game-row p-4 rounded-card bg-paper border border-line space-y-3"
+          data-role-id={item.id}
+          data-correct-actor={item.actor}
+        >
+          <p class="font-display font-bold text-base text-ink">
+            <span class="px-2 py-0.5 rounded bg-republic-100 text-republic-900 text-xs mr-2">
+              Mission {idx + 1}/5
+            </span>
+            « {item.mission} »
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {item.options.map((opt) => (
+              <button
+                type="button"
+                data-actor-choice={opt}
+                class="role-opt-btn px-3.5 py-2.5 rounded-btn bg-surface hover:bg-republic-100 border-2 border-line text-ink font-bold text-xs sm:text-sm text-left transition min-h-[46px]"
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+          <div class="role-row-feedback hidden text-xs sm:text-sm font-bold" aria-live="polite"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- GAME 3: Vrai ou Faux Express (6 questions) -->
+  <div data-game-panel="vrai-faux" class="hidden space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-2 bg-paper p-4 rounded-card border border-line">
+      <p class="text-sm font-medium text-ink">
+        Clique sur <strong>VRAI</strong> ou <strong>FAUX</strong> pour chacune de ces 6 affirmations :
+      </p>
+      <span id="vf-score-pill" class="px-3 py-1 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+        Réponses : 0 / 6
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {VF_QUESTIONS.map((q, idx) => (
+        <div
+          class="vf-card p-5 rounded-card bg-paper border border-line flex flex-col justify-between gap-3"
+          data-vf-id={idx}
+          data-vf-answer={String(q.isTrue)}
+          data-vf-exp={q.explanation}
+        >
+          <div class="space-y-3">
+            <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+              Affirmation {idx + 1}/6
+            </span>
+            <p class="font-display font-bold text-base text-ink leading-snug">
+              {q.statement}
+            </p>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                data-vf-btn="true"
+                class="vf-choice-btn py-2.5 px-4 rounded-btn bg-surface hover:bg-success-light border-2 border-line text-ink font-display font-bold text-sm transition min-h-[46px]"
+              >
+                VRAI ✓
+              </button>
+              <button
+                type="button"
+                data-vf-btn="false"
+                class="vf-choice-btn py-2.5 px-4 rounded-btn bg-surface hover:bg-error-light border-2 border-line text-ink font-display font-bold text-sm transition min-h-[46px]"
+              >
+                FAUX ✗
+              </button>
+            </div>
+            <div class="vf-feedback hidden p-3 rounded-xl text-xs leading-relaxed" aria-live="polite"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initStep10() {
+    // Tabs
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.game-tab-btn');
+    const panels = document.querySelectorAll<HTMLElement>('[data-game-panel]');
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-game-tab');
+        tabBtns.forEach((b) => {
+          const active = b.getAttribute('data-game-tab') === target;
+          b.setAttribute('aria-selected', String(active));
+          b.className = active
+            ? 'game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]'
+            : 'game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]';
+        });
+        panels.forEach((p) => {
+          p.classList.toggle('hidden', p.getAttribute('data-game-panel') !== target);
+        });
+      });
+    });
+
+    // Game 1: Law RPG (4 steps)
+    const rpgStages = [
+      {
+        pill: 'Étape 1 sur 4 · La Commission',
+        title: 'Tu as rédigé ta proposition de loi pour des fontaines à eau fraîche dans les écoles. Où ton texte doit-il être étudié en premier ?',
+        choices: [
+          {
+            label: 'En commission permanente avec des députés spécialistes',
+            correct: true,
+            feedback: 'Bravo ! Avant d’aller dans l’Hémicycle, chaque texte est étudié et amélioré en commission.'
+          },
+          {
+            label: 'Directement au Journal officiel sans discuter',
+            correct: false,
+            feedback: 'Non ! Un texte ne peut jamais devenir une loi sans avoir été discuté et voté par le Parlement.'
+          }
+        ]
+      },
+      {
+        pill: 'Étape 2 sur 4 · Les Amendements',
+        title: 'En commission, un collègue député propose d’ajouter des gourdes réutilisables gratuites pour les élèves de CP. Comment s’appelle cette modification ?',
+        choices: [
+          {
+            label: 'Un amendement',
+            correct: true,
+            feedback: 'Exact ! Un amendement permet d’améliorer ou de compléter un article de la proposition de loi.'
+          },
+          {
+            label: 'Une motion de censure',
+            correct: false,
+            feedback: 'Attention : la motion de censure sert à renverser le Gouvernement, pas à modifier un article de loi !'
+          }
+        ]
+      },
+      {
+        pill: 'Étape 3 sur 4 · Le Vote dans l’Hémicycle',
+        title: 'C’est le grand jour dans l’Hémicycle ! Résultat du scrutin : 340 voix POUR, 120 voix CONTRE. Que se passe-t-il ensuite ?',
+        choices: [
+          {
+            label: 'Le texte part au Sénat pour la navette parlementaire',
+            correct: true,
+            feedback: 'Parfait ! Comme POUR > CONTRE, l’Assemblée a adopté le texte et l’envoie au Palais du Luxembourg (Sénat).'
+          },
+          {
+            label: 'Le texte est abandonné',
+            correct: false,
+            feedback: 'Au contraire : 340 voix Pour contre 120 voix Contre, c’est une belle majorité !'
+          }
+        ]
+      },
+      {
+        pill: 'Étape 4 sur 4 · La Promulgation',
+        title: 'Le Sénat a voté exactement le même texte ! Qui doit maintenant signer la loi pour la promulguer et la publier au Journal officiel ?',
+        choices: [
+          {
+            label: 'Le Président de la République',
+            correct: true,
+            feedback: '🎉 Félicitations ! Ta loi est promulguée et publiée au Journal officiel : toutes les écoles auront leurs fontaines à eau !'
+          },
+          {
+            label: 'Un huissier à chaîne d’argent',
+            correct: false,
+            feedback: 'Non, sous la Ve République, c’est le Président de la République qui promulgue les lois adoptées par le Parlement.'
+          }
+        ]
+      }
+    ];
+
+    let currentRpgIdx = 0;
+    const renderRpgStage = () => {
+      const stage = rpgStages[currentRpgIdx];
+      const pillEl = document.getElementById('law-rpg-step-pill');
+      const titleEl = document.getElementById('law-rpg-title');
+      const choicesEl = document.getElementById('law-rpg-choices');
+      const feedEl = document.getElementById('law-rpg-feedback');
+
+      if (pillEl) pillEl.textContent = stage.pill;
+      if (titleEl) titleEl.textContent = stage.title;
+      feedEl?.classList.add('hidden');
+
+      if (choicesEl) {
+        choicesEl.innerHTML = stage.choices
+          .map(
+            (c, i) => `
+            <button
+              type="button"
+              data-rpg-choice="${i}"
+              class="p-4 rounded-btn bg-surface hover:bg-republic-100 border-2 border-line text-ink font-display font-bold text-sm sm:text-base text-left transition min-h-[54px]"
+            >
+              ${c.label}
+            </button>
+          `
+          )
+          .join('');
+
+        choicesEl.querySelectorAll<HTMLButtonElement>('[data-rpg-choice]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const idx = Number(btn.getAttribute('data-rpg-choice'));
+            const choice = stage.choices[idx];
+            if (!feedEl) return;
+            feedEl.classList.remove('hidden');
+
+            if (choice.correct) {
+              btn.className =
+                'p-4 rounded-btn bg-success-light border-2 border-success text-success font-display font-bold text-sm sm:text-base text-left min-h-[54px]';
+              if (currentRpgIdx < rpgStages.length - 1) {
+                feedEl.className = 'p-4 rounded-xl bg-success-light border border-success text-ink text-sm font-medium flex items-center justify-between gap-3';
+                feedEl.innerHTML = `<span><strong class="text-success">✓ Exact !</strong> ${choice.feedback}</span><button type="button" id="rpg-next-btn" class="px-4 py-2 rounded-btn bg-gold text-ink font-display font-bold text-xs shrink-0 min-h-[40px]">Étape suivante →</button>`;
+                document.getElementById('rpg-next-btn')?.addEventListener('click', () => {
+                  currentRpgIdx++;
+                  renderRpgStage();
+                });
+              } else {
+                feedEl.className = 'p-4 rounded-xl bg-gold-light border-2 border-gold text-ink text-sm font-bold';
+                feedEl.innerHTML = `${choice.feedback}`;
+              }
+            } else {
+              btn.className =
+                'p-4 rounded-btn bg-error-light border-2 border-error text-error font-display font-bold text-sm sm:text-base text-left min-h-[54px]';
+              feedEl.className = 'p-4 rounded-xl bg-error-light border border-error text-ink text-sm font-medium';
+              feedEl.innerHTML = `<strong class="text-error">Pas tout à fait :</strong> ${choice.feedback}`;
+            }
+          });
+        });
+      }
+    };
+
+    document.getElementById('law-rpg-reset')?.addEventListener('click', () => {
+      currentRpgIdx = 0;
+      renderRpgStage();
+    });
+    renderRpgStage();
+
+    // Game 2: Qui fait quoi ?
+    const rolesSolved = new Set<string>();
+    const rolesPill = document.getElementById('roles-score-pill');
+    document.querySelectorAll<HTMLElement>('.role-game-row').forEach((row) => {
+      const id = row.getAttribute('data-role-id') || '';
+      const correctActor = row.getAttribute('data-correct-actor') || '';
+      const feed = row.querySelector<HTMLElement>('.role-row-feedback');
+      const btns = row.querySelectorAll<HTMLButtonElement>('.role-opt-btn');
+
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const chosen = btn.getAttribute('data-actor-choice') || '';
+          if (chosen === correctActor) {
+            rolesSolved.add(id);
+            if (rolesPill) rolesPill.textContent = `Score : ${rolesSolved.size} / 5`;
+            btns.forEach((b) => {
+              const isC = b.getAttribute('data-actor-choice') === correctActor;
+              b.className = isC
+                ? 'role-opt-btn px-3.5 py-2.5 rounded-btn bg-success-light border-2 border-success text-success font-bold text-xs sm:text-sm text-left min-h-[46px]'
+                : 'role-opt-btn px-3.5 py-2.5 rounded-btn bg-surface opacity-50 border border-line text-ink-muted text-xs sm:text-sm text-left min-h-[46px]';
+            });
+            if (feed) {
+              feed.className = 'role-row-feedback text-xs sm:text-sm font-bold text-success';
+              feed.textContent = `✓ Bravo, c’est bien ${correctActor} !`;
+            }
+          } else {
+            btn.className =
+              'role-opt-btn px-3.5 py-2.5 rounded-btn bg-error-light border-2 border-error text-error font-bold text-xs sm:text-sm text-left min-h-[46px]';
+            if (feed) {
+              feed.className = 'role-row-feedback text-xs sm:text-sm font-bold text-error';
+              feed.textContent = '✗ Essaie un autre acteur de la République !';
+            }
+          }
+        });
+      });
+    });
+
+    // Game 3: Vrai ou Faux
+    const vfSolved = new Set<number>();
+    const vfPill = document.getElementById('vf-score-pill');
+    document.querySelectorAll<HTMLElement>('.vf-card').forEach((card) => {
+      const id = Number(card.getAttribute('data-vf-id'));
+      const answer = card.getAttribute('data-vf-answer');
+      const exp = card.getAttribute('data-vf-exp') || '';
+      const feed = card.querySelector<HTMLElement>('.vf-feedback');
+      const btns = card.querySelectorAll<HTMLButtonElement>('.vf-choice-btn');
+
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-vf-btn');
+          const isCorrect = val === answer;
+          vfSolved.add(id);
+          if (vfPill) vfPill.textContent = `Réponses : ${vfSolved.size} / 6`;
+
+          if (feed) {
+            feed.className = isCorrect
+              ? 'vf-feedback p-3 rounded-xl bg-success-light border border-success/40 text-ink text-xs leading-relaxed'
+              : 'vf-feedback p-3 rounded-xl bg-error-light border border-error/40 text-ink text-xs leading-relaxed';
+            feed.innerHTML = `<strong class="${isCorrect ? 'text-success' : 'text-error'}">${
+              isCorrect ? '✓ Bien joué !' : '✗ Eh non !'
+            }</strong> ${exp}`;
+          }
+        });
+      });
+    });
+  }
+
+  initStep10();
+</script>
+

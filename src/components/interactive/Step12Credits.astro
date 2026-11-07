@@ -1,0 +1,121 @@
+---
+import { PHOTOS, VIDEOS_DATA, INSTITUTION_LINKS } from '../../data';
+import Icon from '../ui/Icon.astro';
+import Avatar from '../ui/Avatar.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-republic-900/15 space-y-8">
+  <!-- 1. L'équipe Malik & Papa + Confidentialité -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-paper p-6 rounded-card border border-line">
+    <div class="lg:col-span-7 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <Avatar character="duo" size={84} class="shrink-0" />
+      <div class="space-y-1.5">
+        <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+          Projet Citoyen Indépendant · Cycle 3 (CM2)
+        </span>
+        <h2 class="font-display font-bold text-xl sm:text-2xl text-ink">
+          Créé par Malik (CM2) & son Papa
+        </h2>
+        <p class="text-sm text-ink-muted leading-relaxed">
+          Ce site éducatif a été conçu pour réviser l’Enseignement Moral et Civique (EMC) en famille et en classe. Il n’est pas affilié à l’Assemblée nationale.
+        </p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-5 p-4 rounded-xl bg-surface border border-line space-y-2 text-xs sm:text-sm">
+      <div class="flex items-center gap-2 font-display font-bold text-success">
+        <Icon name="Shield" size={18} />
+        <span>Charte de confidentialité (100 % privé)</span>
+      </div>
+      <ul class="space-y-1 text-ink-muted">
+        <li>✓ <strong>0 cookie publicitaire</strong> et aucun traceur d’analyse.</li>
+        <li>✓ <strong>Aucune donnée envoyée sur Internet</strong> : ton prénom, tes XP et tes badges restent dans le `localStorage` de ton appareil.</li>
+        <li>✓ Bouton « Tout effacer » accessible à tout moment dans les Réglages.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. Crédits complets des 8 photographies (Obligation légale CC BY-SA / Domaine Public) -->
+  <div class="space-y-4">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+        Obligation légale de licence libre
+      </span>
+      <h3 class="font-display font-bold text-xl sm:text-2xl text-ink mt-1">
+        Crédits photographiques (Wikimedia Commons)
+      </h3>
+      <p class="text-sm text-ink-muted mt-1">
+        Chaque photographie utilisée sur ce site provient de Wikimedia Commons et respecte scrupuleusement sa licence Creative Commons (attribution de l’auteur, mention de la licence et lien vers la source).
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {PHOTOS.map((photo, i) => (
+        <div class="p-4 rounded-card bg-paper border border-line flex items-start gap-4">
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            class="w-20 h-20 rounded-xl object-cover shrink-0 border border-line"
+          />
+          <div class="min-w-0 flex-1 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-display font-bold text-sm sm:text-base text-ink truncate">
+                {i + 1}. {photo.title}
+              </span>
+              <span class="px-2 py-0.5 rounded bg-surface border border-line text-[11px] font-bold text-republic-900 shrink-0">
+                {photo.license}
+              </span>
+            </div>
+            <p class="text-xs text-ink-muted">
+              <strong>Auteur :</strong> {photo.author}
+            </p>
+            <p class="text-xs text-ink-muted truncate">
+              <strong>Fichier :</strong> {photo.fileName}
+            </p>
+            <a
+              href={photo.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 text-xs font-bold text-republic-900 hover:underline pt-0.5"
+            >
+              <span>Voir la fiche Wikimedia Commons</span>
+              <Icon name="ExternalLink" size={12} />
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- 3. Textes de référence et Vidéos -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-line">
+    <div class="space-y-3">
+      <h3 class="font-display font-bold text-lg text-ink">
+        Textes constitutionnels & institutionnels vérifiés
+      </h3>
+      <ul class="space-y-2 text-xs sm:text-sm text-ink bg-paper p-4 rounded-card border border-line">
+        <li>📜 <strong>Constitution du 4 octobre 1958</strong> : Articles 3 (souveraineté nationale), 24 (rôle du Parlement, 577 députés, 348 sénateurs), 34 (domaine de la loi), 45 (navette parlementaire), 49 (responsabilité du Gouvernement) et 61 (Conseil constitutionnel).</li>
+        <li>⚖️ <strong>Déclaration des droits de l’homme et du citoyen (26 août 1789)</strong> : Article 16 (séparation des pouvoirs).</li>
+        <li>📘 <strong>Code civil (21 mars 1804)</strong> & <strong>Code pénal</strong> (classification tripartite des infractions : contraventions, délits, crimes).</li>
+      </ul>
+    </div>
+
+    <div class="space-y-3">
+      <h3 class="font-display font-bold text-lg text-ink">
+        Crédits vidéos & Portails publics
+      </h3>
+      <ul class="space-y-2 text-xs sm:text-sm text-ink bg-paper p-4 rounded-card border border-line">
+        {VIDEOS_DATA.map((v) => (
+          <li>
+            🎬 <strong>{v.title}</strong> — {v.source} ({v.duration}).
+          </li>
+        ))}
+        <li class="pt-1 text-ink-muted">
+          Portails institutionnels recommandés : {INSTITUTION_LINKS.map((l) => l.title).join(', ')}.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+

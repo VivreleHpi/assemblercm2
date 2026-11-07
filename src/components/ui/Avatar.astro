@@ -1,0 +1,102 @@
+---
+interface Props {
+  character?: 'malik' | 'papa' | 'duo';
+  size?: number;
+  class?: string;
+}
+
+const {
+  character = 'malik',
+  size = 56,
+  class: className = ''
+} = Astro.props;
+
+const widthPx = character === 'duo' ? Math.round(size * 1.45) : size;
+const heightPx = size;
+---
+
+{character === 'malik' && (
+  <svg
+    viewBox="0 0 80 80"
+    width={widthPx}
+    height={heightPx}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={`shrink-0 ${className}`}
+    role="img"
+    aria-label="Illustration de Malik, élève de CM2"
+  >
+    <circle cx="40" cy="40" r="38" fill="#DBE4F3" stroke="#002654" stroke-width="2.5" />
+    <path d="M16 72C18 57 27 52 40 52C53 52 62 57 64 72" fill="#002654" />
+    <path d="M27 53L48 72H56L34 52Z" fill="#CE1126" />
+    <path d="M31 52L52 72H55L34 52Z" fill="#FFFFFF" />
+    <rect x="35" y="44" width="10" height="10" rx="4" fill="#D99B72" />
+    <circle cx="40" cy="34" r="15" fill="#E6AC84" />
+    <path d="M24 31C23 21 31 15 40 15C50 15 57 21 56 31C53 26 47 24 40 24C33 24 27 26 24 31Z" fill="#2A1B12" />
+    <circle cx="27" cy="24" r="4.5" fill="#2A1B12" />
+    <circle cx="35" cy="19" r="5" fill="#2A1B12" />
+    <circle cx="45" cy="19" r="5" fill="#2A1B12" />
+    <circle cx="53" cy="24" r="4.5" fill="#2A1B12" />
+    <circle cx="34.5" cy="34" r="2.2" fill="#0F172A" />
+    <circle cx="45.5" cy="34" r="2.2" fill="#0F172A" />
+    <path d="M35 41C36.8 43.5 43.2 43.5 45 41" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round" />
+    <circle cx="29" cy="61" r="4" fill="#E8B21A" stroke="#FFFFFF" stroke-width="1.2" />
+  </svg>
+)}
+
+{character === 'papa' && (
+  <svg
+    viewBox="0 0 80 80"
+    width={widthPx}
+    height={heightPx}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={`shrink-0 ${className}`}
+    role="img"
+    aria-label="Illustration du Papa de Malik"
+  >
+    <circle cx="40" cy="40" r="38" fill="#FEF3C7" stroke="#8B1E2D" stroke-width="2.5" />
+    <path d="M14 72C17 56 26 51 40 51C54 51 63 56 66 72" fill="#8B1E2D" />
+    <polygon points="40,51 33,66 47,66" fill="#FAF7F0" />
+    <rect x="34" y="43" width="12" height="10" rx="4" fill="#C98A63" />
+    <circle cx="40" cy="32" r="15.5" fill="#DC9E76" />
+    <path d="M24 29C24 18 31 14 40 14C49 14 56 18 56 29C53 23 47 21 40 21C33 21 27 23 24 29Z" fill="#1E1610" />
+    <path d="M27 36C28 44 34 48 40 48C46 48 52 44 53 36C50 40 45 42 40 42C35 42 30 40 27 36Z" fill="#2A1B12" />
+    <rect x="29" y="28.5" width="9" height="6.5" rx="2" stroke="#002654" stroke-width="2" fill="#FFFFFF" fill-opacity="0.35" />
+    <rect x="42" y="28.5" width="9" height="6.5" rx="2" stroke="#002654" stroke-width="2" fill="#FFFFFF" fill-opacity="0.35" />
+    <line x1="38" y1="31.5" x2="42" y2="31.5" stroke="#002654" stroke-width="2" />
+    <circle cx="33.5" cy="31.8" r="1.7" fill="#0F172A" />
+    <circle cx="46.5" cy="31.8" r="1.7" fill="#0F172A" />
+    <path d="M36 39.5C38 41.2 42 41.2 44 39.5" stroke="#FAF7F0" stroke-width="2" stroke-linecap="round" />
+    <circle cx="51" cy="60" r="3.5" fill="#E8B21A" />
+  </svg>
+)}
+
+{character === 'duo' && (
+  <svg
+    viewBox="0 0 120 80"
+    width={widthPx}
+    height={heightPx}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={`shrink-0 ${className}`}
+    role="img"
+    aria-label="Illustration de Malik et son Papa"
+  >
+    <circle cx="42" cy="40" r="34" fill="#FEF3C7" stroke="#002654" stroke-width="2.5" />
+    <path d="M18 69C21 55 29 50 42 50C55 50 63 55 66 69" fill="#002654" />
+    <circle cx="42" cy="33" r="14" fill="#DC9E76" />
+    <path d="M28 30C28 20 34 16 42 16C50 16 56 20 56 30C53 25 48 23 42 23C36 23 31 25 28 30Z" fill="#1E1610" />
+    <rect x="32" y="30" width="8" height="5.5" rx="1.5" stroke="#0F172A" stroke-width="1.8" fill="#FFFFFF" fill-opacity="0.3" />
+    <rect x="44" y="30" width="8" height="5.5" rx="1.5" stroke="#0F172A" stroke-width="1.8" fill="#FFFFFF" fill-opacity="0.3" />
+    <line x1="40" y1="32.5" x2="44" y2="32.5" stroke="#0F172A" stroke-width="1.8" />
+    <path d="M37 41C39 43 45 43 47 41" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+    <circle cx="80" cy="42" r="32" fill="#DBE4F3" stroke="#E8B21A" stroke-width="2.5" />
+    <path d="M58 69C60 57 68 53 80 53C92 53 100 57 102 69" fill="#8B1E2D" />
+    <circle cx="80" cy="36" r="13" fill="#E6AC84" />
+    <path d="M67 33C67 24 73 20 80 20C87 20 93 24 93 33C90 29 85 27 80 27C75 27 70 29 67 33Z" fill="#2A1B12" />
+    <circle cx="75.5" cy="36" r="1.9" fill="#0F172A" />
+    <circle cx="84.5" cy="36" r="1.9" fill="#0F172A" />
+    <path d="M75.5 42C77.5 44.2 82.5 44.2 84.5 42" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+  </svg>
+)}

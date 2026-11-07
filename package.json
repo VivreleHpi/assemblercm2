@@ -1,0 +1,23 @@
+{
+  "name": "assemblee-nationale-cm2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "L'Assemblée nationale — Le parcours de Malik & son Papa (Cycle 3 CM2)",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/apply-base-path.mjs",
+    "preview": "astro preview",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^5.18.2",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.19"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "playwright": "^1.65.0"
+  }
+}

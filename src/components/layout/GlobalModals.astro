@@ -1,0 +1,450 @@
+---
+import { ETAPES, GLOSSAIRE, BADGES, PHOTOS } from '../../data';
+import Icon from '../ui/Icon.astro';
+import Avatar from '../ui/Avatar.astro';
+import BadgeCard from '../ui/BadgeCard.astro';
+
+const searchIndex = [
+  ...ETAPES.map((e) => ({
+    type: 'Étape',
+    title: `Étape ${e.number} · ${e.title}`,
+    description: e.subtitle,
+    url: `/etape/${e.slug}/`,
+    keywords: `${e.title} ${e.subtitle} ${e.partTitle} ${e.keyPoints.join(' ')}`
+  })),
+  ...GLOSSAIRE.map((g) => ({
+    type: 'Mot du glossaire',
+    title: g.term,
+    description: g.definition,
+    url: `/glossaire/#terme-${g.id}`,
+    keywords: `${g.term} ${g.category} ${g.definition} ${g.example}`
+  })),
+  {
+    type: 'Page',
+    title: 'Espace Enseignants (EMC Cycle 3)',
+    description: 'Programme officiel, durées, corrigés des quiz et fiches imprimables.',
+    url: '/enseignants/',
+    keywords: 'enseignant professeur classe tbi programme emc cycle 3 fiche corrigé'
+  },
+  {
+    type: 'Page',
+    title: 'Crédits photos & Sources officielles',
+    description: 'Licences CC BY-SA Wikimedia Commons, vidéos et confidentialité.',
+    url: '/credits/',
+    keywords: 'credits photos wikimedia sources constitution licence'
+  }
+];
+---
+
+<!-- 1. Non-blocking XP & Badge Toast (top-right, never blocks bottom or center CTAs) -->
+<div
+  id="xp-toast"
+  role="status"
+  aria-live="polite"
+  class="fixed top-20 right-4 z-50 hidden max-w-sm rounded-card bg-night text-white border-2 border-gold shadow-elevated px-4 py-3 no-print pointer-events-auto"
+>
+  <div class="flex items-center gap-3">
+    <span class="w-9 h-9 rounded-full bg-gold text-ink font-display font-bold flex items-center justify-center shrink-0">
+      ⭐
+    </span>
+    <div class="min-w-0 flex-1">
+      <p id="xp-toast-title" class="font-display font-bold text-sm text-gold leading-tight">
+        Bravo ! +20 XP
+      </p>
+      <p id="xp-toast-desc" class="text-xs text-white/90 truncate mt-0.5">
+        Tu progresses vers ton diplôme !
+      </p>
+    </div>
+    <button
+      type="button"
+      id="xp-toast-close"
+      class="p-1 text-white/70 hover:text-white rounded"
+      aria-label="Fermer la notification"
+    >
+      <Icon name="X" size={15} />
+    </button>
+  </div>
+</div>
+
+<!-- 2. Search Modal (Ctrl+K) -->
+<div
+  id="search-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="search-modal-title"
+  class="fixed inset-0 z-50 hidden items-start justify-center bg-night/75 backdrop-blur-sm p-4 sm:pt-16 overflow-y-auto no-print"
+>
+  <div class="surface-card w-full max-w-2xl overflow-hidden border-2 border-republic-900/20 shadow-elevated">
+    <div class="p-4 sm:p-5 border-b border-line flex items-center justify-between gap-3 bg-paper">
+      <div class="flex items-center gap-2.5">
+        <Icon name="Search" size={20} class="text-republic-900" />
+        <h2 id="search-modal-title" class="font-display font-bold text-lg text-ink">
+          Rechercher une étape ou un mot civique
+        </h2>
+      </div>
+      <button
+        type="button"
+        data-close-modal="search-modal"
+        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-btn bg-surface hover:bg-republic-100 text-ink border border-line text-xs font-bold min-h-[38px]"
+      >
+        <span>Fermer</span>
+        <Icon name="X" size={15} />
+      </button>
+    </div>
+
+    <div class="p-4 sm:p-5">
+      <label for="global-search-input" class="sr-only">Tape un mot-clé (ex: Hémicycle, loi, Sénat, Napoléon)</label>
+      <input
+        type="search"
+        id="global-search-input"
+        placeholder="Tape un mot : Hémicycle, 577, Sénat, Napoléon, navette, tribunal..."
+        class="w-full px-4 py-3 rounded-btn bg-paper border-2 border-line focus:border-republic-900 text-ink text-base font-medium outline-none"
+        autocomplete="off"
+      />
+
+      <div id="global-search-results" class="mt-4 max-h-[55vh] overflow-y-auto space-y-2 pr-1">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Profile, XP & 9 Badges Modal -->
+<div
+  id="profile-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="profile-modal-title"
+  class="fixed inset-0 z-50 hidden items-start justify-center bg-night/75 backdrop-blur-sm p-4 sm:py-10 overflow-y-auto no-print"
+>
+  <div class="surface-card w-full max-w-3xl overflow-hidden border-2 border-gold shadow-elevated">
+    <div class="p-5 sm:p-6 bg-night text-white flex flex-wrap items-center justify-between gap-4 border-b-4 border-gold">
+      <div class="flex items-center gap-3.5">
+        <Avatar character="duo" size={60} />
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-gold block">
+            Carnet de Député Junior CM2
+          </span>
+          <h2 id="profile-modal-title" class="font-display font-bold text-xl sm:text-2xl text-white">
+            Mon Profil & Mes 9 Badges
+          </h2>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        data-close-modal="profile-modal"
+        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-btn bg-white/15 hover:bg-white/25 text-white text-xs font-bold min-h-[40px]"
+      >
+        <span>Fermer</span>
+        <Icon name="X" size={16} />
+      </button>
+    </div>
+
+    <div class="p-5 sm:p-6 space-y-6 max-h-[78vh] overflow-y-auto">
+      <!-- Personalization & XP Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-paper p-4 sm:p-5 rounded-card border border-line">
+        <div class="md:col-span-7 space-y-3">
+          <label for="profile-name-input" class="block text-xs font-bold uppercase tracking-wider text-ink-muted">
+            Mon prénom (affiché sur le diplôme)
+          </label>
+          <div class="flex flex-wrap items-center gap-2">
+            <input
+              type="text"
+              id="profile-name-input"
+              maxlength="28"
+              placeholder="Ex : Malik, Inès, Lucas..."
+              class="flex-1 min-w-[160px] px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-bold text-sm"
+            />
+            <button
+              type="button"
+              id="profile-save-btn"
+              class="px-4 py-2.5 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-xs sm:text-sm min-h-[42px]"
+            >
+              Enregistrer
+            </button>
+          </div>
+
+          <div class="flex items-center gap-3 pt-1">
+            <span class="text-xs font-bold text-ink-muted">Mon compagnon :</span>
+            <button
+              type="button"
+              data-select-avatar="malik"
+              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-gold bg-gold-light text-xs font-bold text-ink"
+            >
+              <span>👦🏽 Malik (Élève CM2)</span>
+            </button>
+            <button
+              type="button"
+              data-select-avatar="papa"
+              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-line bg-surface text-xs font-bold text-ink"
+            >
+              <span>👨🏽‍🏫 Papa (Guide)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 grid grid-cols-3 gap-2 text-center">
+          <div class="p-3 rounded-xl bg-surface border border-line">
+            <span id="modal-xp-total" class="font-display font-bold text-2xl text-republic-900 block">0</span>
+            <span class="text-xs text-ink-muted font-bold">Points XP</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface border border-line">
+            <span id="modal-steps-done" class="font-display font-bold text-2xl text-success block">0/12</span>
+            <span class="text-xs text-ink-muted font-bold">Étapes</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface border border-line">
+            <span id="modal-badges-done" class="font-display font-bold text-2xl text-ink block">0/9</span>
+            <span class="text-xs text-ink-muted font-bold">Badges</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barème clair XP -->
+      <div class="p-4 rounded-xl bg-republic-100/50 border border-republic-700/20 text-xs sm:text-sm text-ink flex flex-wrap items-center justify-between gap-2">
+        <span>
+          <strong>Barème officiel du parcours :</strong> Chaque mini-quiz d’étape réussi rapporte <strong>+20 XP</strong> (et <strong>+50 XP</strong> au Grand Quiz final).
+        </span>
+        <a href="/etape/11-quiz-diplome/" class="font-bold text-republic-900 underline">
+          Voir le Diplôme →
+        </a>
+      </div>
+
+      <!-- Grid of 9 Badges -->
+      <div>
+        <h3 class="font-display font-bold text-lg text-ink mb-3">
+          Mes 9 médailles républicaines à collectionner
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {BADGES.map((badge) => (
+            <BadgeCard badge={badge} unlocked={false} />
+          ))}
+        </div>
+      </div>
+
+      <!-- Footer actions -->
+      <div class="pt-4 border-t border-line flex flex-wrap items-center justify-between gap-3">
+        <span class="text-xs text-ink-muted">
+          🔒 Toutes tes réponses sont enregistrées uniquement sur cet appareil (`localStorage`).
+        </span>
+        <button
+          type="button"
+          id="modal-reset-progress-btn"
+          class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-btn bg-error-light hover:bg-error text-error hover:text-white text-xs font-bold transition min-h-[40px]"
+        >
+          <Icon name="RotateCcw" size={14} />
+          <span>Réinitialiser mon parcours</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Photo Lightbox Modal with Mandatory CC BY-SA Legal Credits -->
+<div
+  id="lightbox-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="lightbox-title"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-night/95 backdrop-blur-md p-3 sm:p-6 no-print"
+>
+  <div class="relative w-full max-w-5xl bg-surface rounded-card overflow-hidden border-2 border-white/20 shadow-elevated">
+    <!-- Top bar -->
+    <div class="px-4 sm:px-6 py-3 bg-night text-white flex items-center justify-between gap-4 border-b border-white/15">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span id="lightbox-counter" class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold shrink-0">
+          1 / 8
+        </span>
+        <h2 id="lightbox-title" class="font-display font-bold text-base sm:text-lg text-white truncate">
+          Photo du Palais Bourbon
+        </h2>
+      </div>
+      <button
+        type="button"
+        data-close-modal="lightbox-modal"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-white/15 hover:bg-white/25 text-white text-xs font-bold min-h-[40px] shrink-0"
+        aria-label="Fermer la photo (Échap)"
+      >
+        <span>Fermer</span>
+        <Icon name="X" size={16} />
+      </button>
+    </div>
+
+    <!-- Image Stage -->
+    <div class="relative bg-night flex items-center justify-center aspect-[16/9] max-h-[65vh] w-full overflow-hidden">
+      <button
+        type="button"
+        id="lightbox-prev-btn"
+        class="absolute left-3 z-10 w-12 h-12 rounded-full bg-night/80 hover:bg-gold text-white hover:text-ink border border-white/30 flex items-center justify-center transition shadow-card"
+        aria-label="Photo précédente (Flèche gauche)"
+      >
+        <Icon name="ChevronLeft" size={24} />
+      </button>
+
+      <img
+        id="lightbox-img"
+        src="/img/hemicycle-1600.webp"
+        alt=""
+        class="max-h-[65vh] w-auto max-w-full object-contain"
+      />
+
+      <button
+        type="button"
+        id="lightbox-next-btn"
+        class="absolute right-3 z-10 w-12 h-12 rounded-full bg-night/80 hover:bg-gold text-white hover:text-ink border border-white/30 flex items-center justify-center transition shadow-card"
+        aria-label="Photo suivante (Flèche droite)"
+      >
+        <Icon name="ChevronRight" size={24} />
+      </button>
+    </div>
+
+    <!-- Caption & Mandatory CC BY-SA Credit Bar -->
+    <div class="p-4 sm:p-5 bg-surface text-ink flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="space-y-1 max-w-2xl">
+        <p id="lightbox-caption" class="text-sm sm:text-base text-ink font-medium leading-relaxed"></p>
+        <p class="text-xs text-ink-muted">
+          <strong>Crédit obligatoire :</strong>
+          <span id="lightbox-author"></span> · Licence <span id="lightbox-license" class="font-semibold"></span>
+        </p>
+      </div>
+      <a
+        id="lightbox-source-link"
+        href="https://commons.wikimedia.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-btn bg-paper hover:bg-republic-100 text-republic-900 border border-line text-xs font-bold shrink-0 min-h-[40px]"
+      >
+        <span>Source Wikimedia Commons</span>
+        <Icon name="ExternalLink" size={14} />
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Onboarding Modal (3 screens maximum, skippable) -->
+<div
+  id="onboarding-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="onboarding-title"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-night/80 backdrop-blur-sm p-4 no-print"
+>
+  <div class="surface-card w-full max-w-lg overflow-hidden border-2 border-gold shadow-elevated">
+    <div class="px-5 py-4 bg-night text-white flex items-center justify-between border-b-2 border-gold">
+      <span id="onboarding-step-indicator" class="text-xs font-bold uppercase tracking-wider text-gold">
+        Bienvenue · Écran 1 / 3
+      </span>
+      <button
+        type="button"
+        id="onboarding-skip-btn"
+        class="text-xs font-bold text-white/85 hover:text-gold underline py-1 px-2"
+      >
+        Passer l’introduction →
+      </button>
+    </div>
+
+    <div class="p-6 space-y-5">
+      <!-- Screen 1: Name -->
+      <div data-onboarding-screen="1" class="space-y-4">
+        <div class="flex items-center gap-3.5">
+          <Avatar character="malik" size={64} />
+          <div>
+            <h2 id="onboarding-title" class="font-display font-bold text-2xl text-ink">
+              Salut ! Moi c’est Malik (CM2) !
+            </h2>
+            <p class="text-sm text-ink-muted">
+              Avec mon papa, on t’emmène visiter l’Assemblée nationale. Comment tu t’appelles ?
+            </p>
+          </div>
+        </div>
+        <div>
+          <label for="onboarding-name-input" class="block text-xs font-bold uppercase text-ink-muted mb-1.5">
+            Ton prénom (pour ton futur diplôme)
+          </label>
+          <input
+            type="text"
+            id="onboarding-name-input"
+            maxlength="28"
+            placeholder="Tape ton prénom ici..."
+            class="w-full px-4 py-3 rounded-btn bg-paper border-2 border-line text-ink font-bold text-base"
+          />
+        </div>
+      </div>
+
+      <!-- Screen 2: Avatar -->
+      <div data-onboarding-screen="2" class="hidden space-y-4">
+        <h2 class="font-display font-bold text-2xl text-ink">
+          Choisis ton compagnon de visite
+        </h2>
+        <p class="text-sm text-ink-muted">
+          Tu pourras changer à tout moment dans ton profil en haut de la page.
+        </p>
+        <div class="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            data-onboarding-avatar="malik"
+            class="p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2 text-center"
+          >
+            <Avatar character="malik" size={64} />
+            <span class="font-display font-bold text-base text-ink">Malik (10 ans)</span>
+            <span class="text-xs text-ink-muted">Curieux & joueur</span>
+          </button>
+          <button
+            type="button"
+            data-onboarding-avatar="papa"
+            class="p-4 rounded-card border-2 border-line bg-paper flex flex-col items-center gap-2 text-center"
+          >
+            <Avatar character="papa" size={64} />
+            <span class="font-display font-bold text-base text-ink">Papa</span>
+            <span class="text-xs text-ink-muted">Histoire & anecdotes</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Screen 3: Overview -->
+      <div data-onboarding-screen="3" class="hidden space-y-4">
+        <div class="flex items-center gap-3.5">
+          <Avatar character="duo" size={68} />
+          <div>
+            <h2 class="font-display font-bold text-2xl text-ink">
+              Voici ta mission en 12 étapes !
+            </h2>
+            <p class="text-sm text-ink-muted">
+              Chaque étape dure 4 à 6 minutes et se termine par un mini-quiz de 3 questions.
+            </p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-ink bg-paper p-4 rounded-xl border border-line">
+          <li>🏛️ <strong>Partie 1 (Étapes 1 à 3) :</strong> Explorer le Palais Bourbon et l’Hémicycle.</li>
+          <li>⚖️ <strong>Partie 2 (Étapes 4 à 7) :</strong> Comprendre la Constitution, les tribunaux et le Sénat.</li>
+          <li>🎓 <strong>Partie 3 (Étapes 8 à 12) :</strong> Vidéos, mini-jeux, Grand Quiz et Diplôme imprimable !</li>
+        </ul>
+      </div>
+
+      <!-- Navigation buttons -->
+      <div class="flex items-center justify-between pt-2">
+        <button
+          type="button"
+          id="onboarding-prev-btn"
+          class="invisible px-4 py-2.5 rounded-btn bg-paper border border-line text-ink font-bold text-sm min-h-[44px]"
+        >
+          ← Retour
+        </button>
+        <button
+          type="button"
+          id="onboarding-next-btn"
+          class="px-5 py-2.5 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-sm shadow-sm min-h-[44px]"
+        >
+          Continuer →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script
+  id="app-global-data"
+  type="application/json"
+  set:html={JSON.stringify({ searchIndex, photos: PHOTOS, badges: BADGES, totalSteps: ETAPES.length, steps: ETAPES.map(e => ({ number: e.number, slug: e.slug, title: e.shortTitle })) })}
+/>
+

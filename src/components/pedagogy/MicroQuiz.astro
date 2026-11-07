@@ -1,0 +1,114 @@
+---
+import type { QuizQuestionItem } from '../../data';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  stepNumber: number;
+  xpReward: number;
+  badgeId: string | null;
+  questions: QuizQuestionItem[];
+}
+
+const { stepNumber, xpReward, badgeId, questions } = Astro.props;
+---
+
+<section
+  aria-labelledby={`microquiz-title-${stepNumber}`}
+  class="microquiz-container surface-card p-6 sm:p-8 my-8 border-2 border-republic-900/15 no-print"
+  data-step-number={stepNumber}
+  data-xp-reward={xpReward}
+  data-badge-id={badgeId || ''}
+>
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-line">
+    <div class="flex items-center gap-3">
+      <span class="w-10 h-10 rounded-xl bg-republic-900 text-white flex items-center justify-center shrink-0">
+        <Icon name="HelpCircle" size={22} />
+      </span>
+      <div>
+        <span class="text-xs font-bold text-republic-700 uppercase tracking-wider block">
+          Je vérifie que j’ai compris
+        </span>
+        <h2 id={`microquiz-title-${stepNumber}`} class="font-display font-bold text-xl sm:text-2xl text-ink">
+          Mini-quiz de l’étape {stepNumber} ({questions.length} questions)
+        </h2>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+        <Icon name="Award" size={15} />
+        <span>Réussite = +{xpReward} XP</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    {questions.map((q, qIndex) => (
+      <div
+        class="microquiz-question rounded-xl bg-paper p-5 border border-line"
+        data-q-index={qIndex}
+        data-correct-index={q.correctIndex}
+        data-explanation={q.explanation}
+      >
+        <p class="font-display font-bold text-base sm:text-lg text-ink mb-3.5">
+          <span class="inline-block px-2 py-0.5 rounded bg-republic-100 text-republic-900 text-xs mr-2">
+            Question {qIndex + 1}/{questions.length}
+          </span>
+          {q.question}
+        </p>
+
+        <div class="grid grid-cols-1 gap-2.5" role="group" aria-label={`Choix pour la question ${qIndex + 1}`}>
+          {q.options.map((option, oIndex) => (
+            <button
+              type="button"
+              class="microquiz-option text-left w-full px-4 py-3 rounded-btn bg-surface hover:bg-republic-100/70 border-2 border-line text-ink font-medium text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]"
+              data-option-index={oIndex}
+            >
+              <span class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-full bg-paper border border-line text-ink-muted font-bold text-xs flex items-center justify-center shrink-0">
+                  {String.fromCharCode(65 + oIndex)}
+                </span>
+                <span>{option}</span>
+              </span>
+              <span class="option-status-icon shrink-0 text-sm font-bold" aria-hidden="true"></span>
+            </button>
+          ))}
+        </div>
+
+        <div
+          class="microquiz-feedback hidden mt-3.5 p-3.5 rounded-xl text-sm font-medium leading-relaxed"
+          aria-live="polite"
+        ></div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Summary & Validation Banner -->
+  <div
+    class="microquiz-summary hidden mt-6 p-5 rounded-card bg-success-light border-2 border-success text-ink"
+    aria-live="polite"
+  >
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <span class="w-12 h-12 rounded-full bg-success text-white flex items-center justify-center shrink-0">
+          <Icon name="CheckCircle" size={26} />
+        </span>
+        <div>
+          <h3 class="font-display font-bold text-lg text-success">
+            Bravo ! Étape {stepNumber} validée avec succès !
+          </h3>
+          <p class="text-sm text-ink mt-0.5 microquiz-summary-text">
+            Tu as gagné +{xpReward} XP pour ton parcours de Député Junior.
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="microquiz-reset-btn px-3.5 py-2 rounded-btn bg-surface hover:bg-paper text-ink border border-line text-xs font-bold transition min-h-[40px]"
+      >
+        Recommencer le quiz
+      </button>
+    </div>
+  </div>
+</section>
+

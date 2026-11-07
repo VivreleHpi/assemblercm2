@@ -1,0 +1,89 @@
+---
+import Avatar from '../ui/Avatar.astro';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  character?: 'malik' | 'papa' | 'duo';
+  title: string;
+  text: string;
+  soundEffect?: 'bell' | 'drum' | null;
+}
+
+const {
+  character = 'malik',
+  title,
+  text,
+  soundEffect = null
+} = Astro.props;
+
+const speakerLabel =
+  character === 'papa'
+    ? 'L’explication de Papa'
+    : character === 'duo'
+    ? 'Le mot de Malik & Papa'
+    : 'Le secret de Malik';
+---
+
+<aside
+  aria-label={speakerLabel}
+  class="relative rounded-card bg-gold-light/85 border-2 border-gold p-5 sm:p-6 my-8 shadow-card"
+>
+  <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
+    <div class="flex items-center gap-3 shrink-0">
+      <Avatar character={character} size={character === 'duo' ? 76 : 64} class="drop-shadow-sm" />
+      <span class="sm:hidden text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-gold text-ink">
+        {speakerLabel}
+      </span>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+        <div class="flex items-center gap-2">
+          <span class="hidden sm:inline-block text-xs font-bold px-2.5 py-0.5 rounded-full bg-gold text-ink">
+            {speakerLabel}
+          </span>
+          <h3 class="font-display font-bold text-lg sm:text-xl text-ink">
+            {title}
+          </h3>
+        </div>
+
+        <div class="flex items-center gap-2 no-print">
+          {soundEffect === 'bell' && (
+            <button
+              type="button"
+              data-sound-trigger="bell"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-surface hover:bg-republic-100 text-republic-900 border border-line text-xs font-bold transition min-h-[38px]"
+            >
+              <Icon name="Volume2" size={14} />
+              <span>Sonner la cloche 🔔</span>
+            </button>
+          )}
+          {soundEffect === 'drum' && (
+            <button
+              type="button"
+              data-sound-trigger="drum"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-surface hover:bg-republic-100 text-republic-900 border border-line text-xs font-bold transition min-h-[38px]"
+            >
+              <Icon name="Volume2" size={14} />
+              <span>Roulement de tambour 🥁</span>
+            </button>
+          )}
+          <button
+            type="button"
+            class="tts-button inline-flex items-center gap-1 px-2.5 py-1.5 rounded-btn bg-surface hover:bg-republic-100 text-ink border border-line text-xs font-bold transition min-h-[38px]"
+            data-tts-text={`${title}. ${text}`}
+            aria-label={`Écouter : ${title}`}
+          >
+            <Icon name="Volume2" size={14} />
+            <span>Écouter</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-ink text-base leading-relaxed max-w-reading">
+        {text}
+      </p>
+    </div>
+  </div>
+</aside>
+

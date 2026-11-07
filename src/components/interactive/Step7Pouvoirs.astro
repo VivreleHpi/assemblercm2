@@ -1,0 +1,165 @@
+---
+import { NAVETTE_STEPS } from '../../data';
+import ResponsivePicture from '../ui/ResponsivePicture.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20 space-y-8">
+  <!-- Part A: Separation of Powers & 3 Control Weapons -->
+  <div class="space-y-5">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+        Équilibre de la démocratie · Étape 7
+      </span>
+      <h2 class="font-display font-bold text-2xl text-ink mt-1">
+        1. Pourquoi l’Assemblée nationale est-elle un « contre-pouvoir » ?
+      </h2>
+      <p class="text-sm sm:text-base text-ink-muted mt-1">
+        Pour éviter qu’une seule personne décide de tout, la République sépare celui qui gouverne (<strong>Exécutif</strong>), celui qui vote la loi et contrôle (<strong>Législatif</strong>) et celui qui juge (<strong>Autorité judiciaire</strong>).
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-5 rounded-card bg-paper border-2 border-republic-900/20 space-y-2">
+        <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          Outil de contrôle n° 1
+        </span>
+        <h3 class="font-display font-bold text-lg text-ink">
+          🎙️ Les Questions au Gouvernement (QAG)
+        </h3>
+        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+          Chaque mardi et mercredi après-midi dans l’Hémicycle, les députés interrogent en direct le Premier ministre et les ministres devant les caméras de télévision.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-card bg-paper border-2 border-republic-900/20 space-y-2">
+        <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          Outil de contrôle n° 2
+        </span>
+        <h3 class="font-display font-bold text-lg text-ink">
+          🔎 Les commissions d’enquête
+        </h3>
+        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+          Les députés peuvent convoquer toute personne ou responsable pour enquêter sur un sujet important (santé, environnement, écoles, sécurité) sous serment de dire la vérité.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-card bg-paper border-2 border-marianne/30 space-y-2">
+        <span class="px-2.5 py-0.5 rounded-full bg-marianne-light text-marianne text-xs font-bold">
+          Outil de contrôle n° 3 (Art. 49)
+        </span>
+        <h3 class="font-display font-bold text-lg text-ink">
+          ⚡ La motion de censure
+        </h3>
+        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+          Si au moins <strong>289 députés</strong> (la majorité absolue sur 577) votent une motion de censure, le Gouvernement est renversé et le Premier ministre doit démissionner !
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part B: Navette Parlementaire Simulator -->
+  <div class="pt-6 border-t border-line space-y-5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-7 space-y-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+            Simulateur interactif
+          </span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-ink mt-1">
+            2. Fais voyager un texte avec la « navette parlementaire » !
+          </h3>
+          <p class="text-sm text-ink-muted mt-1">
+            En France, le Parlement a <strong>2 chambres</strong> : l’Assemblée nationale (577 députés au Palais Bourbon) et le Sénat (348 sénateurs au Palais du Luxembourg). Clique sur les 4 étapes du voyage :
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" role="tablist" aria-label="Étapes de la navette parlementaire">
+          {NAVETTE_STEPS.map((ns, idx) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={idx === 0 ? 'true' : 'false'}
+              data-navette-step={ns.step}
+              class={`navette-step-btn px-3 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
+                idx === 0
+                  ? 'bg-republic-900 text-white border-republic-900 shadow-sm'
+                  : 'bg-paper text-ink border-line hover:bg-republic-100'
+              }`}
+            >
+              Étape {ns.step} / 4
+            </button>
+          ))}
+        </div>
+
+        <div
+          id="navette-detail-card"
+          aria-live="polite"
+          class="p-5 rounded-card bg-paper border-2 border-gold space-y-2.5"
+        >
+          <span id="navette-place-badge" class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+            📍 {NAVETTE_STEPS[0].place}
+          </span>
+          <h4 id="navette-title" class="font-display font-bold text-lg sm:text-xl text-ink">
+            {NAVETTE_STEPS[0].title}
+          </h4>
+          <p id="navette-desc" class="text-sm sm:text-base text-ink leading-relaxed">
+            {NAVETTE_STEPS[0].detail}
+          </p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+        <ResponsivePicture
+          photoId="senat-luxembourg"
+          aspect="4/3"
+          sizes="(max-width: 1024px) 100vw, 450px"
+        />
+        <p class="text-xs text-ink-muted mt-2 text-center">
+          Le Palais du Luxembourg à Paris, où siègent les 348 sénateurs élus pour 6 ans.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+  id="step7-navette-json"
+  type="application/json"
+  set:html={JSON.stringify(NAVETTE_STEPS)}
+/>
+
+<script>
+  function initStep7() {
+    const jsonEl = document.getElementById('step7-navette-json');
+    const steps = jsonEl ? JSON.parse(jsonEl.textContent || '[]') : [];
+    const btns = document.querySelectorAll<HTMLButtonElement>('.navette-step-btn');
+
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const sNum = Number(btn.getAttribute('data-navette-step'));
+        const item = steps.find((s: { step: number }) => s.step === sNum);
+        if (!item) return;
+
+        btns.forEach((b) => {
+          const active = Number(b.getAttribute('data-navette-step')) === sNum;
+          b.setAttribute('aria-selected', String(active));
+          b.className = `navette-step-btn px-3 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
+            active
+              ? 'bg-republic-900 text-white border-republic-900 shadow-sm'
+              : 'bg-paper text-ink border-line hover:bg-republic-100'
+          }`;
+        });
+
+        const placeEl = document.getElementById('navette-place-badge');
+        const titleEl = document.getElementById('navette-title');
+        const descEl = document.getElementById('navette-desc');
+        if (placeEl) placeEl.textContent = `📍 ${item.place}`;
+        if (titleEl) titleEl.textContent = item.title;
+        if (descEl) descEl.textContent = item.detail;
+      });
+    });
+  }
+
+  initStep7();
+</script>
+

@@ -1,0 +1,598 @@
+---
+import { HOTSPOTS_DATA } from '../../data';
+import Icon from '../ui/Icon.astro';
+
+// Generate 577 seats across 10 concentric semicircular rows for the SVG map
+interface SeatPoint {
+  id: number;
+  cx: number;
+  cy: number;
+  zone: 'gauche' | 'centre' | 'droite';
+}
+
+const seats: SeatPoint[] = [];
+const rowCounts = [36, 42, 48, 53, 58, 62, 66, 69, 71, 72]; // Sum = 577!
+let seatId = 1;
+rowCounts.forEach((count, rowIndex) => {
+  const radius = 95 + rowIndex * 16;
+  for (let i = 0; i < count; i++) {
+    const ratio = i / (count - 1);
+    const angle = Math.PI - ratio * Math.PI; // Left (PI) to Right (0)
+    const cx = Number((300 + radius * Math.cos(angle)).toFixed(1));
+    const cy = Number((285 - radius * Math.sin(angle)).toFixed(1));
+    const zone: 'gauche' | 'centre' | 'droite' =
+      ratio < 0.36 ? 'gauche' : ratio < 0.66 ? 'centre' : 'droite';
+    seats.push({ id: seatId++, cx, cy, zone });
+  }
+});
+---
+
+<div class="surface-card p-5 sm:p-8 my-8 border-2 border-republic-900/15">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
+        Atelier interactif · Étape 1
+      </span>
+      <h2 class="font-display font-bold text-2xl text-ink">
+        Je comprends comment fonctionne l’Hémicycle
+      </h2>
+    </div>
+    <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-paper border border-line text-ink-muted">
+      4 activités au choix
+    </span>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div
+    role="tablist"
+    aria-label="Outils d'exploration de l'Hémicycle"
+    class="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-6 bg-paper p-2 rounded-card border border-line"
+  >
+    <button
+      type="button"
+      role="tab"
+      aria-selected="true"
+      aria-controls="hemicycle-panel-hotspots"
+      id="hemicycle-tab-hotspots"
+      data-hemi-tab="hotspots"
+      class="hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]"
+    >
+      1. Photo à 6 repères 📍
+    </button>
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="hemicycle-panel-seats"
+      id="hemicycle-tab-seats"
+      data-hemi-tab="seats"
+      class="hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
+    >
+      2. Les 577 sièges 💺
+    </button>
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="hemicycle-panel-vote"
+      id="hemicycle-tab-vote"
+      data-hemi-tab="vote"
+      class="hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
+    >
+      3. Simulateur de vote 🗳️
+    </button>
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="hemicycle-panel-desk"
+      id="hemicycle-tab-desk"
+      data-hemi-tab="desk"
+      class="hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
+    >
+      4. Pupitre de député 🎙️
+    </button>
+  </div>
+
+  <!-- PANEL 1: Hotspots on Photo -->
+  <div
+    id="hemicycle-panel-hotspots"
+    role="tabpanel"
+    aria-labelledby="hemicycle-tab-hotspots"
+    data-hemi-panel="hotspots"
+    class="space-y-5"
+  >
+    <p class="text-sm sm:text-base text-ink-muted">
+      Clique sur les <strong>6 repères numérotés</strong> directement sur la photo (ou sur les boutons en dessous) pour découvrir qui s’assoit à chaque endroit.
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-7 relative rounded-card overflow-hidden border-2 border-line aspect-[16/9] bg-night">
+        <img
+          src="/img/hemicycle-960.webp"
+          alt="L'Hémicycle de l'Assemblée nationale avec 6 repères interactifs"
+          class="w-full h-full object-cover photo-warm"
+        />
+        {HOTSPOTS_DATA.map((spot) => (
+          <button
+            type="button"
+            data-spot-id={spot.id}
+            style={`left: ${spot.x}%; top: ${spot.y}%; transform: translate(-50%, -50%);`}
+            class={`hotspot-pin absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full font-display font-bold text-sm flex items-center justify-center shadow-elevated border-2 transition-transform hover:scale-110 ${
+              spot.id === 1
+                ? 'bg-gold text-ink border-white scale-110 ring-4 ring-gold/50'
+                : 'bg-republic-900 text-white border-white'
+            }`}
+            aria-label={`Repère ${spot.id} : ${spot.title}`}
+          >
+            {spot.id}
+          </button>
+        ))}
+      </div>
+
+      <div class="lg:col-span-5 space-y-4">
+        <div
+          id="hotspot-detail-card"
+          aria-live="polite"
+          class="p-5 rounded-card bg-paper border-2 border-gold shadow-sm"
+        >
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span id="hotspot-badge" class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+              {HOTSPOTS_DATA[0].badge}
+            </span>
+            <span id="hotspot-counter" class="text-xs font-bold text-ink-muted">
+              Repère 1 / 6
+            </span>
+          </div>
+          <h3 id="hotspot-title" class="font-display font-bold text-xl text-ink mb-2">
+            {HOTSPOTS_DATA[0].title}
+          </h3>
+          <p id="hotspot-desc" class="text-sm sm:text-base text-ink leading-relaxed">
+            {HOTSPOTS_DATA[0].description}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {HOTSPOTS_DATA.map((spot) => (
+            <button
+              type="button"
+              data-spot-id={spot.id}
+              class="hotspot-list-btn px-3 py-2 rounded-btn border border-line bg-surface hover:bg-republic-100 text-left text-xs font-bold text-ink truncate min-h-[42px]"
+            >
+              {spot.id}. {spot.title.replace(/^Le |^La |^Les /, '')}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: 577 Seats Map -->
+  <div
+    id="hemicycle-panel-seats"
+    role="tabpanel"
+    aria-labelledby="hemicycle-tab-seats"
+    data-hemi-panel="seats"
+    class="hidden space-y-5"
+  >
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <p class="text-sm sm:text-base text-ink-muted max-w-xl">
+        Voici les <strong>577 fauteuils</strong> dessinés un par un ! Depuis 1789, les députés se placent par famille politique de gauche à droite, face au Président de l’Assemblée.
+      </p>
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrer par zone de l'Hémicycle">
+        <button
+          type="button"
+          data-seat-zone="all"
+          class="seat-zone-btn px-3.5 py-2 rounded-btn bg-republic-900 text-white text-xs font-bold min-h-[42px]"
+        >
+          Tous les 577 sièges
+        </button>
+        <button
+          type="button"
+          data-seat-zone="gauche"
+          class="seat-zone-btn px-3.5 py-2 rounded-btn bg-paper border border-line text-ink text-xs font-bold min-h-[42px]"
+        >
+          🔴 Gauche (~208)
+        </button>
+        <button
+          type="button"
+          data-seat-zone="centre"
+          class="seat-zone-btn px-3.5 py-2 rounded-btn bg-paper border border-line text-ink text-xs font-bold min-h-[42px]"
+        >
+          🟡 Centre (~173)
+        </button>
+        <button
+          type="button"
+          data-seat-zone="droite"
+          class="seat-zone-btn px-3.5 py-2 rounded-btn bg-paper border border-line text-ink text-xs font-bold min-h-[42px]"
+        >
+          🔵 Droite (~196)
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div class="lg:col-span-7 bg-paper rounded-card p-4 border border-line">
+        <svg
+          viewBox="0 0 600 320"
+          class="w-full h-auto"
+          role="img"
+          aria-label="Plan en demi-cercle des 577 sièges de l'Assemblée nationale"
+        >
+          <!-- Background arc labels -->
+          <text x="65" y="35" fill="#8B1E2D" font-size="13" font-weight="bold">GAUCHE</text>
+          <text x="270" y="22" fill="#B45309" font-size="13" font-weight="bold">CENTRE</text>
+          <text x="475" y="35" fill="#002654" font-size="13" font-weight="bold">DROITE</text>
+
+          <!-- 577 individual seats -->
+          {seats.map((s) => (
+            <circle
+              cx={s.cx}
+              cy={s.cy}
+              r="3.6"
+              data-seat-dot={s.zone}
+              fill={s.zone === 'gauche' ? '#CE1126' : s.zone === 'centre' ? '#E8B21A' : '#002654'}
+              class="transition-opacity duration-200"
+            />
+          ))}
+
+          <!-- Bancs du Gouvernement -->
+          <rect x="215" y="242" width="170" height="18" rx="6" fill="#1E3A8A" />
+          <text x="300" y="255" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="bold">
+            BANCS DES MINISTRES
+          </text>
+
+          <!-- Perchoir & Tribune -->
+          <rect x="245" y="272" width="110" height="32" rx="8" fill="#8B1E2D" stroke="#E8B21A" stroke-width="2" />
+          <text x="300" y="292" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">
+            LE PERCHOIR
+          </text>
+        </svg>
+      </div>
+
+      <div id="seat-zone-explanation" aria-live="polite" class="lg:col-span-5 p-5 rounded-card bg-paper border-2 border-line space-y-3">
+        <span class="px-2.5 py-1 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          Vue d’ensemble · 577 députés
+        </span>
+        <h3 id="seat-zone-title" class="font-display font-bold text-xl text-ink">
+          Pourquoi 577 sièges en demi-cercle ?
+        </h3>
+        <p id="seat-zone-desc" class="text-sm sm:text-base text-ink leading-relaxed">
+          Chaque point représente 1 député élu dans une circonscription de France (métropole, Outre-mer et Français de l’étranger). Pour adopter une loi à l’unanimité des présents ou à la majorité absolue de tous les députés, le chiffre clé est <strong>289 voix</strong> (la moitié de 577 + 1) !
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: Vote Simulator -->
+  <div
+    id="hemicycle-panel-vote"
+    role="tabpanel"
+    aria-labelledby="hemicycle-tab-vote"
+    data-hemi-panel="vote"
+    class="hidden space-y-5"
+  >
+    <div class="p-5 rounded-card bg-paper border border-line space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-display font-bold text-lg sm:text-xl text-ink">
+          Simule un scrutin électronique sur les écrans géants !
+        </h3>
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold">
+          Règle : Loi adoptée si POUR &gt; CONTRE
+        </span>
+      </div>
+
+      <div>
+        <label for="vote-sim-law-select" class="block text-xs font-bold uppercase text-ink-muted mb-1.5">
+          Choisis la proposition de loi mise au vote :
+        </label>
+        <select
+          id="vote-sim-law-select"
+          class="w-full px-4 py-3 rounded-btn bg-surface border-2 border-line text-ink font-bold text-sm sm:text-base"
+        >
+          <option value="0">Proposition n°1 : Créer un potager pédagogique dans chaque école primaire</option>
+          <option value="1">Proposition n°2 : Ajouter 30 minutes de lecture quotidienne en classe</option>
+          <option value="2">Proposition n°3 : Interdire les devoirs écrits le soir à la maison</option>
+        </select>
+      </div>
+
+      <div class="flex flex-wrap gap-2.5 pt-1">
+        <button
+          type="button"
+          data-vote-scenario="adopted-large"
+          class="px-4 py-2.5 rounded-btn bg-success text-white font-display font-bold text-xs sm:text-sm min-h-[44px]"
+        >
+          Simuler un large accord (412 Pour / 98 Contre)
+        </button>
+        <button
+          type="button"
+          data-vote-scenario="adopted-serre"
+          class="px-4 py-2.5 rounded-btn bg-republic-900 text-white font-display font-bold text-xs sm:text-sm min-h-[44px]"
+        >
+          Simuler un vote très serré (275 Pour / 268 Contre)
+        </button>
+        <button
+          type="button"
+          data-vote-scenario="rejected"
+          class="px-4 py-2.5 rounded-btn bg-error text-white font-display font-bold text-xs sm:text-sm min-h-[44px]"
+        >
+          Simuler un rejet (190 Pour / 310 Contre)
+        </button>
+      </div>
+
+      <!-- Result Board -->
+      <div
+        id="vote-sim-board"
+        aria-live="polite"
+        class="p-5 rounded-card bg-night text-white border-2 border-gold space-y-4"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/15 pb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-gold">
+            Panneau officiel de scrutin · 577 députés
+          </span>
+          <span id="vote-sim-verdict" class="px-3 py-1 rounded-full bg-success text-white text-xs font-bold">
+            LOI ADOPTÉE ✓
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-white/10">
+            <span id="vote-count-votants" class="font-display font-bold text-2xl text-white block">545</span>
+            <span class="text-xs text-white/80">Votants</span>
+          </div>
+          <div class="p-3 rounded-xl bg-success/30 border border-success">
+            <span id="vote-count-pour" class="font-display font-bold text-2xl text-white block">412</span>
+            <span class="text-xs text-white/95 font-bold">POUR (Vert)</span>
+          </div>
+          <div class="p-3 rounded-xl bg-error/30 border border-error">
+            <span id="vote-count-contre" class="font-display font-bold text-2xl text-white block">98</span>
+            <span class="text-xs text-white/95 font-bold">CONTRE (Rouge)</span>
+          </div>
+          <div class="p-3 rounded-xl bg-white/10">
+            <span id="vote-count-abst" class="font-display font-bold text-2xl text-gold block">35</span>
+            <span class="text-xs text-white/90 font-bold">ABSTENTION</span>
+          </div>
+        </div>
+
+        <p id="vote-sim-explanation" class="text-xs sm:text-sm text-white/90 leading-relaxed">
+          Suffrages exprimés : 510 (412 Pour + 98 Contre). Comme il y a plus de voix POUR que CONTRE, l’Assemblée nationale adopte le texte !
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: Deputy Desk -->
+  <div
+    id="hemicycle-panel-desk"
+    role="tabpanel"
+    aria-labelledby="hemicycle-tab-desk"
+    data-hemi-panel="desk"
+    class="hidden space-y-5"
+  >
+    <p class="text-sm sm:text-base text-ink-muted">
+      Tu es assis sur le fauteuil rouge n° 245. Clique sur les <strong>3 objets posés sur ton pupitre en bois</strong> pour les tester :
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <button
+        type="button"
+        data-desk-item="micro"
+        class="desk-item-btn text-left p-5 rounded-card border-2 border-gold bg-gold-light transition space-y-2"
+      >
+        <span class="text-2xl block">🎙️</span>
+        <h3 class="font-display font-bold text-lg text-ink">1. Le microphone</h3>
+        <p class="text-xs sm:text-sm text-ink-muted">
+          Pour défendre un amendement depuis ta place.
+        </p>
+      </button>
+
+      <button
+        type="button"
+        data-desk-item="boitier"
+        class="desk-item-btn text-left p-5 rounded-card border-2 border-line bg-paper hover:bg-republic-100/60 transition space-y-2"
+      >
+        <span class="text-2xl block">🗳️</span>
+        <h3 class="font-display font-bold text-lg text-ink">2. Le boîtier à clé</h3>
+        <p class="text-xs sm:text-sm text-ink-muted">
+          3 boutons lumineux : P (Pour), C (Contre), A (Abstention).
+        </p>
+      </button>
+
+      <button
+        type="button"
+        data-desk-item="liasse"
+        class="desk-item-btn text-left p-5 rounded-card border-2 border-line bg-paper hover:bg-republic-100/60 transition space-y-2"
+      >
+        <span class="text-2xl block">📑</span>
+        <h3 class="font-display font-bold text-lg text-ink">3. Les amendements</h3>
+        <p class="text-xs sm:text-sm text-ink-muted">
+          Les propositions pour modifier un mot ou une phrase de la loi.
+        </p>
+      </button>
+    </div>
+
+    <div
+      id="desk-item-detail"
+      aria-live="polite"
+      class="p-5 rounded-card bg-paper border-2 border-republic-900/20 text-ink text-sm sm:text-base leading-relaxed"
+    >
+      <strong>🎙️ Le microphone :</strong> Attention, ton micro est éteint par défaut ! Seul le Président ou la Présidente de séance (tout en haut au Perchoir) peut l’allumer quand tu lèves la main pour demander la parole. Chaque député dispose en général de <strong>2 minutes</strong> pour s’exprimer.
+    </div>
+  </div>
+</div>
+
+<script
+  id="step1-hotspots-json"
+  type="application/json"
+  set:html={JSON.stringify(HOTSPOTS_DATA)}
+/>
+
+<script>
+  function initStep1() {
+    const spotsJson = document.getElementById('step1-hotspots-json');
+    const hotspots = spotsJson ? JSON.parse(spotsJson.textContent || '[]') : [];
+
+    // Tabs switching
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.hemi-tab-btn');
+    const panels = document.querySelectorAll<HTMLElement>('[data-hemi-panel]');
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-hemi-tab');
+        tabBtns.forEach((b) => {
+          const active = b.getAttribute('data-hemi-tab') === target;
+          b.setAttribute('aria-selected', String(active));
+          b.className = active
+            ? 'hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]'
+            : 'hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]';
+        });
+        panels.forEach((p) => {
+          p.classList.toggle('hidden', p.getAttribute('data-hemi-panel') !== target);
+        });
+      });
+    });
+
+    // Hotspots interaction
+    const selectSpot = (id: number) => {
+      const spot = hotspots.find((s: { id: number }) => s.id === id);
+      if (!spot) return;
+      const badgeEl = document.getElementById('hotspot-badge');
+      const countEl = document.getElementById('hotspot-counter');
+      const titleEl = document.getElementById('hotspot-title');
+      const descEl = document.getElementById('hotspot-desc');
+      if (badgeEl) badgeEl.textContent = spot.badge;
+      if (countEl) countEl.textContent = `Repère ${spot.id} / 6`;
+      if (titleEl) titleEl.textContent = spot.title;
+      if (descEl) descEl.textContent = spot.description;
+
+      document.querySelectorAll<HTMLButtonElement>('.hotspot-pin').forEach((pin) => {
+        const active = Number(pin.getAttribute('data-spot-id')) === id;
+        pin.className = `hotspot-pin absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full font-display font-bold text-sm flex items-center justify-center shadow-elevated border-2 transition-transform hover:scale-110 ${
+          active
+            ? 'bg-gold text-ink border-white scale-110 ring-4 ring-gold/50'
+            : 'bg-republic-900 text-white border-white'
+        }`;
+      });
+    };
+
+    document.querySelectorAll<HTMLElement>('[data-spot-id]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const id = Number(el.getAttribute('data-spot-id'));
+        selectSpot(id);
+      });
+    });
+
+    // 577 Seats Zone filter
+    const zoneInfo: Record<string, { title: string; desc: string }> = {
+      all: {
+        title: 'Pourquoi 577 sièges en demi-cercle ?',
+        desc: 'Chaque point représente 1 député élu dans une circonscription de France. La majorité absolue de tous les députés est de 289 voix (la moitié de 577 + 1).'
+      },
+      gauche: {
+        title: 'Les travées de Gauche',
+        desc: 'En regardant l’Hémicycle depuis le Perchoir du Président, ces groupes siègent sur le côté gauche. Cette habitude remonte à l’été 1789 pendant la Révolution française !'
+      },
+      centre: {
+        title: 'Les travées du Centre',
+        desc: 'Situés au milieu du demi-cercle, face à la tribune, ces groupes cherchent souvent à construire des alliances ou une majorité autour du Gouvernement.'
+      },
+      droite: {
+        title: 'Les travées de Droite',
+        desc: 'Placés sur le côté droit vu du Perchoir. Que un député siège à gauche, au centre ou à droite, sa voix compte exactement pour 1 voix lors du vote des lois.'
+      }
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('.seat-zone-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const zone = btn.getAttribute('data-seat-zone') || 'all';
+        document.querySelectorAll<HTMLButtonElement>('.seat-zone-btn').forEach((b) => {
+          const active = b.getAttribute('data-seat-zone') === zone;
+          b.className = active
+            ? 'seat-zone-btn px-3.5 py-2 rounded-btn bg-republic-900 text-white text-xs font-bold min-h-[42px]'
+            : 'seat-zone-btn px-3.5 py-2 rounded-btn bg-paper border border-line text-ink text-xs font-bold min-h-[42px]';
+        });
+
+        document.querySelectorAll<SVGElement>('[data-seat-dot]').forEach((dot) => {
+          const dZone = dot.getAttribute('data-seat-dot');
+          dot.style.opacity = zone === 'all' || dZone === zone ? '1' : '0.15';
+        });
+
+        const info = zoneInfo[zone] || zoneInfo.all;
+        const tEl = document.getElementById('seat-zone-title');
+        const dEl = document.getElementById('seat-zone-desc');
+        if (tEl) tEl.textContent = info.title;
+        if (dEl) dEl.textContent = info.desc;
+      });
+    });
+
+    // Vote Simulator
+    const scenarios: Record<string, { pour: number; contre: number; abst: number }> = {
+      'adopted-large': { pour: 412, contre: 98, abst: 35 },
+      'adopted-serre': { pour: 275, contre: 268, abst: 22 },
+      rejected: { pour: 190, contre: 310, abst: 40 }
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-vote-scenario]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-vote-scenario') || 'adopted-large';
+        const s = scenarios[key] || scenarios['adopted-large'];
+        const votants = s.pour + s.contre + s.abst;
+        const exprimes = s.pour + s.contre;
+        const adopted = s.pour > s.contre;
+
+        const vEl = document.getElementById('vote-count-votants');
+        const pEl = document.getElementById('vote-count-pour');
+        const cEl = document.getElementById('vote-count-contre');
+        const aEl = document.getElementById('vote-count-abst');
+        const verdictEl = document.getElementById('vote-sim-verdict');
+        const expEl = document.getElementById('vote-sim-explanation');
+
+        if (vEl) vEl.textContent = String(votants);
+        if (pEl) pEl.textContent = String(s.pour);
+        if (cEl) cEl.textContent = String(s.contre);
+        if (aEl) aEl.textContent = String(s.abst);
+
+        if (verdictEl) {
+          verdictEl.textContent = adopted ? 'LOI ADOPTÉE ✓' : 'LOI REJETÉE ✗';
+          verdictEl.className = adopted
+            ? 'px-3 py-1 rounded-full bg-success text-white text-xs font-bold'
+            : 'px-3 py-1 rounded-full bg-error text-white text-xs font-bold';
+        }
+        if (expEl) {
+          expEl.textContent = adopted
+            ? `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre). Comme POUR > CONTRE, l’Assemblée nationale adopte le texte !`
+            : `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre). Comme il y a plus de voix CONTRE que POUR, le texte n’est pas adopté.`;
+        }
+      });
+    });
+
+    // Deputy Desk items
+    const deskTexts: Record<string, string> = {
+      micro:
+        '<strong>🎙️ Le microphone :</strong> Attention, ton micro est éteint par défaut ! Seul le Président ou la Présidente de séance (tout en haut au Perchoir) peut l’allumer quand tu lèves la main pour demander la parole.',
+      boitier:
+        '<strong>🗳️ Le boîtier électronique :</strong> Chaque député possède une clé personnelle. Au moment du vote, il appuie sur <strong>P</strong> (Pour = voyant vert), <strong>C</strong> (Contre = voyant rouge) ou <strong>A</strong> (Abstention = voyant ambre). En quelques secondes, l’ordinateur additionne les 577 pupitres !',
+      liasse:
+        '<strong>📑 Les amendements :</strong> Avant de voter une loi entière, les députés étudient parfois des centaines d’amendements pour ajouter un mot, corriger une phrase ou préciser un article.'
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('.desk-item-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-desk-item') || 'micro';
+        document.querySelectorAll<HTMLButtonElement>('.desk-item-btn').forEach((b) => {
+          const active = b.getAttribute('data-desk-item') === key;
+          b.className = active
+            ? 'desk-item-btn text-left p-5 rounded-card border-2 border-gold bg-gold-light transition space-y-2'
+            : 'desk-item-btn text-left p-5 rounded-card border-2 border-line bg-paper hover:bg-republic-100/60 transition space-y-2';
+        });
+        const detail = document.getElementById('desk-item-detail');
+        if (detail && deskTexts[key]) {
+          detail.innerHTML = deskTexts[key];
+        }
+      });
+    });
+  }
+
+  initStep1();
+</script>
+

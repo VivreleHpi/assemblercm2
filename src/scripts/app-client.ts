@@ -1,0 +1,832 @@
+export interface AppState {
+  userName: string;
+  avatar: 'malik' | 'papa';
+  xp: number;
+  completedSteps: number[];
+  unlockedBadges: string[];
+  fontSize: 'normal' | 'large' | 'xlarge';
+  dysMode: boolean;
+  classroomMode: boolean;
+  soundEnabled: boolean;
+  onboardingDone: boolean;
+  finalQuizBestScore: number;
+}
+
+const STORAGE_KEY = 'an_cm2_v2_state';
+
+const DEFAULT_STATE: AppState = {
+  userName: '',
+  avatar: 'malik',
+  xp: 0,
+  completedSteps: [],
+  unlockedBadges: [],
+  fontSize: 'normal',
+  dysMode: false,
+  classroomMode: false,
+  soundEnabled: true,
+  onboardingDone: false,
+  finalQuizBestScore: 0
+};
+
+export function initAppClient() {
+  const globalDataEl = document.getElementById('app-global-data');
+  const globalData = globalDataEl ? JSON.parse(globalDataEl.textContent || '{}') : {
+    searchIndex: [],
+    photos: [],
+    badges: [],
+    totalSteps: 12,
+    steps: []
+  };
+
+  let state: AppState = loadState();
+  let toastTimeout: number | undefined;
+  let currentLightboxIndex = 0;
+
+  function loadState(): AppState {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return { ...DEFAULT_STATE };
+      const parsed = JSON.parse(raw);
+      return {
+        ...DEFAULT_STATE,
+        ...parsed,
+        completedSteps: Array.isArray(parsed.completedSteps) ? parsed.completedSteps : [],
+        unlockedBadges: Array.isArray(parsed.unlockedBadges) ? parsed.unlockedBadges : []
+      };
+    } catch {
+      return { ...DEFAULT_STATE };
+    }
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // ignore storage quota errors
+    }
+    syncUI();
+    window.dispatchEvent(new CustomEvent('an:state-updated', { detail: state }));
+  }
+
+  // Web Audio Synthesizer (zero external MP3 needed, works 100% offline)
+  function playSound(type: 'bell' | 'drum' | 'success' | 'pop') {
+    if (!state.soundEnabled) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const now = ctx.currentTime;
+
+      if (type === 'bell') {
+        [880, 1318.5, 1760].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.18 / (idx + 1), now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.15);
+        });
+      } else if (type === 'drum') {
+        for (let i = 0; i < 6; i++) {
+          const t = now + i * 0.07;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(140 - i * 10, t);
+          osc.frequency.exponentialRampToValueAtTime(55, t + 0.06);
+          gain.gain.setValueAtTime(0.22, t);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.065);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.07);
+        }
+      } else if (type === 'success') {
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+          const t = now + i * 0.09;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.16, t);
+          gain.gain.exponentialRampToValueAtTime(0.005, t + 0.25);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.26);
+        });
+      } else {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(580, now);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + 0.09);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.1);
+      }
+    } catch {
+      // ignore audio context restrictions
+    }
+  }
+
+  function showToast(title: string, desc: string) {
+    const toast = document.getElementById('xp-toast');
+    const titleEl = document.getElementById('xp-toast-title');
+    const descEl = document.getElementById('xp-toast-desc');
+    if (!toast || !titleEl || !descEl) return;
+
+    titleEl.textContent = title;
+    descEl.textContent = desc;
+    toast.classList.remove('hidden');
+
+    if (toastTimeout) window.clearTimeout(toastTimeout);
+    toastTimeout = window.setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 3400);
+  }
+
+  function addXP(amount: number, reason: string) {
+    state.xp += amount;
+    saveState();
+    playSound('success');
+    showToast(`+${amount} XP gagnés !`, reason);
+  }
+
+  function unlockBadge(badgeId: string, customReason?: string): boolean {
+    if (!badgeId) return false;
+    if (state.unlockedBadges.includes(badgeId)) return false;
+    state.unlockedBadges.push(badgeId);
+    const badgeObj = (globalData.badges || []).find((b: { id: string; title: string }) => b.id === badgeId);
+    const title = badgeObj ? badgeObj.title : badgeId;
+    saveState();
+    playSound('bell');
+    showToast(`🏅 Nouveau badge : ${title}`, customReason || 'Consulte ton profil pour voir ta médaille !');
+    return true;
+  }
+
+  function completeStep(stepNumber: number, xpReward = 20, badgeId?: string) {
+    const isNewStep = !state.completedSteps.includes(stepNumber);
+    if (isNewStep) {
+      state.completedSteps.push(stepNumber);
+      state.xp += xpReward;
+    }
+    if (badgeId && !state.unlockedBadges.includes(badgeId)) {
+      state.unlockedBadges.push(badgeId);
+    }
+    saveState();
+    if (isNewStep) {
+      playSound('success');
+      const badgeObj = badgeId
+        ? (globalData.badges || []).find((b: { id: string; title: string }) => b.id === badgeId)
+        : null;
+      showToast(
+        `Étape ${stepNumber} validée (+${xpReward} XP) !`,
+        badgeObj ? `Médaille « ${badgeObj.title} » débloquée !` : 'Continue ton parcours de Député Junior !'
+      );
+    }
+  }
+
+  function syncUI() {
+    const html = document.documentElement;
+    // Font size
+    html.setAttribute('data-font-size', state.fontSize);
+    document.querySelectorAll<HTMLButtonElement>('[data-font-size-btn]').forEach((btn) => {
+      const active = btn.getAttribute('data-font-size-btn') === state.fontSize;
+      btn.classList.toggle('bg-republic-900', active);
+      btn.classList.toggle('text-white', active);
+      btn.classList.toggle('bg-paper', !active);
+      btn.classList.toggle('text-ink', !active);
+    });
+
+    // Dys mode
+    if (state.dysMode) {
+      html.setAttribute('data-dys', 'true');
+    } else {
+      html.removeAttribute('data-dys');
+    }
+    const dysBtn = document.getElementById('toggle-dys-btn');
+    if (dysBtn) {
+      dysBtn.setAttribute('aria-pressed', String(state.dysMode));
+      dysBtn.textContent = state.dysMode ? 'Activé ✓' : 'Désactivé';
+      dysBtn.className = state.dysMode
+        ? 'px-3 py-1.5 rounded-full border border-success/40 bg-success-light text-xs font-bold text-success min-h-[38px]'
+        : 'px-3 py-1.5 rounded-full border border-line bg-paper text-xs font-bold text-ink min-h-[38px]';
+    }
+
+    // Classroom mode
+    if (state.classroomMode) {
+      html.setAttribute('data-classroom', 'true');
+    } else {
+      html.removeAttribute('data-classroom');
+    }
+    const classBtn = document.getElementById('toggle-classroom-btn');
+    if (classBtn) {
+      classBtn.setAttribute('aria-pressed', String(state.classroomMode));
+      classBtn.textContent = state.classroomMode ? 'Activé ✓' : 'Désactivé';
+      classBtn.className = state.classroomMode
+        ? 'px-3 py-1.5 rounded-full border border-success/40 bg-success-light text-xs font-bold text-success min-h-[38px]'
+        : 'px-3 py-1.5 rounded-full border border-line bg-paper text-xs font-bold text-ink min-h-[38px]';
+    }
+
+    // Sound toggle
+    const soundBtn = document.getElementById('toggle-sound-btn');
+    if (soundBtn) {
+      soundBtn.setAttribute('aria-pressed', String(state.soundEnabled));
+      soundBtn.textContent = state.soundEnabled ? 'Activé 🔔' : 'Muet 🔇';
+      soundBtn.className = state.soundEnabled
+        ? 'px-3 py-1.5 rounded-full border border-success/40 bg-success-light text-xs font-bold text-success min-h-[38px]'
+        : 'px-3 py-1.5 rounded-full border border-line bg-paper text-xs font-bold text-ink min-h-[38px]';
+    }
+
+    // Header & Modal counters
+    const doneCount = state.completedSteps.length;
+    const pct = Math.round((doneCount / 12) * 100);
+    const xpEl = document.getElementById('header-xp-count');
+    if (xpEl) xpEl.textContent = String(state.xp);
+
+    const badgeEl = document.getElementById('header-badge-count');
+    if (badgeEl) badgeEl.textContent = `${state.unlockedBadges.length}/9`;
+
+    const nameEl = document.getElementById('header-user-name');
+    if (nameEl) nameEl.textContent = state.userName || 'Explorateur';
+
+    const avMalik = document.getElementById('header-avatar-malik');
+    const avPapa = document.getElementById('header-avatar-papa');
+    if (avMalik && avPapa) {
+      avMalik.classList.toggle('hidden', state.avatar !== 'malik');
+      avPapa.classList.toggle('hidden', state.avatar !== 'papa');
+    }
+
+    const pctEl = document.getElementById('header-progress-pct');
+    if (pctEl) pctEl.textContent = `${pct}%`;
+
+    const fillEl = document.getElementById('header-progress-fill');
+    if (fillEl) fillEl.style.width = `${pct}%`;
+
+    const progressBar = document.getElementById('header-progressbar');
+    if (progressBar) progressBar.setAttribute('aria-valuenow', String(doneCount));
+
+    // Modal stats
+    const modalXp = document.getElementById('modal-xp-total');
+    if (modalXp) modalXp.textContent = String(state.xp);
+    const modalSteps = document.getElementById('modal-steps-done');
+    if (modalSteps) modalSteps.textContent = `${doneCount}/12`;
+    const modalBadges = document.getElementById('modal-badges-done');
+    if (modalBadges) modalBadges.textContent = `${state.unlockedBadges.length}/9`;
+
+    const profileInput = document.getElementById('profile-name-input') as HTMLInputElement | null;
+    if (profileInput && document.activeElement !== profileInput) {
+      profileInput.value = state.userName;
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-select-avatar]').forEach((btn) => {
+      const isSelected = btn.getAttribute('data-select-avatar') === state.avatar;
+      btn.className = isSelected
+        ? 'avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-gold bg-gold-light text-xs font-bold text-ink'
+        : 'avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-line bg-surface text-xs font-bold text-ink';
+    });
+
+    // Badges cards across page & modal
+    document.querySelectorAll<HTMLElement>('[data-badge-card]').forEach((card) => {
+      const id = card.getAttribute('data-badge-card') || '';
+      const unlocked = state.unlockedBadges.includes(id);
+      card.setAttribute('data-unlocked', unlocked ? 'true' : 'false');
+      card.className = `badge-card-item relative flex items-start gap-3.5 p-4 rounded-card border-2 transition-all ${
+        unlocked ? 'bg-gold-light border-gold shadow-card' : 'bg-paper border-line'
+      }`;
+      const medal = card.querySelector('.badge-medal');
+      if (medal) {
+        medal.className = `badge-medal w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 shadow-sm transition-colors ${
+          unlocked ? 'bg-gold text-ink border-ink/20' : 'bg-surface text-ink-muted border-line'
+        }`;
+      }
+      const pill = card.querySelector('.badge-status-pill');
+      if (pill && unlocked) {
+        pill.textContent = 'Débloqué ✓';
+        pill.className = 'badge-status-pill text-xs font-bold px-2 py-0.5 rounded-full shrink-0 bg-success-light text-success border border-success/30';
+      }
+    });
+
+    // Step status badges on lesson header & home map
+    document.querySelectorAll<HTMLElement>('[data-step-status-badge]').forEach((badge) => {
+      const num = Number(badge.getAttribute('data-step-status-badge'));
+      const done = state.completedSteps.includes(num);
+      badge.classList.toggle('hidden', !done);
+      badge.classList.toggle('inline-flex', done);
+    });
+
+    // Home page dynamic CTA & Map cards
+    const homeHeroCta = document.getElementById('home-hero-primary-cta') as HTMLAnchorElement | null;
+    const homeHeroCtaText = document.getElementById('home-hero-primary-cta-text');
+    if (homeHeroCta && homeHeroCtaText && globalData.steps?.length) {
+      if (doneCount > 0 && doneCount < 12) {
+        const nextStepObj = globalData.steps.find((s: { number: number }) => !state.completedSteps.includes(s.number)) || globalData.steps[0];
+        homeHeroCta.href = `/etape/${nextStepObj.slug}/`;
+        homeHeroCtaText.textContent = `Continuer — Étape ${nextStepObj.number} : ${nextStepObj.title}`;
+      } else if (doneCount >= 12) {
+        homeHeroCta.href = '/etape/11-quiz-diplome/';
+        homeHeroCtaText.textContent = 'Voir mon Diplôme de Député Junior';
+      } else {
+        homeHeroCta.href = '/etape/1-hemicycle/';
+        homeHeroCtaText.textContent = 'Commencer le parcours (Étape 1)';
+      }
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-map-step-card]').forEach((card) => {
+      const num = Number(card.getAttribute('data-map-step-card'));
+      const done = state.completedSteps.includes(num);
+      const pill = card.querySelector('[data-map-step-pill]');
+      if (pill) {
+        if (done) {
+          pill.textContent = 'Terminée ✓';
+          pill.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-success-light text-success border border-success/30';
+        } else {
+          pill.textContent = 'Disponible →';
+          pill.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold';
+        }
+      }
+    });
+  }
+
+  // Modal helpers
+  function openModal(id: string) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    if (id === 'search-modal') {
+      const input = document.getElementById('global-search-input') as HTMLInputElement | null;
+      renderSearchResults('');
+      setTimeout(() => input?.focus(), 50);
+    }
+  }
+
+  function closeModal(id: string) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  // Search Engine
+  function renderSearchResults(query: string) {
+    const container = document.getElementById('global-search-results');
+    if (!container) return;
+    const q = query.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const items = (globalData.searchIndex || []).filter((item: { title: string; description: string; keywords: string }) => {
+      if (!q) return true;
+      const hay = `${item.title} ${item.description} ${item.keywords}`
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      return hay.includes(q);
+    }).slice(0, 12);
+
+    if (items.length === 0) {
+      container.innerHTML = `<div class="p-6 text-center text-sm text-ink-muted bg-paper rounded-xl border border-line">Aucun résultat pour « <strong>${query}</strong> ». Essaie « Hémicycle », « loi », « Sénat » ou « Napoléon ».</div>`;
+      return;
+    }
+
+    container.innerHTML = items
+      .map(
+        (item: { type: string; title: string; description: string; url: string }) => `
+        <a href="${item.url}" class="block p-3.5 rounded-xl bg-paper hover:bg-republic-100/70 border border-line transition group">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-display font-bold text-sm sm:text-base text-ink group-hover:text-republic-900">${item.title}</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-surface text-republic-700 border border-line shrink-0">${item.type}</span>
+          </div>
+          <p class="text-xs sm:text-sm text-ink-muted mt-1 line-clamp-2">${item.description}</p>
+        </a>
+      `
+      )
+      .join('');
+  }
+
+  // Lightbox Engine
+  function openLightboxByPhotoId(photoId: string) {
+    const photos = globalData.photos || [];
+    const index = photos.findIndex((p: { id: string }) => p.id === photoId);
+    currentLightboxIndex = index >= 0 ? index : 0;
+    updateLightboxSlide();
+    openModal('lightbox-modal');
+  }
+
+  function updateLightboxSlide() {
+    const photos = globalData.photos || [];
+    if (!photos.length) return;
+    const photo = photos[currentLightboxIndex];
+    const baseName = photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '');
+    const imgEl = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const titleEl = document.getElementById('lightbox-title');
+    const counterEl = document.getElementById('lightbox-counter');
+    const captionEl = document.getElementById('lightbox-caption');
+    const authorEl = document.getElementById('lightbox-author');
+    const licenseEl = document.getElementById('lightbox-license');
+    const sourceLinkEl = document.getElementById('lightbox-source-link') as HTMLAnchorElement | null;
+
+    if (imgEl) {
+      imgEl.src = `/img/${baseName}-1600.webp`;
+      imgEl.alt = photo.alt;
+    }
+    if (titleEl) titleEl.textContent = photo.title;
+    if (counterEl) counterEl.textContent = `${currentLightboxIndex + 1} / ${photos.length}`;
+    if (captionEl) captionEl.textContent = photo.caption;
+    if (authorEl) authorEl.textContent = photo.author;
+    if (licenseEl) licenseEl.textContent = photo.license;
+    if (sourceLinkEl) sourceLinkEl.href = photo.sourceUrl;
+  }
+
+  // Event Listeners Setup
+  function setupEventListeners() {
+    // Open & Close Modals
+    document.querySelectorAll<HTMLElement>('[data-open-modal]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-open-modal');
+        if (target) openModal(target);
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-close-modal]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-close-modal');
+        if (target) closeModal(target);
+      });
+    });
+
+    ['search-modal', 'profile-modal', 'lightbox-modal', 'onboarding-modal'].forEach((id) => {
+      const modal = document.getElementById(id);
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(id);
+      });
+    });
+
+    // Search input
+    const searchInput = document.getElementById('global-search-input') as HTMLInputElement | null;
+    searchInput?.addEventListener('input', () => {
+      renderSearchResults(searchInput.value);
+    });
+
+    // Keyboard shortcuts (Ctrl+K, Escape, Lightbox arrows)
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openModal('search-modal');
+      } else if (e.key === 'Escape') {
+        ['search-modal', 'profile-modal', 'lightbox-modal', 'onboarding-modal'].forEach(closeModal);
+        document.getElementById('settings-dropdown')?.classList.add('hidden');
+        document.getElementById('settings-menu-button')?.setAttribute('aria-expanded', 'false');
+      } else {
+        const lb = document.getElementById('lightbox-modal');
+        if (lb && !lb.classList.contains('hidden')) {
+          const total = (globalData.photos || []).length || 8;
+          if (e.key === 'ArrowRight') {
+            currentLightboxIndex = (currentLightboxIndex + 1) % total;
+            updateLightboxSlide();
+          } else if (e.key === 'ArrowLeft') {
+            currentLightboxIndex = (currentLightboxIndex - 1 + total) % total;
+            updateLightboxSlide();
+          }
+        }
+      }
+    });
+
+    // Lightbox Triggers & Prev/Next
+    document.querySelectorAll<HTMLElement>('.lightbox-trigger').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-photo-id');
+        if (id) openLightboxByPhotoId(id);
+      });
+    });
+
+    document.getElementById('lightbox-prev-btn')?.addEventListener('click', () => {
+      const total = (globalData.photos || []).length || 8;
+      currentLightboxIndex = (currentLightboxIndex - 1 + total) % total;
+      updateLightboxSlide();
+    });
+    document.getElementById('lightbox-next-btn')?.addEventListener('click', () => {
+      const total = (globalData.photos || []).length || 8;
+      currentLightboxIndex = (currentLightboxIndex + 1) % total;
+      updateLightboxSlide();
+    });
+
+    // Settings Dropdown
+    const settingsBtn = document.getElementById('settings-menu-button');
+    const settingsDrop = document.getElementById('settings-dropdown');
+    settingsBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = settingsDrop?.classList.toggle('hidden');
+      settingsBtn.setAttribute('aria-expanded', String(!isHidden));
+    });
+    document.getElementById('settings-close-btn')?.addEventListener('click', () => {
+      settingsDrop?.classList.add('hidden');
+      settingsBtn?.setAttribute('aria-expanded', 'false');
+    });
+    document.addEventListener('click', (e) => {
+      if (settingsDrop && !settingsDrop.classList.contains('hidden')) {
+        if (!settingsDrop.contains(e.target as Node) && e.target !== settingsBtn) {
+          settingsDrop.classList.add('hidden');
+          settingsBtn?.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Font Size, Dys, Classroom, Sound buttons
+    document.querySelectorAll<HTMLButtonElement>('[data-font-size-btn]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const size = btn.getAttribute('data-font-size-btn') as 'normal' | 'large' | 'xlarge';
+        if (size) {
+          state.fontSize = size;
+          saveState();
+        }
+      });
+    });
+
+    document.getElementById('toggle-dys-btn')?.addEventListener('click', () => {
+      state.dysMode = !state.dysMode;
+      saveState();
+    });
+
+    document.getElementById('toggle-classroom-btn')?.addEventListener('click', () => {
+      state.classroomMode = !state.classroomMode;
+      saveState();
+    });
+
+    document.getElementById('toggle-sound-btn')?.addEventListener('click', () => {
+      state.soundEnabled = !state.soundEnabled;
+      saveState();
+      if (state.soundEnabled) playSound('pop');
+    });
+
+    // Profile Save & Avatar Selection
+    document.getElementById('profile-save-btn')?.addEventListener('click', () => {
+      const input = document.getElementById('profile-name-input') as HTMLInputElement | null;
+      if (input) {
+        state.userName = input.value.trim();
+        state.onboardingDone = true;
+        saveState();
+        showToast('Profil enregistré !', state.userName ? `Bienvenue ${state.userName} !` : 'Profil mis à jour.');
+      }
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-select-avatar]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const av = btn.getAttribute('data-select-avatar') as 'malik' | 'papa';
+        if (av) {
+          state.avatar = av;
+          saveState();
+        }
+      });
+    });
+
+    // Reset All Progress
+    const handleReset = () => {
+      if (window.confirm('Veux-tu vraiment effacer toute ta progression, tes XP et tes badges sur cet appareil ?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        state = { ...DEFAULT_STATE };
+        saveState();
+        window.location.reload();
+      }
+    };
+    document.getElementById('reset-all-progress-btn')?.addEventListener('click', handleReset);
+    document.getElementById('modal-reset-progress-btn')?.addEventListener('click', handleReset);
+
+    // Toast close
+    document.getElementById('xp-toast-close')?.addEventListener('click', () => {
+      document.getElementById('xp-toast')?.classList.add('hidden');
+    });
+
+    // Sound Effect Triggers (MalikBubble bell / drum)
+    document.querySelectorAll<HTMLElement>('[data-sound-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-sound-trigger') as 'bell' | 'drum';
+        if (type) playSound(type);
+      });
+    });
+
+    // Web Speech API (TTS)
+    document.querySelectorAll<HTMLButtonElement>('.tts-button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!('speechSynthesis' in window)) {
+          showToast('Lecture vocale indisponible', 'Ton navigateur ne supporte pas la synthèse vocale.');
+          return;
+        }
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+          btn.querySelector('span')?.replaceWith(Object.assign(document.createElement('span'), { textContent: 'Écouter' }));
+          return;
+        }
+        const text = btn.getAttribute('data-tts-text') || '';
+        if (!text) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.95;
+        const span = btn.querySelector('span');
+        const originalLabel = span?.textContent || 'Écouter';
+        if (span) span.textContent = 'Arrêter ⏹';
+        utterance.onend = () => {
+          if (span) span.textContent = originalLabel;
+        };
+        utterance.onerror = () => {
+          if (span) span.textContent = originalLabel;
+        };
+        window.speechSynthesis.speak(utterance);
+      });
+    });
+
+    // Copy KeyPoints button
+    document.querySelectorAll<HTMLButtonElement>('.copy-keypoints-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-copy-text') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('Copié ! 📋', 'Les 3 phrases à retenir sont copiées dans le presse-papier.');
+        } catch {
+          showToast('Résumé prêt', 'Recopie ces 3 phrases dans ton cahier d’EMC.');
+        }
+      });
+    });
+
+    // Onboarding Modal (triggered by #open-onboarding-btn or customizable)
+    let onboardingStep = 1;
+    const updateOnboardingScreen = () => {
+      document.querySelectorAll<HTMLElement>('[data-onboarding-screen]').forEach((el) => {
+        el.classList.toggle('hidden', Number(el.getAttribute('data-onboarding-screen')) !== onboardingStep);
+      });
+      const ind = document.getElementById('onboarding-step-indicator');
+      if (ind) ind.textContent = `Bienvenue · Écran ${onboardingStep} / 3`;
+      const prev = document.getElementById('onboarding-prev-btn');
+      if (prev) prev.classList.toggle('invisible', onboardingStep === 1);
+      const next = document.getElementById('onboarding-next-btn');
+      if (next) next.textContent = onboardingStep === 3 ? 'C’est parti ! 🚀' : 'Continuer →';
+    };
+
+    document.querySelectorAll<HTMLElement>('[data-open-onboarding]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        onboardingStep = 1;
+        updateOnboardingScreen();
+        openModal('onboarding-modal');
+      });
+    });
+
+    document.getElementById('onboarding-skip-btn')?.addEventListener('click', () => {
+      state.onboardingDone = true;
+      saveState();
+      closeModal('onboarding-modal');
+    });
+
+    document.getElementById('onboarding-prev-btn')?.addEventListener('click', () => {
+      if (onboardingStep > 1) {
+        onboardingStep--;
+        updateOnboardingScreen();
+      }
+    });
+
+    document.getElementById('onboarding-next-btn')?.addEventListener('click', () => {
+      const nameInput = document.getElementById('onboarding-name-input') as HTMLInputElement | null;
+      if (onboardingStep === 1 && nameInput?.value.trim()) {
+        state.userName = nameInput.value.trim();
+      }
+      if (onboardingStep < 3) {
+        onboardingStep++;
+        updateOnboardingScreen();
+      } else {
+        state.onboardingDone = true;
+        saveState();
+        closeModal('onboarding-modal');
+        showToast(
+          `Bienvenue ${state.userName || 'Député Junior'} !`,
+          'Commence par l’Étape 1 pour découvrir l’Hémicycle.'
+        );
+      }
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-onboarding-avatar]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const av = btn.getAttribute('data-onboarding-avatar') as 'malik' | 'papa';
+        if (av) {
+          state.avatar = av;
+          saveState();
+          document.querySelectorAll<HTMLButtonElement>('[data-onboarding-avatar]').forEach((b) => {
+            const active = b.getAttribute('data-onboarding-avatar') === av;
+            b.className = active
+              ? 'p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2 text-center'
+              : 'p-4 rounded-card border-2 border-line bg-paper flex flex-col items-center gap-2 text-center';
+          });
+        }
+      });
+    });
+
+    // MicroQuiz Engine
+    document.querySelectorAll<HTMLElement>('.microquiz-container').forEach((quizEl) => {
+      const stepNumber = Number(quizEl.getAttribute('data-step-number'));
+      const xpReward = Number(quizEl.getAttribute('data-xp-reward') || 20);
+      const badgeId = quizEl.getAttribute('data-badge-id') || undefined;
+      const questionEls = quizEl.querySelectorAll<HTMLElement>('.microquiz-question');
+      const summaryEl = quizEl.querySelector<HTMLElement>('.microquiz-summary');
+      const resetBtn = quizEl.querySelector<HTMLButtonElement>('.microquiz-reset-btn');
+      const solvedSet = new Set<number>();
+
+      questionEls.forEach((qEl) => {
+        const qIndex = Number(qEl.getAttribute('data-q-index'));
+        const correctIndex = Number(qEl.getAttribute('data-correct-index'));
+        const explanation = qEl.getAttribute('data-explanation') || '';
+        const feedbackEl = qEl.querySelector<HTMLElement>('.microquiz-feedback');
+        const options = qEl.querySelectorAll<HTMLButtonElement>('.microquiz-option');
+
+        options.forEach((optBtn) => {
+          optBtn.addEventListener('click', () => {
+            const chosenIndex = Number(optBtn.getAttribute('data-option-index'));
+            const isCorrect = chosenIndex === correctIndex;
+
+            if (isCorrect) {
+              playSound('pop');
+              solvedSet.add(qIndex);
+              options.forEach((b) => {
+                const idx = Number(b.getAttribute('data-option-index'));
+                const statusIcon = b.querySelector('.option-status-icon');
+                if (idx === correctIndex) {
+                  b.className =
+                    'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-success-light border-2 border-success text-ink font-bold text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+                  if (statusIcon) statusIcon.textContent = '✓ Exact';
+                } else {
+                  b.className =
+                    'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-surface opacity-60 border border-line text-ink-muted text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+                }
+              });
+
+              if (feedbackEl) {
+                feedbackEl.className =
+                  'microquiz-feedback mt-3.5 p-3.5 rounded-xl bg-success-light border border-success/40 text-ink text-sm font-medium leading-relaxed';
+                feedbackEl.innerHTML = `<strong class="text-success">✓ Bonne réponse !</strong> ${explanation}`;
+              }
+
+              if (solvedSet.size === questionEls.length) {
+                summaryEl?.classList.remove('hidden');
+                completeStep(stepNumber, xpReward, badgeId);
+              }
+            } else {
+              optBtn.className =
+                'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-error-light border-2 border-error text-ink font-semibold text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+              const statusIcon = optBtn.querySelector('.option-status-icon');
+              if (statusIcon) statusIcon.textContent = '✗ Essaie encore';
+              if (feedbackEl) {
+                feedbackEl.className =
+                  'microquiz-feedback mt-3.5 p-3.5 rounded-xl bg-error-light border border-error/40 text-ink text-sm font-medium leading-relaxed';
+                feedbackEl.innerHTML = `<strong class="text-error">Pas tout à fait !</strong> Relis bien l’indice : ${explanation} <em>Clique sur la bonne réponse pour valider la question.</em>`;
+              }
+            }
+          });
+        });
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        solvedSet.clear();
+        summaryEl?.classList.add('hidden');
+        questionEls.forEach((qEl) => {
+          qEl.querySelector<HTMLElement>('.microquiz-feedback')?.classList.add('hidden');
+          qEl.querySelectorAll<HTMLButtonElement>('.microquiz-option').forEach((b) => {
+            b.className =
+              'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-surface hover:bg-republic-100/70 border-2 border-line text-ink font-medium text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+            const statusIcon = b.querySelector('.option-status-icon');
+            if (statusIcon) statusIcon.textContent = '';
+          });
+        });
+      });
+    });
+  }
+
+  // Expose API globally for interactive step islands
+  (window as unknown as Record<string, unknown>).ANApp = {
+    getState: () => state,
+    addXP,
+    unlockBadge,
+    completeStep,
+    playSound,
+    showToast,
+    openLightboxByPhotoId,
+    setFinalQuizScore: (score: number) => {
+      if (score > state.finalQuizBestScore) {
+        state.finalQuizBestScore = score;
+      }
+      saveState();
+    }
+  };
+
+  syncUI();
+  setupEventListeners();
+
+  // Register Service Worker for offline PWA use in classroom
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
+}
+

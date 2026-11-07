@@ -1,0 +1,665 @@
+[
+  {
+    "order": 1,
+    "slug": "1-hemicycle",
+    "legacyId": "hemicycle",
+    "part": "palais",
+    "partLabel": "Partie 1 • Le Palais Bourbon",
+    "title": "L'Hémicycle et ses 577 Députés",
+    "shortTitle": "1. Hémicycle 360°",
+    "subtitle": "Explore la salle des séances en demi-cercle, le Perchoir, les 577 sièges de velours rouge et le boîtier de vote électronique.",
+    "duration": "6 min",
+    "xpReward": 20,
+    "badgeId": "hemi",
+    "heroPhotoId": "hemicycle",
+    "discover": {
+      "heading": "Au cœur du Palais Bourbon : la grande salle en demi-cercle",
+      "lead": "À Paris, au bord de la Seine, se dresse le Palais Bourbon. C'est ici que bat le cœur de notre démocratie : dans une immense salle appelée l'Hémicycle.",
+      "paragraphs": [
+        "Chaque semaine, 577 députés élus par les citoyens français au suffrage universel direct s'assoient sur des fauteuils en velours rouge disposés en demi-cercle (« hémicycle » en grec ancien). Même si chaque député est élu dans sa circonscription, une fois dans cette salle, il représente toute la Nation !",
+        "Tout en haut, à 3 mètres du sol, le Président ou la Présidente de l'Assemblée nationale dirige les débats depuis le Perchoir. Juste en dessous se trouve la Tribune où les orateurs prennent la parole, tandis que les ministres du Gouvernement sont assis aux deux premiers rangs du bas."
+      ],
+      "glossaryIds": ["hemicycle", "suffrage-direct", "circonscription", "perchoir"]
+    },
+    "interactiveWidget": "hemicycle",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "Le Secret de Malik : La cloche en bronze du Perchoir !",
+      "text": "Sur le bureau du Perchoir est posée une vraie cloche en bronze ! Quand les 577 députés débattent avec trop de passion et que le bruit monte, le Président l'agite vigoureusement pour réclamer le silence. Et aucun micro de député ne marche tant que le Perchoir ne l'allume pas !",
+      "soundAction": "bell"
+    },
+    "keyPoints": [
+      "Les 577 députés sont élus pour 5 ans au suffrage universel direct et siègent en demi-cercle dans l'Hémicycle du Palais Bourbon.",
+      "Le Président de l'Assemblée nationale dirige les débats depuis le Perchoir (à 3 mètres de haut) et les orateurs parlent à la Tribune.",
+      "Les ministres s'assoient aux premiers rangs du bas pour défendre leurs textes, mais ils n'ont jamais le droit de voter."
+    ],
+    "microQuiz": [
+      {
+        "q": "Combien de députés siègent dans l'Hémicycle de l'Assemblée nationale ?",
+        "options": ["348 députés", "577 députés", "100 députés"],
+        "correct": 1,
+        "exp": "Exact ! La France est divisée en 577 circonscriptions : il y a donc exactement 577 députés (contre 348 sénateurs au Sénat)."
+      },
+      {
+        "q": "Comment surnomme-t-on le fauteuil situé à 3 mètres de haut où s'assoit le Président de l'Assemblée ?",
+        "options": ["Le Perchoir", "Le Balcon royal", "La Tour de garde"],
+        "correct": 0,
+        "exp": "Bravo ! On l'appelle le Perchoir car il domine toute la salle des séances."
+      },
+      {
+        "q": "Les ministres assis au premier rang ont-ils le droit de voter les lois avec les députés ?",
+        "options": ["Oui, ils votent deux fois", "Non, jamais : seuls les députés votent", "Seulement le mercredi"],
+        "correct": 1,
+        "exp": "Parfait ! En vertu de la séparation des pouvoirs, les ministres font partie du Gouvernement (exécutif) et ne peuvent pas voter les lois."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — Identifier le lieu d'exercice du pouvoir législatif (Palais Bourbon), le rôle du député et l'organisation spatiale du débat démocratique (Gauche / Centre / Droite, Perchoir, Tribune)."
+  },
+  {
+    "order": 2,
+    "slug": "2-galerie",
+    "legacyId": "galerie",
+    "part": "palais",
+    "partLabel": "Partie 1 • Le Palais Bourbon",
+    "title": "Les 8 Trésors Visuels du Palais Bourbon",
+    "shortTitle": "2. Galerie Photos",
+    "subtitle": "Admire en haute définition l'architecture, les plafonds peints et les grands tableaux qui racontent l'histoire de l'Assemblée.",
+    "duration": "4 min",
+    "xpReward": 20,
+    "badgeId": "galerie",
+    "heroPhotoId": "palais-bourbon",
+    "discover": {
+      "heading": "Un palais du XVIIIe siècle devenu le temple de la République",
+      "lead": "Avant d'accueillir les députés en 1798, le Palais Bourbon était la résidence d'une princesse, la duchesse de Bourbon, fille de Louis XIV.",
+      "paragraphs": [
+        "Au fil des siècles, les plus grands architectes, peintres et sculpteurs français ont embelli ce palais pour honorer la souveraineté du peuple : Bernard Poyet a dressé ses 12 colonnes grecques en 1806, Eugène Delacroix a peint les coupoles de la Bibliothèque, et Horace Vernet a décoré la Salle des Pas Perdus.",
+        "Clique sur chacune des 8 œuvres ci-dessous pour l'ouvrir en plein écran, naviguer au clavier ou au doigt, et découvrir ses secrets de fabrication."
+      ],
+      "glossaryIds": ["hemicycle", "perchoir", "parlement"]
+    },
+    "interactiveWidget": "galerie",
+    "malikBubble": {
+      "speaker": "Papa",
+      "title": "L'astuce de Papa : Pourquoi les 12 colonnes regardent-elles la Seine ?",
+      "text": "Si tu te places sur le pont de la Concorde à Paris, tu verras que les 12 colonnes du Palais Bourbon font exactement face aux colonnes de l'église de la Madeleine ! Napoléon Ier a voulu créer une perspective symétrique grandiose de chaque côté du fleuve."
+    },
+    "keyPoints": [
+      "La façade à 12 colonnes grecques du Palais Bourbon a été commandée par Napoléon Ier en 1806 à l'architecte Bernard Poyet.",
+      "La Bibliothèque de l'Assemblée a été peinte par Eugène Delacroix et conserve plus de 700 000 livres et manuscrits précieux.",
+      "La Salle des Pas Perdus est la grande galerie où les députés et les journalistes discutent avant d'entrer dans l'Hémicycle."
+    ],
+    "microQuiz": [
+      {
+        "q": "Combien de colonnes grecques ornent la façade du Palais Bourbon face à la Seine ?",
+        "options": ["6 colonnes", "12 colonnes", "24 colonnes"],
+        "correct": 1,
+        "exp": "Bien vu ! La colonnade néoclassique dessinée par Bernard Poyet en 1806 compte exactement 12 colonnes."
+      },
+      {
+        "q": "Quel célèbre artiste du XIXe siècle a peint les coupoles de la Bibliothèque de l'Assemblée ?",
+        "options": ["Eugène Delacroix", "Claude Monet", "Pablo Picasso"],
+        "correct": 0,
+        "exp": "Exact ! Eugène Delacroix y a travaillé de 1838 à 1847 pour représenter la Philosophie, les Sciences et la Législation."
+      },
+      {
+        "q": "Quel tableau de Jacques-Louis David montre la naissance de l'Assemblée nationale en 1789 ?",
+        "options": ["La Joconde", "Le Serment du Jeu de Paume", "La Liberté sur la Lune"],
+        "correct": 1,
+        "exp": "Bravo ! Le Serment du Jeu de Paume immortalise les députés du 20 juin 1789 jurant de donner une Constitution à la France."
+      }
+    ],
+    "teacherObjective": "Histoire des Arts & Histoire Cycle 3 — Lire l'architecture néoclassique (1806) et la peinture historique (David, Delacroix) comme expressions symboliques de la République."
+  },
+  {
+    "order": 3,
+    "slug": "3-secrets",
+    "legacyId": "anecdotes",
+    "part": "palais",
+    "partLabel": "Partie 1 • Le Palais Bourbon",
+    "title": "Les 6 Secrets & Coulisses du Palais",
+    "shortTitle": "3. Secrets du Palais",
+    "subtitle": "Retourne les 6 cartes du cabinet de curiosités de Malik pour percer les traditions les plus étonnantes de l'Assemblée.",
+    "duration": "5 min",
+    "xpReward": 20,
+    "badgeId": "secrets",
+    "heroPhotoId": "salle-pas-perdus",
+    "discover": {
+      "heading": "Traditions républicaines et mystères des coulisses",
+      "lead": "Pourquoi y a-t-il un nombre impair de députés ? Pourquoi des soldats battent-ils le tambour dans les couloirs ? Et pourquoi le Président de la République n'a-t-il pas le droit d'entrer dans l'Hémicycle ?",
+      "paragraphs": [
+        "Derrière chaque tradition du Palais Bourbon se cache une règle importante pour protéger l'indépendance des élus du peuple. Les huissiers à chaîne d'argent, la Garde républicaine ou encore les coffres-forts de la Bibliothèque racontent plus de deux siècles d'histoire vivante.",
+        "Clique (ou appuie sur Entrée) sur chacune des 6 cartes ci-dessous pour la retourner !"
+      ],
+      "glossaryIds": ["circonscription", "huissier", "separation-pouvoirs", "motion-censure"]
+    },
+    "interactiveWidget": "secrets",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "Le Secret de Malik : Le roulement de tambour de la Garde républicaine",
+      "text": "Quand la séance commence, les portes s'ouvrent et le tambour résonne dans la Salle des Pas Perdus ! Les soldats de la Garde républicaine forment une haie d'honneur au Président de l'Assemblée : cela montre que l'armée obéit aux représentants élus par les citoyens.",
+      "soundAction": "drum"
+    },
+    "keyPoints": [
+      "Le nombre de 577 députés est un nombre impair (fixé en 1986) correspondant aux 577 circonscriptions, avec une majorité absolue à 289 voix.",
+      "Les huissiers de séance portent un habit noir et une chaîne en argent depuis 1789 pour faire respecter le calme et le protocole.",
+      "Au nom de la séparation des pouvoirs, le Président de la République n'a pas le droit d'entrer dans l'Hémicycle (sauf réunion du Congrès à Versailles)."
+    ],
+    "microQuiz": [
+      {
+        "q": "Pourquoi le nombre total de députés (577) est-il un nombre impair ?",
+        "options": ["Pour éviter un match nul 50/50 si les 577 députés votent tous Pour ou Contre", "Parce qu'il manquait un fauteuil", "C'est le code postal de Paris"],
+        "correct": 0,
+        "exp": "Exact ! 577 étant impair, la majorité absolue tombe pile à 289 députés."
+      },
+      {
+        "q": "Le Président de la République a-t-il le droit d'entrer dans l'Hémicycle du Palais Bourbon ?",
+        "options": ["Oui, quand il veut", "Non, c'est interdit au nom de la séparation des pouvoirs", "Seulement le dimanche"],
+        "correct": 1,
+        "exp": "Tout à fait ! Depuis 1875, le Président ne peut pas entrer dans l'Hémicycle pour ne pas faire pression sur les députés."
+      },
+      {
+        "q": "Qui porte un habit noir et une chaîne en argent dans l'Hémicycle depuis 1789 ?",
+        "options": ["Les huissiers de séance", "Les journalistes", "Les cuisiniers du Palais"],
+        "correct": 0,
+        "exp": "Bravo ! Les huissiers de séance veillent au bon déroulement des débats et apportent les documents à la Tribune."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — Comprendre le sens civique des symboles et du protocole républicain (indépendance du Parlement face à l'exécutif, subordination de la force publique au pouvoir civil)."
+  },
+  {
+    "order": 4,
+    "slug": "4-constitution-justice",
+    "legacyId": "justice",
+    "part": "institutions",
+    "partLabel": "Partie 2 • Les Institutions",
+    "title": "La Constitution, les Codes et l'Arbre de la Justice",
+    "shortTitle": "4. Constitution & Justice",
+    "subtitle": "Comprends pourquoi la Constitution est au sommet de toutes les règles, la différence entre Code civil et Code pénal, et le rôle de chaque tribunal.",
+    "duration": "8 min",
+    "xpReward": 20,
+    "badgeId": "justice",
+    "heroPhotoId": "tribune-perchoir",
+    "discover": {
+      "heading": "D'où viennent nos règles et qui vérifie qu'elles sont justes ?",
+      "lead": "En République française, toutes les règles sont rangées dans un ordre très précis appelé la « Hiérarchie des normes » (ou pyramide de Kelsen) : une règle du bas n'a jamais le droit de contredire une règle située au-dessus d'elle !",
+      "paragraphs": [
+        "Tout en haut de la pyramide brille la Constitution du 4 octobre 1958, qui protège nos libertés fondamentales. Lorsque le Parlement vote une loi, celle-ci doit respecter la Constitution (sous la surveillance des 9 Sages du Conseil constitutionnel), puis être promulguée par le Président de la République.",
+        "Au quotidien, le Code civil organise la vie entre citoyens (« qui casse répare »), tandis que le Code pénal punit les infractions (contraventions, délits, crimes). Et en cas de litige, les tribunaux de l'ordre judiciaire et de l'ordre administratif rendent la justice en toute indépendance."
+      ],
+      "glossaryIds": ["constitution", "kelsen", "conseil-constitutionnel", "promulgation", "cour-assises", "cour-cassation", "conseil-etat"]
+    },
+    "interactiveWidget": "justice",
+    "malikBubble": {
+      "speaker": "Malik & Papa",
+      "title": "L'exemple de Malik : Civil ou Pénal ?",
+      "text": "Si tu casses la vitre du voisin par accident avec ton ballon, c'est du Code civil : il faut rembourser la vitre (« qui casse répare »), mais personne ne va en prison ! En revanche, voler ou blesser quelqu'un volontairement est interdit par le Code pénal et puni par un tribunal."
+    },
+    "keyPoints": [
+      "Au sommet de la pyramide des règles se trouve la Constitution de 1958, protégée par les 9 Sages du Conseil constitutionnel.",
+      "Le Code civil règle les relations privées entre citoyens, tandis que le Code pénal punit les infractions (contravention, délit, crime).",
+      "La justice est divisée en deux ordres : l'ordre judiciaire (entre citoyens et pénal, sommet : Cour de cassation) et l'ordre administratif (citoyen contre État/mairie, sommet : Conseil d'État)."
+    ],
+    "microQuiz": [
+      {
+        "q": "Quel texte se trouve tout au sommet de la pyramide des règles en France ?",
+        "options": ["Le règlement intérieur de l'école", "La Constitution de 1958", "Un arrêté du maire"],
+        "correct": 1,
+        "exp": "Exact ! La Constitution de 1958 est la loi suprême : toutes les lois et tous les décrets doivent la respecter."
+      },
+      {
+        "q": "Quel tribunal juge un conflit lorsqu'un citoyen conteste une décision injuste prise par une mairie ou l'État ?",
+        "options": ["Le Tribunal administratif", "La Cour d'assises", "Le Tribunal pour enfants"],
+        "correct": 0,
+        "exp": "Bravo ! Les litiges entre un citoyen et une administration publique relèvent du Tribunal administratif."
+      },
+      {
+        "q": "Dans quel tribunal 6 citoyens tirés au sort (les jurés) votent-ils le verdict avec les juges pour les crimes les plus graves ?",
+        "options": ["Au Tribunal de proximité", "À la Cour d'assises", "Au Conseil constitutionnel"],
+        "correct": 1,
+        "exp": "Parfait ! La Cour d'assises juge les crimes graves avec un jury populaire composé de citoyens tirés au sort."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — Comprendre la hiérarchie des normes (Constitution, loi, règlement), distinguer responsabilité civile et responsabilité pénale, et identifier le rôle de l'autorité judiciaire."
+  },
+  {
+    "order": 5,
+    "slug": "5-frise-napoleon",
+    "legacyId": "histoire",
+    "part": "institutions",
+    "partLabel": "Partie 2 • Les Institutions",
+    "title": "La Grande Frise (1789 – 1994) & Napoléon Ier",
+    "shortTitle": "5. Frise & Napoléon",
+    "subtitle": "Voyage à travers 7 grandes dates historiques, du Serment du Jeu de Paume en 1789 jusqu'au droit de vote des femmes et aux élèves de CM2.",
+    "duration": "6 min",
+    "xpReward": 20,
+    "badgeId": "histoire",
+    "heroPhotoId": "jeu-de-paume",
+    "discover": {
+      "heading": "Plus de deux siècles de conquêtes pour la liberté et le droit de vote",
+      "lead": "La démocratie française ne s'est pas construite en un seul jour ! Avant 1789, le roi décidait presque seul des lois du royaume.",
+      "paragraphs": [
+        "Le 20 juin 1789, à Versailles, les députés du Tiers-État prêtent le célèbre Serment du Jeu de Paume et créent l'Assemblée nationale. En août 1789, ils votent la Déclaration des Droits de l'Homme et du Citoyen.",
+        "Il a ensuite fallu de grandes étapes pour que tous les citoyens puissent voter : le suffrage universel masculin au printemps 1848 (en même temps que l'abolition définitive de l'esclavage par Victor Schœlcher), puis le droit de vote et d'éligibilité des femmes le 21 avril 1944, et le vote dès 18 ans en 1974 !"
+      ],
+      "glossaryIds": ["constitution", "suffrage-direct", "hemicycle"]
+    },
+    "interactiveWidget": "timeline",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "Le Zoom de Malik : L'Assemblée des « Députés Muets » sous Napoléon !",
+      "text": "Sous Napoléon Ier, les 300 députés du Palais Bourbon s'appelaient le « Corps législatif ». Napoléon n'aimait pas qu'on contredise ses projets : les députés devaient écouter les orateurs en silence et déposer une boule blanche (pour) ou noire (contre) dans l'urne sans prononcer un seul mot !"
+    },
+    "keyPoints": [
+      "L'Assemblée nationale est née le 20 juin 1789 (Serment du Jeu de Paume) et s'est installée au Palais Bourbon en 1798.",
+      "En 1804, Napoléon Ier promulgue le Code civil, puis fait construire la façade aux 12 colonnes du Palais Bourbon en 1806.",
+      "Le droit de vote s'est élargi à tous les hommes majeurs en mars 1848, aux femmes le 21 avril 1944, et aux jeunes dès 18 ans en 1974."
+    ],
+    "microQuiz": [
+      {
+        "q": "Quel événement fondateur a donné naissance à l'Assemblée nationale le 20 juin 1789 ?",
+        "options": ["Le Serment du Jeu de Paume à Versailles", "La construction de la Tour Eiffel", "Le sacre de Napoléon"],
+        "correct": 0,
+        "exp": "Exact ! Réunis dans la salle du Jeu de Paume le 20 juin 1789, les députés ont juré de rédiger une Constitution."
+      },
+      {
+        "q": "En quelle année les Françaises ont-elles enfin obtenu le droit de vote et d'être élues députées ?",
+        "options": ["En 1789", "En 1848", "En 1944"],
+        "correct": 2,
+        "exp": "Bravo ! C'est l'ordonnance du 21 avril 1944 qui a rendu le suffrage véritablement universel en l'ouvrant aux femmes."
+      },
+      {
+        "q": "Pourquoi surnommait-on les députés du Palais Bourbon « les Muets » sous Napoléon Ier ?",
+        "options": ["Parce qu'ils votaient les lois sans avoir le droit de parler pendant la séance", "Parce qu'ils chuchotaient", "Parce qu'ils parlaient en latin"],
+        "correct": 0,
+        "exp": "Bien joué ! Sous l'Empire, le Corps législatif votait en silence après avoir écouté les orateurs."
+      }
+    ],
+    "teacherObjective": "Histoire Cycle 3 — Repérer les grandes étapes de la construction de la République et de la conquête du suffrage universel (1789, 1804-1806, 1848, 1944, 1958, 1974)."
+  },
+  {
+    "order": 6,
+    "slug": "6-parlement-enfants",
+    "legacyId": "enfants",
+    "part": "institutions",
+    "partLabel": "Partie 2 • Les Institutions",
+    "title": "Le Parlement des Enfants (Depuis 1994)",
+    "shortTitle": "6. Parlement des Enfants",
+    "subtitle": "Découvre comment 577 classes de CM2 rédigent et votent chaque année une vraie proposition de loi pour la France !",
+    "duration": "5 min",
+    "xpReward": 20,
+    "badgeId": "enfants",
+    "heroPhotoId": "hemicycle",
+    "discover": {
+      "heading": "Quand les élèves de CM2 deviennent législateurs !",
+      "lead": "Savais-tu que des enfants de ton âge ont déjà écrit de vraies lois de la République française ?",
+      "paragraphs": [
+        "En juin 1994, Philippe Séguin (alors Président de l'Assemblée nationale) a créé le « Parlement des Enfants » avec le ministère de l'Éducation nationale. Le 4 juin 1994, pour la toute première fois de l'Histoire, 577 délégués d'école primaire (CM2) ont pris place sur les fauteuils rouges de l'Hémicycle !",
+        "Chaque année, 577 classes sélectionnées dans toute la France travaillent sur un grand thème civique (protection de l'environnement, lutte contre le harcèlement, égalité, alimentation), rédigent une proposition de loi avec l'aide de leur député, et votent au scrutin national pour élire le meilleur texte."
+      ],
+      "glossaryIds": ["projet-proposition", "amendement", "circonscription", "parlement"]
+    },
+    "interactiveWidget": "enfants",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "La question de Malik : Est-ce que ces lois écrites par des CM2 deviennent de vraies lois ?",
+      "text": "Oui ! Plusieurs propositions gagnantes du Parlement des Enfants ont été reprises par de vrais députés et votées définitivement par le Parlement : par exemple sur les droits des enfants, la protection des océans ou le maintien des liens entre frères et sœurs !"
+    },
+    "keyPoints": [
+      "Le Parlement des Enfants a été créé en juin 1994 par Philippe Séguin pour faire vivre la démocratie aux élèves de CM2 (Cycle 3).",
+      "Chaque année, 577 classes (une par circonscription) débattent et rédigent une vraie proposition de loi avec leur professeur.",
+      "Après un vote national de toutes les classes participantes, le texte lauréat peut inspirer une véritable loi de la République."
+    ],
+    "microQuiz": [
+      {
+        "q": "En quelle année a eu lieu la toute première séance du Parlement des Enfants à l'Assemblée nationale ?",
+        "options": ["En 1806", "Le 4 juin 1994", "En 2018"],
+        "correct": 1,
+        "exp": "Exact ! Le 4 juin 1994, 577 élèves de CM2 ont siégé pour la première fois dans l'Hémicycle sous la présidence de Philippe Séguin."
+      },
+      {
+        "q": "Combien de classes sont sélectionnées chaque année en France pour participer au Parlement des Enfants ?",
+        "options": ["10 classes", "100 classes", "577 classes (autant que de députés)"],
+        "correct": 2,
+        "exp": "Bravo ! Une classe est choisie dans chacune des 577 circonscriptions législatives françaises."
+      },
+      {
+        "q": "Quel est le travail réalisé par les élèves pendant le Parlement des Enfants ?",
+        "options": ["Ils rédigent et votent une proposition de loi sur un thème citoyen", "Ils repeignent l'Hémicycle", "Ils élisent le maire de Paris"],
+        "correct": 0,
+        "exp": "Parfait ! Les élèves apprennent le métier de législateur en rédigeant des articles de loi et un exposé des motifs."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — S'engager dans un projet collectif citoyen, débattre de manière argumentée et comprendre le passage d'un besoin collectif à la rédaction d'une règle de droit."
+  },
+  {
+    "order": 7,
+    "slug": "7-contre-pouvoir-senat",
+    "legacyId": "pouvoirs",
+    "part": "institutions",
+    "partLabel": "Partie 2 • Les Institutions",
+    "title": "Le Contre-Pouvoir & la Navette avec le Sénat",
+    "shortTitle": "7. Contre-Pouvoir & Sénat",
+    "subtitle": "Découvre comment l'Assemblée surveille le Gouvernement et fais voyager une loi entre le Palais Bourbon et le Sénat !",
+    "duration": "6 min",
+    "xpReward": 20,
+    "badgeId": "pouvoirs",
+    "heroPhotoId": "senat-luxembourg",
+    "discover": {
+      "heading": "Séparer les pouvoirs et faire dialoguer les deux chambres du Parlement",
+      "lead": "Pour qu'aucun dirigeant ne puisse abuser de son autorité, la République sépare le pouvoir exécutif (Président et Gouvernement), le pouvoir législatif (Parlement) et l'autorité judiciaire (Tribunaux) : c'est la séparation des pouvoirs théorisée par Montesquieu.",
+      "paragraphs": [
+        "L'Assemblée nationale est un puissant contre-pouvoir : elle interroge les ministres chaque semaine en direct, contrôle le budget de l'État, mène des commissions d'enquête et peut renverser le Gouvernement en votant une motion de censure à la majorité absolue (289 députés).",
+        "De plus, le Parlement français est bicaméral : il compte deux chambres, l'Assemblée nationale (577 députés) et le Sénat (348 sénateurs au Palais du Luxembourg). Tout texte de loi voyage entre elles : c'est la navette parlementaire !"
+      ],
+      "glossaryIds": ["separation-pouvoirs", "contre-pouvoir", "motion-censure", "bicameral", "navette", "cmp"]
+    },
+    "interactiveWidget": "pouvoirs",
+    "malikBubble": {
+      "speaker": "Papa",
+      "title": "L'explication de Papa : Pourquoi l'Assemblée a-t-elle toujours le dernier mot face au Sénat ?",
+      "text": "Si l'Assemblée et le Sénat n'arrivent pas à se mettre d'accord après la Commission Mixte Paritaire (7 députés + 7 sénateurs), le Gouvernement peut donner le « dernier mot » à l'Assemblée nationale. Pourquoi ? Parce que les députés sont les seuls élus directement par tous les citoyens !"
+    },
+    "keyPoints": [
+      "L'Assemblée nationale exerce un rôle de contre-pouvoir : elle surveille le Gouvernement et peut le renverser avec une motion de censure (289 voix).",
+      "Le Parlement français est bicaméral : il réunit l'Assemblée nationale (577 députés, suffrage direct) et le Sénat (348 sénateurs, suffrage indirect).",
+      "La loi fait la « navette parlementaire » entre les deux chambres ; en cas de désaccord persistant, l'Assemblée nationale a le dernier mot."
+    ],
+    "microQuiz": [
+      {
+        "q": "Combien de voix au minimum faut-il pour adopter une motion de censure et obliger le Gouvernement à démissionner ?",
+        "options": ["50 voix", "289 voix (la majorité absolue des 577 députés)", "577 voix à l'unanimité"],
+        "correct": 1,
+        "exp": "Exact ! Il faut la majorité absolue des membres composant l'Assemblée, soit au moins 289 députés sur 577."
+      },
+      {
+        "q": "Comment appelle-t-on les allers-retours d'un texte de loi entre l'Assemblée nationale et le Sénat ?",
+        "options": ["La navette parlementaire", "Le relais républicain", "La ronde des palais"],
+        "correct": 0,
+        "exp": "Bravo ! C'est la navette parlementaire, prévue à l'article 45 de la Constitution."
+      },
+      {
+        "q": "En cas de désaccord final entre les députés et les sénateurs sur une loi ordinaire, qui peut avoir le dernier mot ?",
+        "options": ["Le Sénat", "L'Assemblée nationale, car elle est élue au suffrage universel direct", "Tirage au sort à pile ou face"],
+        "correct": 1,
+        "exp": "Parfait ! Élus directement par les citoyens, les députés de l'Assemblée nationale détiennent le dernier mot."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — Comprendre l'équilibre des pouvoirs dans une république démocratique (séparation des pouvoirs, bicamérisme, contrôle parlementaire)."
+  },
+  {
+    "order": 8,
+    "slug": "8-videos",
+    "legacyId": "videos",
+    "part": "entrainer",
+    "partLabel": "Partie 3 • S'entraîner & Sources",
+    "title": "Les 4 Capsules Vidéo Vérifiées",
+    "shortTitle": "8. Vidéos",
+    "subtitle": "Regarde les 4 dessins animés de la collection « 1 jour, 1 question » (1 min 42 chacun) pour tout revoir en images.",
+    "duration": "7 min",
+    "xpReward": 20,
+    "badgeId": null,
+    "heroPhotoId": "palais-bourbon",
+    "discover": {
+      "heading": "Comprendre le Parlement en 4 dessins animés",
+      "lead": "Dessinées avec humour par Jacques Azam pour France Télévisions et Milan Presse, les capsules « 1 jour, 1 question » résument l'essentiel en moins de deux minutes.",
+      "paragraphs": [
+        "Pour respecter ta vie privée, aucune connexion vers YouTube n'est lancée automatiquement : clique sur le bouton « Lancer la vidéo » de la capsule de ton choix pour démarrer le lecteur sans cookie (youtube-nocookie).",
+        "Après ton visionnage, réponds aux 3 questions du mini-quiz en bas de page pour valider tes 20 XP !"
+      ],
+      "glossaryIds": ["parlement", "projet-proposition", "navette"]
+    },
+    "interactiveWidget": "videos",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "Le Conseil de Malik : Regarde la capsule n°2 avant de jouer à « Fais voter ta loi » !",
+      "text": "La vidéo « Comment on crée une loi ? » te montre exactement comment les députés discutent en commission puis dans l'Hémicycle. C'est super utile pour gagner le mini-jeu de l'étape 10 !"
+    },
+    "keyPoints": [
+      "Une loi peut venir du Gouvernement (projet de loi) ou des parlementaires (proposition de loi).",
+      "Avant le vote en séance publique, chaque texte est étudié et amélioré grâce à des amendements.",
+      "Les séances de l'Assemblée sont publiques et retransmises en direct pour que chaque citoyen puisse s'informer."
+    ],
+    "microQuiz": [
+      {
+        "q": "Comment appelle-t-on un texte de loi lorsqu'il est proposé par un ou plusieurs députés ?",
+        "options": ["Une proposition de loi", "Un projet de loi", "Un arrêté municipal"],
+        "correct": 0,
+        "exp": "Exact ! « Proposition de loi » = vient des parlementaires (P comme Parlement) ; « Projet de loi » = vient du Gouvernement (J comme Gouvernement)."
+      },
+      {
+        "q": "Comment s'appelle une modification proposée par un député pour améliorer un article de loi ?",
+        "options": ["Un amendement", "Une rature", "Une punition"],
+        "correct": 0,
+        "exp": "Bravo ! Les députés déposent et votent des milliers d'amendements chaque année."
+      },
+      {
+        "q": "Où siégent les 348 sénateurs qui examinent les lois avec les députés ?",
+        "options": ["Au Palais Bourbon", "Au Palais du Luxembourg à Paris", "Au Château de Chambord"],
+        "correct": 1,
+        "exp": "Tout à fait ! Le Sénat siège au Palais du Luxembourg, tandis que l'Assemblée nationale siège au Palais Bourbon."
+      }
+    ],
+    "teacherObjective": "Éducation aux Médias et à l'Information (EMI) & EMC Cycle 3 — Croiser des supports multimédias institutionnels vérifiés et synthétiser le circuit d'élaboration de la loi."
+  },
+  {
+    "order": 9,
+    "slug": "9-carte-mentale",
+    "legacyId": "mindmap",
+    "part": "entrainer",
+    "partLabel": "Partie 3 • S'entraîner & Sources",
+    "title": "La Carte Mentale & le Mode Cache-Cache",
+    "shortTitle": "9. Carte Mentale",
+    "subtitle": "Révise d'un seul coup d'œil les 6 grandes branches de l'Assemblée nationale et teste ta mémoire en masquant les réponses !",
+    "duration": "5 min",
+    "xpReward": 20,
+    "badgeId": "mindmap",
+    "heroPhotoId": "bibliotheque",
+    "discover": {
+      "heading": "Ton grand schéma bilan pour préparer ton exposé ou ton évaluation d'EMC",
+      "lead": "Pour retenir facilement tout ce que tu as appris, rien de mieux qu'une carte mentale organisée autour de 6 questions simples : Qui ? Où ? Mission 1 ? Mission 2 ? Avec qui ? Et depuis quand ?",
+      "paragraphs": [
+        "Commence par lire attentivement chacune des 6 branches colorées. Ensuite, clique sur le bouton « Activer le Mode Cache-Cache Révision » : les détails se floutent pour que tu puisses réciter de mémoire, branche par branche, avant de cliquer dessus pour vérifier !",
+        "Tu peux aussi imprimer cette fiche depuis l'espace Enseignants."
+      ],
+      "glossaryIds": ["suffrage-direct", "amendement", "contre-pouvoir", "navette"]
+    },
+    "interactiveWidget": "mindmap",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "La technique de Malik pour son exposé de CM2",
+      "text": "Avec Papa, on s'est entraînés avec le Mode Cache-Cache : je choisissais une branche au hasard (par exemple « Branche 4 • Contrôler le Gouvernement ») et je devais citer les 3 points clés sans regarder avant de cliquer pour révéler la carte !"
+    },
+    "keyPoints": [
+      "QUI & OÙ : 577 députés élus pour 5 ans au suffrage universel direct, réunis dans l'Hémicycle du Palais Bourbon à Paris.",
+      "LES 2 MISSIONS : 1) Discuter, amender et voter la loi (ainsi que le budget) ; 2) Contrôler l'action du Gouvernement.",
+      "LE DUO & L'HISTOIRE : Navette parlementaire avec les 348 sénateurs (dernier mot à l'Assemblée) ; née le 20 juin 1789 et ouverte aux CM2 depuis 1994."
+    ],
+    "microQuiz": [
+      {
+        "q": "Quelles sont les deux grandes missions constitutionnelles d'un député ?",
+        "options": ["Voter la loi ET contrôler le Gouvernement", "Juger les procès ET diriger la police", "Construire des routes ET gérer la cantine"],
+        "correct": 0,
+        "exp": "Parfait ! L'article 24 de la Constitution confie au Parlement le vote de la loi et le contrôle de l'action du Gouvernement."
+      },
+      {
+        "q": "Pour quelle durée (mandat) les 577 députés sont-ils élus ?",
+        "options": ["Pour 2 ans", "Pour 5 ans (sauf dissolution)", "À vie"],
+        "correct": 1,
+        "exp": "Exact ! La législature dure 5 ans."
+      },
+      {
+        "q": "Que vote le Parlement chaque automne pour décider comment l'argent des impôts sera utilisé pour les écoles, les hôpitaux ou la justice ?",
+        "options": ["Le Budget de l'État (loi de finances)", "Le calendrier des vacances", "Le règlement du code de la route"],
+        "correct": 0,
+        "exp": "Bravo ! Voter le budget de l'État est l'une des responsabilités les plus importantes des députés."
+      }
+    ],
+    "teacherObjective": "Méthodologie & EMC Cycle 3 — Structurer ses connaissances sous forme de carte heuristique et pratiquer la récupération active en mémoire (active recall)."
+  },
+  {
+    "order": 10,
+    "slug": "10-mini-jeux",
+    "legacyId": "minijeux",
+    "part": "entrainer",
+    "partLabel": "Partie 3 • S'entraîner & Sources",
+    "title": "Les 3 Mini-Jeux du Député Junior",
+    "shortTitle": "10. Mini-Jeux",
+    "subtitle": "Entre dans la peau d'un député : défends ta proposition de loi jusqu'au vote final, associe les rôles républicains et relève le défi Vrai/Faux !",
+    "duration": "7 min",
+    "xpReward": 20,
+    "badgeId": null,
+    "heroPhotoId": "tribune-perchoir",
+    "discover": {
+      "heading": "À toi de jouer dans l'Hémicycle !",
+      "lead": "Faire adopter une loi demande de bonnes idées, mais aussi le sens de l'écoute, du compromis en commission et de la conviction à la Tribune !",
+      "paragraphs": [
+        "Dans cet atelier interactif, nous t'avons préparé 3 défis complémentaires : une simulation parlementaire en 4 étapes où tu choisis et défends ta propre loi, le jeu d'association « Qui fait quoi à l'Assemblée ? », et le « Vrai ou Faux Express » en 6 affirmations.",
+        "Termine au moins un des défis et valide le mini-quiz final pour remporter tes 20 XP !"
+      ],
+      "glossaryIds": ["projet-proposition", "amendement", "huissier", "perchoir"]
+    },
+    "interactiveWidget": "minijeux",
+    "malikBubble": {
+      "speaker": "Malik",
+      "title": "L'astuce de Député de Malik",
+      "text": "Dans le jeu « Fais voter ta loi », si tu refuses tout compromis en commission ou si tu menaces tes collègues à la Tribune, tu risques de perdre des voix ! En démocratie, un bon député écoute les arguments et cherche à rassembler une majorité."
+    },
+    "keyPoints": [
+      "Pour faire adopter une loi ordinaire, il faut convaincre une majorité de députés de voter POUR (plus de voix POUR que de voix CONTRE).",
+      "Le travail en commission parlementaire permet de négocier des compromis et d'améliorer le texte avant le vote solennel.",
+      "Chaque acteur du Palais a un rôle précis : Député, Président au Perchoir, Premier ministre, Sénateur et Huissier de séance."
+    ],
+    "microQuiz": [
+      {
+        "q": "Lors d'un vote ordinaire dans l'Hémicycle avec 340 voix POUR, 190 CONTRE et 47 ABSTENTIONS, la loi est-elle adoptée ?",
+        "options": ["Oui, car il y a plus de voix POUR que de voix CONTRE", "Non, car il faut l'unanimité des 577 députés", "Non, à cause des abstentions"],
+        "correct": 0,
+        "exp": "Exact ! Une loi ordinaire est adoptée à la majorité des suffrages exprimés (les POUR l'emportent sur les CONTRE)."
+      },
+      {
+        "q": "Où les députés travaillent-ils en petit groupe spécialisé pour étudier et modifier une loi avant le débat dans l'Hémicycle ?",
+        "options": ["En commission parlementaire", "Dans les jardins du Luxembourg", "Au Conseil d'État"],
+        "correct": 0,
+        "exp": "Bravo ! L'Assemblée compte 8 commissions permanentes spécialisées (affaires sociales, lois, finances, développement durable, etc.)."
+      },
+      {
+        "q": "Qui est élu au suffrage universel indirect par les maires et les élus locaux ?",
+        "options": ["Le député", "Le sénateur", "L'huissier de séance"],
+        "correct": 1,
+        "exp": "Tout à fait ! Les 348 sénateurs sont élus au suffrage indirect et représentent les collectivités territoriales."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — Expérimenter par le jeu de rôle la délibération démocratique, la recherche du compromis et la distinction des fonctions institutionnelles."
+  },
+  {
+    "order": 11,
+    "slug": "11-quiz-diplome",
+    "legacyId": "jeux",
+    "part": "entrainer",
+    "partLabel": "Partie 3 • S'entraîner & Sources",
+    "title": "Le Grand Quiz Final & ton Diplôme A4",
+    "shortTitle": "11. Quiz & Diplôme",
+    "subtitle": "Réponds aux 8 questions du défi final de Malik & son Papa (objectif : au moins 6/8) pour débloquer et imprimer ton Diplôme de Député Junior !",
+    "duration": "6 min",
+    "xpReward": 20,
+    "badgeId": "quiz",
+    "heroPhotoId": "hemicycle",
+    "discover": {
+      "heading": "L'épreuve finale du parcours citoyen !",
+      "lead": "Tu as exploré l'Hémicycle, découvert les secrets du Palais, compris la Constitution et remonté le temps depuis 1789. Il est temps de relever le Grand Quiz final en 8 questions !",
+      "paragraphs": [
+        "Si tu obtiens un score d'au moins 6 sur 8, tu débloques le badge suprême « Super Député Junior » ainsi que ton Diplôme de Député Junior CM2 personnalisé à ton prénom (ou au nom de ta classe).",
+        "Le diplôme est mis en page au format A4 paysage : tu peux l'imprimer directement sur papier ou l'enregistrer en PDF en un clic !"
+      ],
+      "glossaryIds": ["hemicycle", "constitution", "navette", "suffrage-direct"]
+    },
+    "interactiveWidget": "quiz-diplome",
+    "malikBubble": {
+      "speaker": "Malik & Papa",
+      "title": "Bravo d'être arrivé jusqu'ici !",
+      "text": "Prends ton temps pour lire chaque question. Même si tu te trompes, chaque réponse est expliquée et tu peux recommencer le quiz autant de fois que tu le souhaites pour décrocher le 8/8 !"
+    },
+    "keyPoints": [
+      "Un citoyen éclairé connaît ses droits, respecte la hiérarchie des lois et comprend comment fonctionnent les institutions de son pays.",
+      "Ton prénom saisi sur le diplôme reste uniquement dans la mémoire de ton appareil : aucune donnée personnelle n'est envoyée sur Internet.",
+      "Avec au moins 6 bonnes réponses sur 8 au Grand Quiz, tu valides ta maîtrise du parcours citoyen CM2 !"
+    ],
+    "microQuiz": [
+      {
+        "q": "Quelle est la devise de la République française inscrite au fronton des mairies et des écoles ?",
+        "options": ["Liberté, Égalité, Fraternité", "Force, Honneur, Victoire", "Travail, Silence, Discipline"],
+        "correct": 0,
+        "exp": "Bravo ! « Liberté, Égalité, Fraternité » est la devise de la République française, héritée de la Révolution de 1789 et officielle depuis 1848."
+      },
+      {
+        "q": "À partir de quel âge un citoyen français a-t-il le droit de voter aux élections ?",
+        "options": ["Dès 16 ans", "Dès 18 ans (la majorité civique)", "Dès 21 ans"],
+        "correct": 1,
+        "exp": "Exact ! Depuis 1974, tout citoyen français majeur (18 ans) peut voter."
+      },
+      {
+        "q": "Que signifie le fait que la France est une République démocratique (« gouvernement du peuple, par le peuple et pour le peuple ») ?",
+        "options": ["La souveraineté appartient aux citoyens qui élisent leurs représentants", "Un roi gouverne par héritage familial", "Seuls les juges votent les lois"],
+        "correct": 0,
+        "exp": "Parfait ! Comme l'affirme l'article 2 et l'article 3 de la Constitution, la souveraineté nationale appartient au peuple."
+      }
+    ],
+    "teacherObjective": "EMC Cycle 3 — Évaluation sommative bienveillante des acquis sur le Parlement, la Constitution, la justice et l'histoire républicaine."
+  },
+  {
+    "order": 12,
+    "slug": "12-sources-credits",
+    "legacyId": "credits",
+    "part": "entrainer",
+    "partLabel": "Partie 3 • S'entraîner & Sources",
+    "title": "Sources, Crédits & Histoire du Projet",
+    "shortTitle": "12. Sources & Crédits",
+    "subtitle": "Vérifie d'où viennent toutes les photos, vidéos et informations de ce site : un réflexe essentiel de citoyen numérique !",
+    "duration": "4 min",
+    "xpReward": 20,
+    "badgeId": null,
+    "heroPhotoId": "bibliotheque",
+    "discover": {
+      "heading": "Pourquoi un vrai citoyen vérifie-t-il toujours ses sources ?",
+      "lead": "Sur Internet, n'importe qui peut écrire une fausse information (une « infox »). C'est pourquoi Malik et son Papa ont tenu à citer chaque photographe, chaque musée et chaque article de la Constitution utilisés sur ce site !",
+      "paragraphs": [
+        "Toutes les photographies proviennent de Wikimedia Commons ou des collections publiques (Paris Musées, Assemblée nationale, Sénat) sous licence libre Creative Commons ou dans le Domaine public. Les vidéos sont issues de la série éducative « 1 jour, 1 question » (France Télévisions / Milan Presse).",
+        "Ce site est un projet familial, bénévole et indépendant, sans publicité, sans compte et sans aucun traceur : tout ce que tu fais reste sur ton ordinateur ou ta tablette."
+      ],
+      "glossaryIds": ["constitution", "parlement"]
+    },
+    "interactiveWidget": "credits",
+    "malikBubble": {
+      "speaker": "Malik & Papa",
+      "title": "Pourquoi on a créé ce site ensemble ❤️",
+      "text": "Tout a commencé avec une question de Malik en préparant son cours de CM2 : « Papa, ça ressemble à quoi en vrai l'Assemblée nationale, qui a construit ses colonnes, et depuis quand les enfants ont le droit d'y aller ? » On a décidé de construire ce carnet interactif pour le partager avec toutes les classes de France !"
+    },
+    "keyPoints": [
+      "Vérifier ses sources (qui est l'auteur ? quelle est l'institution ? quelle est la date ?) permet de distinguer un fait vérifié d'une rumeur.",
+      "Les licences libres Creative Commons (CC BY-SA) permettent de partager la culture à condition de citer obligatoirement l'auteur et la licence.",
+      "Ce site éducatif est indépendant (non affilié à l'Assemblée nationale) et protège 100 % de ta vie privée (zéro cookie, zéro collecte)."
+    ],
+    "microQuiz": [
+      {
+        "q": "Que dois-tu toujours faire lorsque tu utilises une photographie sous licence Creative Commons (CC BY-SA) pour ton exposé ?",
+        "options": ["Citer le nom de l'auteur, la source et la licence", "Dire que c'est toi qui as pris la photo", "Payer une amende"],
+        "correct": 0,
+        "exp": "Exact ! « BY » signifie l'obligation de créditer l'auteur de l'œuvre."
+      },
+      {
+        "q": "Quel bon réflexe permet de vérifier si une information sur les lois ou l'Assemblée nationale est vraie ?",
+        "options": ["Vérifier sur des sources publiques de référence (assemblee-nationale.fr, vie-publique.fr)", "Croire le premier message anonyme vu sur un réseau social", "Deviner au hasard"],
+        "correct": 0,
+        "exp": "Bravo ! Croiser les informations avec des sources institutionnelles et éducatives fiables est la base de l'esprit critique."
+      },
+      {
+        "q": "Où est enregistré ton prénom lorsque tu l'écris pour ton Diplôme sur ce site ?",
+        "options": ["Uniquement dans la mémoire locale de ton navigateur, sur ton appareil", "Sur un serveur publicitaire à l'étranger", "Dans le journal télévisé"],
+        "correct": 0,
+        "exp": "Parfait ! Aucune donnée ne quitte ton appareil, et tu peux tout effacer à tout moment avec le bouton « Tout effacer »."
+      }
+    ],
+    "teacherObjective": "EMI & EMC Cycle 3 — Comprendre le droit d'auteur, les licences Creative Commons, la vérification des sources et la protection des données personnelles."
+  }
+]
+

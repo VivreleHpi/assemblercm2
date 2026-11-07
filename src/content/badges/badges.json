@@ -1,0 +1,84 @@
+[
+  {
+    "id": "hemi",
+    "order": 1,
+    "title": "Explorateur de l'Hémicycle",
+    "desc": "A exploré les points clés de l'Hémicycle et validé l'étape 1",
+    "stepOrder": 1,
+    "part": "palais",
+    "icon": "landmark"
+  },
+  {
+    "id": "galerie",
+    "order": 2,
+    "title": "Conservateur du Palais",
+    "desc": "A étudié les 8 trésors photographiques et artistiques du Palais Bourbon",
+    "stepOrder": 2,
+    "part": "palais",
+    "icon": "camera"
+  },
+  {
+    "id": "secrets",
+    "order": 3,
+    "title": "Gardien des Coulisses",
+    "desc": "A retourné les 6 cartes secrètes du cabinet de curiosités de Malik",
+    "stepOrder": 3,
+    "part": "palais",
+    "icon": "key"
+  },
+  {
+    "id": "justice",
+    "order": 4,
+    "title": "Juge Citoyen CM2",
+    "desc": "A maîtrisé la Pyramide de la Constitution et l'Arbre des Tribunaux",
+    "stepOrder": 4,
+    "part": "institutions",
+    "icon": "scale"
+  },
+  {
+    "id": "histoire",
+    "order": 5,
+    "title": "Historien de la République",
+    "desc": "A remonté le temps de 1789 à Napoléon Ier et à la Ve République",
+    "stepOrder": 5,
+    "part": "institutions",
+    "icon": "scroll"
+  },
+  {
+    "id": "enfants",
+    "order": 6,
+    "title": "Ambassadeur CM2 (1994)",
+    "desc": "A découvert l'histoire et le fonctionnement du Parlement des Enfants",
+    "stepOrder": 6,
+    "part": "institutions",
+    "icon": "users"
+  },
+  {
+    "id": "pouvoirs",
+    "order": 7,
+    "title": "Sentinelle du Contre-Pouvoir",
+    "desc": "A piloté la Navette parlementaire entre l'Assemblée et le Sénat",
+    "stepOrder": 7,
+    "part": "institutions",
+    "icon": "shield"
+  },
+  {
+    "id": "mindmap",
+    "order": 8,
+    "title": "Maître de la Carte Mentale",
+    "desc": "A révisé les 6 branches du bilan citoyen en mode Cache-Cache",
+    "stepOrder": 9,
+    "part": "entrainer",
+    "icon": "network"
+  },
+  {
+    "id": "quiz",
+    "order": 9,
+    "title": "Super Député Junior",
+    "desc": "A fait adopter sa loi et réussi le Grand Quiz final avec au moins 6/8",
+    "stepOrder": 11,
+    "part": "entrainer",
+    "icon": "award"
+  }
+]
+

@@ -1,0 +1,139 @@
+---
+import { VIDEOS_DATA, INSTITUTION_LINKS } from '../../data';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-gold/50 space-y-8">
+  <div>
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+        Sélection audiovisuelle vérifiée · Étape 8
+      </span>
+      <span class="px-3 py-1 rounded-full bg-success-light text-success border border-success/30 text-xs font-bold">
+        🔒 Mode sans traceur (youtube-nocookie au clic)
+      </span>
+    </div>
+    <h2 class="font-display font-bold text-2xl text-ink mt-1">
+      4 vidéos courtes « 1 jour, 1 question » (1 min 42 chacune)
+    </h2>
+    <p class="text-sm sm:text-base text-ink-muted mt-1">
+      Aucune vidéo ne se charge automatiquement pour protéger ta vie privée et la vitesse de la page. Clique sur <strong>« Lancer la vidéo »</strong> pour regarder un épisode.
+    </p>
+  </div>
+
+  <!-- 4 Video Facade Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {VIDEOS_DATA.map((video, idx) => (
+      <article class="rounded-card bg-paper border-2 border-line overflow-hidden flex flex-col justify-between shadow-sm">
+        <div>
+          <!-- Privacy-first Facade Stage -->
+          <div
+            class="video-facade-stage relative aspect-[16/9] bg-night text-white flex flex-col items-center justify-center p-5 text-center overflow-hidden"
+            data-youtube-id={video.youtubeId}
+            data-video-title={video.title}
+          >
+            <!-- Decorative Republican background -->
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,#E8B21A_0%,transparent_70%)]" aria-hidden="true"></div>
+
+            <div class="relative z-10 space-y-3 max-w-sm">
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/15 text-gold text-xs font-bold">
+                Épisode {idx + 1} · {video.source} ({video.duration})
+              </span>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-white leading-snug">
+                {video.title}
+              </h3>
+              <button
+                type="button"
+                class="load-video-facade-btn inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-sm shadow-elevated transition min-h-[48px]"
+                aria-label={`Lancer la vidéo : ${video.title}`}
+              >
+                <Icon name="Play" size={18} />
+                <span>Lancer la vidéo ({video.duration})</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-5 space-y-2">
+            <h4 class="font-display font-bold text-base sm:text-lg text-ink">
+              Ce que tu vas apprendre :
+            </h4>
+            <p class="text-sm text-ink-muted leading-relaxed">
+              {video.summary}
+            </p>
+          </div>
+        </div>
+
+        <div class="px-5 py-3 bg-surface border-t border-line flex items-center justify-between gap-2 text-xs">
+          <span class="text-ink-muted font-medium">{video.source}</span>
+          <a
+            href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 font-bold text-republic-900 hover:underline"
+          >
+            <span>Ouvrir sur YouTube</span>
+            <Icon name="ExternalLink" size={13} />
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <!-- 6 Official Institutional Portals -->
+  <div class="pt-6 border-t border-line space-y-4">
+    <h3 class="font-display font-bold text-xl text-ink">
+      6 sites officiels de la République pour aller plus loin en classe
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+      {INSTITUTION_LINKS.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="p-4 rounded-card bg-paper hover:bg-republic-100/70 border border-line transition flex flex-col justify-between gap-2 group"
+        >
+          <div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-display font-bold text-sm sm:text-base text-ink group-hover:text-republic-900">
+                {link.title}
+              </span>
+              <Icon name="ExternalLink" size={15} class="text-republic-700 shrink-0" />
+            </div>
+            <p class="text-xs text-ink-muted mt-1 leading-relaxed">
+              {link.desc}
+            </p>
+          </div>
+          <span class="text-xs font-bold text-republic-900 pt-1">
+            Visiter le portail officiel →
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initStep8() {
+    document.querySelectorAll<HTMLElement>('.video-facade-stage').forEach((stage) => {
+      const btn = stage.querySelector<HTMLButtonElement>('.load-video-facade-btn');
+      btn?.addEventListener('click', () => {
+        const ytId = stage.getAttribute('data-youtube-id');
+        const title = stage.getAttribute('data-video-title') || 'Vidéo éducative';
+        if (!ytId) return;
+
+        stage.innerHTML = `
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0"
+            title="${title.replace(/"/g, '&quot;')}"
+            class="w-full h-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        `;
+      });
+    });
+  }
+
+  initStep8();
+</script>
+

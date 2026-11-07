@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ETAPES, type EtapeItem } from '../../data';
+import LessonHeader from '../../components/pedagogy/LessonHeader.astro';
+import ResponsivePicture from '../../components/ui/ResponsivePicture.astro';
+import MalikBubble from '../../components/pedagogy/MalikBubble.astro';
+import KeyPoints from '../../components/pedagogy/KeyPoints.astro';
+import MicroQuiz from '../../components/pedagogy/MicroQuiz.astro';
+import NextStepCard from '../../components/pedagogy/NextStepCard.astro';
+
+import Step1Hemicycle from '../../components/interactive/Step1Hemicycle.astro';
+import Step2Galerie from '../../components/interactive/Step2Galerie.astro';
+import Step3Secrets from '../../components/interactive/Step3Secrets.astro';
+import Step4Justice from '../../components/interactive/Step4Justice.astro';
+import Step5Timeline from '../../components/interactive/Step5Timeline.astro';
+import Step6Enfants from '../../components/interactive/Step6Enfants.astro';
+import Step7Pouvoirs from '../../components/interactive/Step7Pouvoirs.astro';
+import Step8Videos from '../../components/interactive/Step8Videos.astro';
+import Step9Mindmap from '../../components/interactive/Step9Mindmap.astro';
+import Step10Minijeux from '../../components/interactive/Step10Minijeux.astro';
+import Step11QuizDiplome from '../../components/interactive/Step11QuizDiplome.astro';
+import Step12Credits from '../../components/interactive/Step12Credits.astro';
+
+export function getStaticPaths() {
+  return ETAPES.map((etape, index) => ({
+    params: { slug: etape.slug },
+    props: {
+      etape,
+      prevStep: index > 0 ? ETAPES[index - 1] : undefined,
+      nextStep: index < ETAPES.length - 1 ? ETAPES[index + 1] : undefined
+    }
+  }));
+}
+
+interface Props {
+  etape: EtapeItem;
+  prevStep?: EtapeItem;
+  nextStep?: EtapeItem;
+}
+
+const { etape, prevStep, nextStep } = Astro.props;
+
+const soundEffect =
+  etape.number === 1
+    ? 'bell'
+    : etape.number === 3
+    ? 'drum'
+    : null;
+---
+
+<BaseLayout
+  title={`Étape ${etape.number} : ${etape.title}`}
+  description={etape.subtitle}
+  currentStepNumber={etape.number}
+>
+  <article class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <!-- 1. Fil d'Ariane + LessonHeader -->
+    <LessonHeader etape={etape} />
+
+    <!-- 2. « Je découvre » (Visuel + récit court adapté 9-11 ans, <= 65ch) -->
+    <section aria-labelledby="section-decouvre-title" class="surface-card p-6 sm:p-8 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+        <div class="lg:col-span-6 space-y-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
+              1. Je découvre
+            </span>
+            <h2 id="section-decouvre-title" class="font-display font-bold text-2xl text-ink mt-1">
+              L’essentiel expliqué simplement
+            </h2>
+          </div>
+
+          <div class="space-y-3.5 text-ink text-base sm:text-[1.08rem] leading-[1.65] max-w-reading">
+            {etape.discoverText.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <ResponsivePicture
+            photoId={etape.heroPhoto}
+            aspect="16/9"
+            priority={true}
+            sizes="(max-width: 1024px) 100vw, 540px"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. « Je comprends » (Une interaction principale dédiée par étape) -->
+    {etape.interactiveType === 'hemicycle' && <Step1Hemicycle />}
+    {etape.interactiveType === 'galerie' && <Step2Galerie />}
+    {etape.interactiveType === 'secrets' && <Step3Secrets />}
+    {etape.interactiveType === 'justice' && <Step4Justice />}
+    {etape.interactiveType === 'timeline' && <Step5Timeline />}
+    {etape.interactiveType === 'enfants' && <Step6Enfants />}
+    {etape.interactiveType === 'pouvoirs' && <Step7Pouvoirs />}
+    {etape.interactiveType === 'videos' && <Step8Videos />}
+    {etape.interactiveType === 'mindmap' && <Step9Mindmap />}
+    {etape.interactiveType === 'minijeux' && <Step10Minijeux />}
+    {etape.interactiveType === 'quiz-diplome' && <Step11QuizDiplome />}
+    {etape.interactiveType === 'credits' && <Step12Credits />}
+
+    <!-- 4. « Le secret de Malik » (Bulle personnage illustrée + son/audio) -->
+    <MalikBubble
+      character={etape.malikSecret.character}
+      title={etape.malikSecret.title}
+      text={etape.malikSecret.text}
+      soundEffect={soundEffect}
+    />
+
+    <!-- 5. « Je retiens » (3 phrases maximum, à recopier dans le cahier) -->
+    <KeyPoints points={etape.keyPoints} stepNumber={etape.number} />
+
+    <!-- 6. « Je vérifie » (Mini-quiz de 3 questions avec feedback expliqué + XP) -->
+    <MicroQuiz
+      stepNumber={etape.number}
+      xpReward={etape.xp}
+      badgeId={etape.badgeId}
+      questions={etape.quiz}
+    />
+
+    <!-- 7. Grande carte « Étape suivante » + lien « Étape précédente » -->
+    <NextStepCard prevStep={prevStep} nextStep={nextStep} />
+  </article>
+</BaseLayout>
+

@@ -1,0 +1,155 @@
+---
+import { TIMELINE_EVENTS } from '../../data';
+import ResponsivePicture from '../ui/ResponsivePicture.astro';
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20 space-y-8">
+  <div>
+    <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+      Frise chronologique interactive · Étape 5
+    </span>
+    <h2 class="font-display font-bold text-2xl text-ink mt-1">
+      7 grandes dates de notre démocratie (1789 → Aujourd’hui)
+    </h2>
+    <p class="text-sm sm:text-base text-ink-muted mt-1">
+      Clique sur une année de la frise pour explorer l’événement historique correspondant :
+    </p>
+  </div>
+
+  <!-- Interactive Date Pills -->
+  <div
+    role="tablist"
+    aria-label="Dates clés de la frise historique"
+    class="grid grid-cols-3 sm:grid-cols-7 gap-2"
+  >
+    {TIMELINE_EVENTS.map((ev, idx) => (
+      <button
+        type="button"
+        role="tab"
+        aria-selected={idx === 0 ? 'true' : 'false'}
+        data-timeline-year={ev.year}
+        class={`timeline-year-btn px-3 py-3 rounded-btn font-display font-bold text-sm sm:text-base border-2 transition min-h-[48px] ${
+          idx === 0
+            ? 'bg-velvet text-white border-velvet shadow-sm'
+            : 'bg-paper text-ink border-line hover:bg-velvet-light'
+        }`}
+      >
+        {ev.year}
+      </button>
+    ))}
+  </div>
+
+  <!-- Active Timeline Card -->
+  <div
+    id="timeline-active-card"
+    aria-live="polite"
+    class="p-6 rounded-card bg-paper border-2 border-gold shadow-sm space-y-2.5"
+  >
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span id="tl-year-badge" class="px-3 py-1 rounded-full bg-velvet text-white font-display font-bold text-sm">
+        {TIMELINE_EVENTS[0].year} · {TIMELINE_EVENTS[0].dateLabel}
+      </span>
+      <span class="text-xs font-bold text-ink-muted">Histoire de la République</span>
+    </div>
+    <h3 id="tl-title" class="font-display font-bold text-xl sm:text-2xl text-ink">
+      {TIMELINE_EVENTS[0].title}
+    </h3>
+    <p id="tl-desc" class="text-sm sm:text-base text-ink leading-relaxed max-w-reading">
+      {TIMELINE_EVENTS[0].description}
+    </p>
+  </div>
+
+  <!-- Napoleon Spotlight (with top-aligned portrait) -->
+  <div class="pt-6 border-t border-line">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-5">
+        <ResponsivePicture
+          photoId="napoleon"
+          aspect="4/3"
+          sizes="(max-width: 1024px) 100vw, 450px"
+        />
+      </div>
+      <div class="lg:col-span-7 space-y-4">
+        <div>
+          <span class="px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+            Zoom Histoire CM2 · 1804 & 1807
+          </span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-ink mt-2">
+            Ce que Napoléon a laissé au droit français et au Palais Bourbon
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3">
+          <div class="p-4 rounded-xl bg-paper border border-line">
+            <h4 class="font-display font-bold text-base text-ink">
+              1. Le Code civil du 21 mars 1804
+            </h4>
+            <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
+              Avant la Révolution, chaque province avait ses propres coutumes. En 1804, Napoléon réunit 4 grands juristes (dont Portalis) pour publier un seul livre de <strong>2 281 articles</strong> identiques pour tous les Français.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-paper border border-line">
+            <h4 class="font-display font-bold text-base text-ink">
+              2. Les 12 colonnes du Palais Bourbon (1807)
+            </h4>
+            <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
+              C’est Napoléon qui demande à l’architecte Bernard Poyet de construire la grande façade façon temple antique face au pont de la Concorde et à l’église de la Madeleine.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-paper border border-line">
+            <h4 class="font-display font-bold text-base text-ink">
+              3. Les grandes institutions modernes
+            </h4>
+            <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
+              Sous le Consulat et l’Empire naissent aussi les <strong>lycées</strong>, le <strong>baccalauréat</strong>, les <strong>préfets</strong> dans chaque département, le Conseil d’État, la Cour des comptes et la Légion d’honneur.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+  id="step5-timeline-json"
+  type="application/json"
+  set:html={JSON.stringify(TIMELINE_EVENTS)}
+/>
+
+<script>
+  function initStep5() {
+    const jsonEl = document.getElementById('step5-timeline-json');
+    const events = jsonEl ? JSON.parse(jsonEl.textContent || '[]') : [];
+    const btns = document.querySelectorAll<HTMLButtonElement>('.timeline-year-btn');
+
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const year = btn.getAttribute('data-timeline-year');
+        const ev = events.find((e: { year: string }) => e.year === year);
+        if (!ev) return;
+
+        btns.forEach((b) => {
+          const active = b.getAttribute('data-timeline-year') === year;
+          b.setAttribute('aria-selected', String(active));
+          b.className = `timeline-year-btn px-3 py-3 rounded-btn font-display font-bold text-sm sm:text-base border-2 transition min-h-[48px] ${
+            active
+              ? 'bg-velvet text-white border-velvet shadow-sm'
+              : 'bg-paper text-ink border-line hover:bg-velvet-light'
+          }`;
+        });
+
+        const badge = document.getElementById('tl-year-badge');
+        const title = document.getElementById('tl-title');
+        const desc = document.getElementById('tl-desc');
+        if (badge) badge.textContent = `${ev.year} · ${ev.dateLabel}`;
+        if (title) title.textContent = ev.title;
+        if (desc) desc.textContent = ev.description;
+      });
+    });
+  }
+
+  initStep5();
+</script>
+

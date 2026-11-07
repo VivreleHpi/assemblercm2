@@ -1,0 +1,37 @@
+---
+import Icon from '../ui/Icon.astro';
+---
+
+<nav
+  aria-label="Navigation rapide mobile"
+  class="fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t-2 border-line shadow-elevated md:hidden no-print"
+>
+  <div class="grid grid-cols-3 h-16 max-w-md mx-auto px-2">
+    <a
+      href="/#carte-parcours"
+      class="flex flex-col items-center justify-center gap-0.5 text-xs font-display font-bold text-ink hover:text-republic-900 py-1 min-h-[48px]"
+    >
+      <Icon name="Compass" size={20} />
+      <span>Parcours (12)</span>
+    </a>
+
+    <button
+      type="button"
+      data-open-modal="search-modal"
+      class="flex flex-col items-center justify-center gap-0.5 text-xs font-display font-bold text-ink hover:text-republic-900 py-1 min-h-[48px]"
+    >
+      <Icon name="Search" size={20} />
+      <span>Rechercher</span>
+    </button>
+
+    <button
+      type="button"
+      data-open-modal="profile-modal"
+      class="flex flex-col items-center justify-center gap-0.5 text-xs font-display font-bold text-ink hover:text-republic-900 py-1 min-h-[48px]"
+    >
+      <Icon name="Award" size={20} />
+      <span>Profil & Badges</span>
+    </button>
+  </div>
+</nav>
+

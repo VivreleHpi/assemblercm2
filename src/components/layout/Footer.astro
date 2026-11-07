@@ -1,0 +1,93 @@
+---
+import Icon from '../ui/Icon.astro';
+import Avatar from '../ui/Avatar.astro';
+---
+
+<footer class="bg-night text-white mt-16 pb-20 md:pb-0 border-t-4 border-gold no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-white/15">
+      <!-- Brand & Story -->
+      <div class="md:col-span-5 space-y-3">
+        <div class="flex items-center gap-3">
+          <Avatar character="duo" size={56} />
+          <div>
+            <span class="font-display font-bold text-lg text-white block">
+              Le parcours de Malik & son Papa
+            </span>
+            <span class="text-xs text-gold font-semibold block">
+              Découvrir l’Assemblée nationale en CM2 (Cycle 3)
+            </span>
+          </div>
+        </div>
+        <p class="text-sm text-white/90 leading-relaxed max-w-md">
+          Un carnet de voyage républicain gratuit, sans compte, sans cookie et sans publicité, conçu pour aider les élèves de 9 à 11 ans à comprendre comment naissent les lois.
+        </p>
+      </div>
+
+      <!-- Navigation Parcours -->
+      <div class="md:col-span-4 space-y-2.5">
+        <h3 class="font-display font-bold text-base text-gold">
+          Les 3 parties du parcours
+        </h3>
+        <ul class="space-y-2 text-sm text-white/90">
+          <li>
+            <a href="/etape/1-hemicycle/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Partie 1 · Le Palais Bourbon (Étapes 1 à 3)
+            </a>
+          </li>
+          <li>
+            <a href="/etape/4-constitution-justice/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Partie 2 · Les Institutions & l’Histoire (Étapes 4 à 7)
+            </a>
+          </li>
+          <li>
+            <a href="/etape/8-videos/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Partie 3 · S’entraîner & Diplôme (Étapes 8 à 12)
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pages Ressources -->
+      <div class="md:col-span-3 space-y-2.5">
+        <h3 class="font-display font-bold text-base text-gold">
+          Ressources & Crédits
+        </h3>
+        <ul class="space-y-2 text-sm text-white/90">
+          <li>
+            <a href="/enseignants/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Espace Enseignants (EMC Cycle 3)
+            </a>
+          </li>
+          <li>
+            <a href="/glossaire/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Glossaire civique (23 mots expliqués)
+            </a>
+          </li>
+          <li>
+            <a href="/credits/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Crédits photos CC BY-SA & Sources
+            </a>
+          </li>
+          <li>
+            <a href="/styleguide/" class="hover:text-gold underline decoration-white/30 underline-offset-4">
+              Design System & Styleguide
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Legal & Independent Disclaimer -->
+    <div class="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-white/85">
+      <p class="leading-relaxed max-w-2xl">
+        <strong class="text-gold">Mention pédagogique :</strong> Ce site est un projet éducatif indépendant réalisé par Malik (CM2) et son papa. Il n’est pas affilié à l’Assemblée nationale. Toutes les photographies sont créditées sous licence libre Wikimedia Commons (CC BY-SA / Domaine public).
+      </p>
+      <div class="flex items-center gap-2 shrink-0 px-3 py-1.5 rounded-full bg-white/10 text-white">
+        <Icon name="Shield" size={14} />
+        <span>Aucune donnée ne quitte ton appareil</span>
+      </div>
+    </div>
+  </div>
+</footer>
+

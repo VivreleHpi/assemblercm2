@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { GLOSSAIRE } from '../data';
+import Icon from '../components/ui/Icon.astro';
+
+const categories = ['Tous', ...Array.from(new Set(GLOSSAIRE.map((g) => g.category)))];
+---
+
+<BaseLayout
+  title="Glossaire Civique CM2 (23 mots expliqués)"
+  description="Tous les mots de l'Assemblée nationale, de la Constitution et de la Justice expliqués simplement pour les élèves de CM2 (9-11 ans)."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+    <header class="surface-card p-6 sm:p-8 border-t-4 border-t-republic-900 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <span class="px-3 py-1 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          📖 Dictionnaire Citoyen CM2 · {GLOSSAIRE.length} mots expliqués
+        </span>
+        <a
+          href="/#carte-parcours"
+          class="text-xs sm:text-sm font-bold text-republic-900 hover:underline"
+        >
+          ← Retour à la carte du parcours
+        </a>
+      </div>
+
+      <h1 class="font-display font-bold text-3xl sm:text-4xl text-ink">
+        Le Glossaire de Malik & Papa
+      </h1>
+      <p class="text-base sm:text-lg text-ink-muted max-w-2xl leading-relaxed">
+        Un mot compliqué dans ton cours d’EMC ? Tape-le ci-dessous ou filtre par thème pour lire sa définition à hauteur d’enfant de 10 ans (et l’écouter à voix haute !).
+      </p>
+
+      <!-- Search + Category Filters -->
+      <div class="pt-2 space-y-3 no-print">
+        <div class="relative max-w-xl">
+          <label for="glossary-filter-input" class="sr-only">Rechercher un mot dans le glossaire</label>
+          <input
+            type="search"
+            id="glossary-filter-input"
+            placeholder="Rechercher un mot : amendement, hémicycle, navette, suffrage..."
+            class="w-full px-4 py-3 rounded-btn bg-paper border-2 border-line focus:border-republic-900 text-ink font-medium text-sm sm:text-base outline-none"
+          />
+        </div>
+
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrer par catégorie">
+          {categories.map((cat, idx) => (
+            <button
+              type="button"
+              data-gloss-cat={cat}
+              class={`gloss-cat-btn px-3.5 py-2 rounded-btn font-display font-bold text-xs sm:text-sm border transition min-h-[42px] ${
+                idx === 0
+                  ? 'bg-republic-900 text-white border-republic-900'
+                  : 'bg-paper text-ink border-line hover:bg-republic-100'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+    </header>
+
+    <!-- Glossary Cards Grid -->
+    <div id="glossary-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {GLOSSAIRE.map((item) => (
+        <article
+          id={`terme-${item.id}`}
+          data-term-card
+          data-term-cat={item.category}
+          data-term-search={`${item.term} ${item.definition} ${item.example}`.toLowerCase()}
+          class="surface-card p-5 sm:p-6 border border-line flex flex-col justify-between gap-4 scroll-mt-24"
+        >
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+                {item.category}
+              </span>
+              <button
+                type="button"
+                class="tts-button inline-flex items-center gap-1 px-2.5 py-1 rounded-btn bg-paper hover:bg-republic-100 text-ink border border-line text-xs font-bold min-h-[34px] no-print"
+                data-tts-text={`${item.term}. ${item.definition} Exemple : ${item.example}`}
+                aria-label={`Écouter la définition de ${item.term}`}
+              >
+                <Icon name="Volume2" size={13} />
+                <span>Écouter</span>
+              </button>
+            </div>
+
+            <h2 class="font-display font-bold text-xl text-ink">
+              {item.term}
+            </h2>
+            <p class="text-sm sm:text-base text-ink leading-relaxed">
+              {item.definition}
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-paper border border-line text-xs sm:text-sm text-ink-muted">
+            <strong class="text-republic-900">Exemple :</strong> {item.example}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  function initGlossaryPage() {
+    let activeCat = 'Tous';
+    const input = document.getElementById('glossary-filter-input') as HTMLInputElement | null;
+    const cards = document.querySelectorAll<HTMLElement>('[data-term-card]');
+    const catBtns = document.querySelectorAll<HTMLButtonElement>('.gloss-cat-btn');
+
+    const applyFilter = () => {
+      const q = (input?.value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      cards.forEach((card) => {
+        const cat = card.getAttribute('data-term-cat') || '';
+        const text = (card.getAttribute('data-term-search') || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+        const matchCat = activeCat === 'Tous' || cat === activeCat;
+        const matchQuery = !q || text.includes(q);
+        card.classList.toggle('hidden', !(matchCat && matchQuery));
+      });
+    };
+
+    input?.addEventListener('input', applyFilter);
+
+    catBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activeCat = btn.getAttribute('data-gloss-cat') || 'Tous';
+        catBtns.forEach((b) => {
+          const active = b.getAttribute('data-gloss-cat') === activeCat;
+          b.className = `gloss-cat-btn px-3.5 py-2 rounded-btn font-display font-bold text-xs sm:text-sm border transition min-h-[42px] ${
+            active
+              ? 'bg-republic-900 text-white border-republic-900'
+              : 'bg-paper text-ink border-line hover:bg-republic-100'
+          }`;
+        });
+        applyFilter();
+      });
+    });
+  }
+
+  initGlossaryPage();
+</script>
+

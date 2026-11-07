@@ -1,0 +1,141 @@
+[
+  {
+    "id": "amendement",
+    "term": "Amendement",
+    "category": "Vote de la loi",
+    "shortDef": "Une modification proposée par un député, un sénateur ou le Gouvernement pour corriger, ajouter ou supprimer des mots dans un texte de loi avant son vote."
+  },
+  {
+    "id": "bicameral",
+    "term": "Bicaméral (Bicamérisme)",
+    "category": "Institutions",
+    "shortDef": "Un Parlement composé de deux chambres (« bi » = deux) : en France, l'Assemblée nationale (577 députés) et le Sénat (348 sénateurs)."
+  },
+  {
+    "id": "circonscription",
+    "term": "Circonscription législative",
+    "category": "Élections",
+    "shortDef": "Une portion du territoire français qui élit un député. La France est découpée en 577 circonscriptions d'environ 125 000 habitants chacune."
+  },
+  {
+    "id": "cmp",
+    "term": "Commission Mixte Paritaire (CMP)",
+    "category": "Vote de la loi",
+    "shortDef": "Une réunion de 7 députés et 7 sénateurs chargée de trouver un texte commun quand l'Assemblée et le Sénat ne sont pas d'accord sur une loi."
+  },
+  {
+    "id": "constitution",
+    "term": "Constitution de 1958",
+    "category": "Droit & Justice",
+    "shortDef": "Le texte suprême de la République française (voté le 4 octobre 1958). Il fixe les droits des citoyens et le rôle du Président, du Gouvernement et du Parlement."
+  },
+  {
+    "id": "conseil-constitutionnel",
+    "term": "Conseil constitutionnel",
+    "category": "Droit & Justice",
+    "shortDef": "Composé de 9 membres (« les 9 Sages »), il vérifie lorsqu'il est saisi qu'aucune loi votée par le Parlement ne contredit la Constitution ni nos libertés."
+  },
+  {
+    "id": "conseil-etat",
+    "term": "Conseil d'État",
+    "category": "Droit & Justice",
+    "shortDef": "Le tribunal suprême de l'ordre administratif : il juge en dernier ressort les conflits entre les citoyens et l'administration, et conseille le Gouvernement sur ses projets de loi."
+  },
+  {
+    "id": "contre-pouvoir",
+    "term": "Contre-pouvoir",
+    "category": "Institutions",
+    "shortDef": "Une institution qui surveille, questionne et limite le pouvoir du Gouvernement pour empêcher tout abus d'autorité en démocratie."
+  },
+  {
+    "id": "cour-assises",
+    "term": "Cour d'assises",
+    "category": "Droit & Justice",
+    "shortDef": "Le tribunal qui juge les crimes les plus graves (meurtres, braquages). Six citoyens tirés au sort (les jurés) y votent le verdict avec trois juges professionnels."
+  },
+  {
+    "id": "cour-cassation",
+    "term": "Cour de cassation",
+    "category": "Droit & Justice",
+    "shortDef": "Située à Paris, c'est le sommet de la justice judiciaire : elle ne rejuge pas les faits, mais vérifie que les juges ont appliqué la loi sans erreur."
+  },
+  {
+    "id": "decret",
+    "term": "Décret et Arrêté",
+    "category": "Droit & Justice",
+    "shortDef": "Des règles pratiques signées par le Président, le Premier ministre, un préfet ou un maire pour appliquer les lois au quotidien (situées sous la loi dans la pyramide)."
+  },
+  {
+    "id": "hemicycle",
+    "term": "Hémicycle",
+    "category": "Le Palais Bourbon",
+    "shortDef": "Grande salle en demi-cercle inspirée des théâtres grecs antiques où les 577 députés se font face pour débattre et voter les lois."
+  },
+  {
+    "id": "huissier",
+    "term": "Huissier de séance",
+    "category": "Le Palais Bourbon",
+    "shortDef": "Agent de l'Assemblée reconnaissable à son habit noir et sa chaîne d'argent. Depuis 1789, il veille au calme, apporte les documents et fait passer les urnes."
+  },
+  {
+    "id": "kelsen",
+    "term": "Hiérarchie des normes (Pyramide de Kelsen)",
+    "category": "Droit & Justice",
+    "shortDef": "Règle fondamentale expliquée par le juriste Hans Kelsen : une règle inférieure (arrêté, décret, loi) doit toujours respecter les règles placées au-dessus d'elle (Constitution)."
+  },
+  {
+    "id": "motion-censure",
+    "term": "Motion de censure",
+    "category": "Institutions",
+    "shortDef": "Vote solennel par lequel les députés peuvent obliger le Premier ministre et tout son Gouvernement à démissionner s'ils réunissent au moins 289 voix."
+  },
+  {
+    "id": "navette",
+    "term": "Navette parlementaire",
+    "category": "Vote de la loi",
+    "shortDef": "Le va-et-vient d'un texte de loi entre l'Assemblée nationale et le Sénat jusqu'à ce que les deux chambres votent le même texte (ou que l'Assemblée ait le dernier mot)."
+  },
+  {
+    "id": "parlement",
+    "term": "Parlement",
+    "category": "Institutions",
+    "shortDef": "L'institution qui détient le pouvoir législatif (discuter et voter la loi, contrôler le Gouvernement). En France, Parlement = Assemblée nationale + Sénat."
+  },
+  {
+    "id": "perchoir",
+    "term": "Perchoir",
+    "category": "Le Palais Bourbon",
+    "shortDef": "Surnom donné au fauteuil du Président de l'Assemblée nationale, perché à 3 mètres de hauteur au-dessus de la Tribune pour voir tous les députés."
+  },
+  {
+    "id": "projet-proposition",
+    "term": "Projet de loi vs Proposition de loi",
+    "category": "Vote de la loi",
+    "shortDef": "Un « projet de loi » est un texte proposé par le Gouvernement (Premier ministre et ministres), tandis qu'une « proposition de loi » est écrite par un ou plusieurs députés ou sénateurs."
+  },
+  {
+    "id": "promulgation",
+    "term": "Promulgation",
+    "category": "Vote de la loi",
+    "shortDef": "L'acte par lequel le Président de la République signe officiellement une loi votée par le Parlement et ordonne sa publication au Journal officiel."
+  },
+  {
+    "id": "separation-pouvoirs",
+    "term": "Séparation des pouvoirs",
+    "category": "Institutions",
+    "shortDef": "Principe démocratique théorisé par Montesquieu (1748) : pour protéger la liberté des citoyens, le pouvoir d'exécuter les lois, celui de les voter et celui de juger doivent être séparés."
+  },
+  {
+    "id": "suffrage-direct",
+    "term": "Suffrage universel direct",
+    "category": "Élections",
+    "shortDef": "Mode d'élection où tous les citoyens français majeurs (18 ans et plus) votent directement dans l'urne pour choisir leurs représentants, comme les 577 députés."
+  },
+  {
+    "id": "suffrage-indirect",
+    "term": "Suffrage universel indirect",
+    "category": "Élections",
+    "shortDef": "Mode d'élection où les citoyens élisent d'abord des élus locaux (maires, conseillers), qui votent ensuite à leur tour pour élire les 348 sénateurs."
+  }
+]
+

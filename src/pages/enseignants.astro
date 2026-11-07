@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ETAPES, FINAL_QUIZ_QUESTIONS } from '../data';
+import Icon from '../components/ui/Icon.astro';
+---
+
+<BaseLayout
+  title="Espace Enseignants (EMC & Histoire Cycle 3)"
+  description="Guide pédagogique pour les enseignants de CM1-CM2 (Cycle 3) : objectifs du programme officiel d'EMC, découpage en séances, Mode Classe TBI et corrigés imprimables."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
+    <!-- Header -->
+    <header class="surface-card p-6 sm:p-8 border-t-4 border-t-republic-900">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <span class="px-3 py-1 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+          👩‍🏫 Ressource pédagogique Cycle 3 (CM1 · CM2 · 6e)
+        </span>
+        <div class="flex flex-wrap items-center gap-2 no-print">
+          <button
+            type="button"
+            id="page-toggle-tbi-btn"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-xs sm:text-sm shadow-sm min-h-[44px]"
+          >
+            <Icon name="Sparkles" size={16} />
+            <span>Activer le Mode Classe (TBI)</span>
+          </button>
+          <button
+            type="button"
+            id="print-teacher-guide-btn"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-xs sm:text-sm shadow-sm min-h-[44px]"
+          >
+            <Icon name="Printer" size={16} />
+            <span>Imprimer le livret & les corrigés (PDF)</span>
+          </button>
+        </div>
+      </div>
+
+      <h1 class="font-display font-bold text-3xl sm:text-4xl text-ink mb-3">
+        Espace Enseignants — Enseignement Moral et Civique (EMC)
+      </h1>
+      <p class="text-base sm:text-lg text-ink-muted max-w-3xl leading-relaxed">
+        Ce parcours de 12 étapes couvre les attendus du programme officiel d’EMC et d’Histoire du Cycle 3 sur les institutions de la Ve République, l’élaboration de la loi, la séparation des pouvoirs et le rôle du citoyen.
+      </p>
+    </header>
+
+    <!-- Découpage en 4 séances de 15 minutes -->
+    <section class="surface-card p-6 sm:p-8 space-y-5">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        1. Proposition de découpage en 4 séances de classe (15 minutes chacune)
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+            Séance 1 (15 min)
+          </span>
+          <h3 class="font-display font-bold text-lg text-ink">Le Palais Bourbon</h3>
+          <p class="text-xs sm:text-sm text-ink-muted">
+            <strong>Étapes 1, 2 et 3 :</strong> Découverte visuelle de l’Hémicycle, des 577 sièges, du Perchoir et du scrutin électronique.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
+            Séance 2 (15 min)
+          </span>
+          <h3 class="font-display font-bold text-lg text-ink">La Loi & la Justice</h3>
+          <p class="text-xs sm:text-sm text-ink-muted">
+            <strong>Étapes 4 et 5 :</strong> La pyramide des normes (Constitution de 1958), Code civil / Code pénal, frise depuis 1789 et tribunaux.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
+            Séance 3 (15 min)
+          </span>
+          <h3 class="font-display font-bold text-lg text-ink">Débat & Navette</h3>
+          <p class="text-xs sm:text-sm text-ink-muted">
+            <strong>Étapes 6 et 7 :</strong> Le Parlement des enfants, le contrôle du Gouvernement et la navette Assemblée / Sénat.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-card bg-gold-light border-2 border-gold space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+            Séance 4 (15 min)
+          </span>
+          <h3 class="font-display font-bold text-lg text-ink">Révision & Diplôme</h3>
+          <p class="text-xs sm:text-sm text-ink">
+            <strong>Étapes 8 à 11 :</strong> Vidéos, carte mentale en mode cache-cache, Grand Quiz collectif et remise du Diplôme.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tableau synoptique des 12 étapes + Trace écrite + Corrigés -->
+    <section class="surface-card p-6 sm:p-8 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-4">
+        <div>
+          <h2 class="font-display font-bold text-2xl text-ink">
+            2. Fiches récapitulatives, traces écrites & corrigés des 12 étapes
+          </h2>
+          <p class="text-sm text-ink-muted mt-1">
+            Chaque fiche ci-dessous contient le lien direct pour vidéoprojection (TBI), l’objectif du programme officiel, les 3 phrases de trace écrite et les réponses du mini-quiz.
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        {ETAPES.map((step) => (
+          <article class="p-5 rounded-card bg-paper border border-line space-y-4 break-inside-avoid">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-republic-700">
+                  Partie {step.partNumber} · Étape {step.number} / 12 (Durée : {step.duration})
+                </span>
+                <h3 class="font-display font-bold text-xl text-ink">
+                  {step.title}
+                </h3>
+              </div>
+              <a
+                href={`/etape/${step.slug}/`}
+                class="no-print inline-flex items-center gap-1.5 px-3.5 py-2 rounded-btn bg-surface hover:bg-republic-100 text-republic-900 border border-line text-xs font-bold"
+              >
+                <span>Projeter l’étape {step.number}</span>
+                <Icon name="ArrowRight" size={14} />
+              </a>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-republic-100/50 border border-republic-700/20 text-xs sm:text-sm text-ink">
+              <strong class="text-republic-900">Objectif du programme EMC / Histoire :</strong> {step.teacherObjective}
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <!-- Trace écrite -->
+              <div class="p-4 rounded-xl bg-surface border border-line space-y-2">
+                <h4 class="font-display font-bold text-sm text-marianne uppercase tracking-wider">
+                  Trace écrite (« Je retiens » — 3 phrases)
+                </h4>
+                <ol class="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-ink leading-relaxed">
+                  {step.keyPoints.map((kp) => (
+                    <li>{kp}</li>
+                  ))}
+                </ol>
+              </div>
+
+              <!-- Corrigé du mini-quiz -->
+              <div class="p-4 rounded-xl bg-surface border border-line space-y-2">
+                <h4 class="font-display font-bold text-sm text-success uppercase tracking-wider">
+                  Corrigé du mini-quiz (3 questions)
+                </h4>
+                <ul class="space-y-2 text-xs sm:text-sm text-ink">
+                  {step.quiz.map((q, qi) => (
+                    <li>
+                      <strong>Q{qi + 1}. {q.question}</strong>
+                      <br />
+                      <span class="text-success font-bold">→ Réponse : {q.options[q.correctIndex]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Corrigé du Grand Quiz Final (8 questions) -->
+    <section class="surface-card p-6 sm:p-8 space-y-4 break-inside-avoid">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        3. Corrigé du Grand Quiz Final (Étape 11 — 8 questions)
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {FINAL_QUIZ_QUESTIONS.map((fq, idx) => (
+          <div class="p-4 rounded-xl bg-paper border border-line text-xs sm:text-sm space-y-1">
+            <p class="font-bold text-ink">
+              {idx + 1}. {fq.question}
+            </p>
+            <p class="text-success font-bold">
+              ✓ Réponse : {fq.options[fq.correctIndex]}
+            </p>
+            <p class="text-ink-muted">{fq.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  document.getElementById('print-teacher-guide-btn')?.addEventListener('click', () => {
+    window.print();
+  });
+  document.getElementById('page-toggle-tbi-btn')?.addEventListener('click', () => {
+    document.getElementById('toggle-classroom-btn')?.click();
+  });
+</script>
+

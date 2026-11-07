@@ -1,0 +1,84 @@
+---
+import { getPhotoById } from '../../data';
+import Icon from './Icon.astro';
+
+interface Props {
+  photoId: string;
+  aspect?: '16/9' | '4/3' | 'none';
+  priority?: boolean;
+  class?: string;
+  imgClass?: string;
+  showCreditBadge?: boolean;
+  enableLightbox?: boolean;
+  sizes?: string;
+}
+
+const {
+  photoId,
+  aspect = '16/9',
+  priority = false,
+  class: className = '',
+  imgClass = '',
+  showCreditBadge = true,
+  enableLightbox = true,
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1100px'
+} = Astro.props;
+
+const photo = getPhotoById(photoId);
+if (!photo) {
+  throw new Error(`Photo "${photoId}" introuvable dans photos.json`);
+}
+
+const baseName = photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '');
+const aspectClass =
+  aspect === '16/9'
+    ? 'aspect-[16/9]'
+    : aspect === '4/3'
+    ? 'aspect-[4/3]'
+    : '';
+---
+
+<figure class={`relative overflow-hidden rounded-card bg-night/5 border border-line group ${aspectClass} ${className}`}>
+  <picture class="block w-full h-full">
+    <source
+      type="image/avif"
+      srcset={`/img/${baseName}-480.avif 480w, /img/${baseName}-960.avif 960w, /img/${baseName}-1600.avif 1600w`}
+      sizes={sizes}
+    />
+    <source
+      type="image/webp"
+      srcset={`/img/${baseName}-480.webp 480w, /img/${baseName}-960.webp 960w, /img/${baseName}-1600.webp 1600w`}
+      sizes={sizes}
+    />
+    <img
+      src={photo.src}
+      alt={photo.alt}
+      width={photo.width}
+      height={photo.height}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+      style={`object-position: ${photo.objectPosition || 'center center'};`}
+      class={`w-full h-full object-cover photo-warm transition-transform duration-300 group-hover:scale-[1.015] ${imgClass}`}
+    />
+  </picture>
+
+  {enableLightbox && (
+    <button
+      type="button"
+      class="lightbox-trigger absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-night/80 hover:bg-night text-white text-xs font-bold shadow-card backdrop-blur-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold min-h-[38px]"
+      data-photo-id={photo.id}
+      aria-label={`Agrandir la photo : ${photo.title}`}
+    >
+      <Icon name="zoom-in" size={15} />
+      <span>Agrandir</span>
+    </button>
+  )}
+
+  {showCreditBadge && (
+    <figcaption class="absolute bottom-2.5 right-2.5 z-10 max-w-[90%] px-2.5 py-1 rounded-md bg-night/80 text-white/95 text-xs leading-tight backdrop-blur-sm truncate">
+      📸 {photo.author} · {photo.license}
+    </figcaption>
+  )}
+</figure>
+

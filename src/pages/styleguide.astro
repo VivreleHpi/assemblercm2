@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ETAPES, BADGES } from '../data';
+import Avatar from '../components/ui/Avatar.astro';
+import Icon from '../components/ui/Icon.astro';
+import BadgeCard from '../components/ui/BadgeCard.astro';
+import ResponsivePicture from '../components/ui/ResponsivePicture.astro';
+import MalikBubble from '../components/pedagogy/MalikBubble.astro';
+import KeyPoints from '../components/pedagogy/KeyPoints.astro';
+
+const sampleEtape = ETAPES[0];
+const colors = [
+  { name: 'paper (60% Fond)', hex: '#FAF7F0', bg: 'bg-paper', text: 'text-ink', ratio: '15.8:1 avec ink' },
+  { name: 'surface (Cartes)', hex: '#FFFFFF', bg: 'bg-surface', text: 'text-ink', ratio: '17.4:1 avec ink' },
+  { name: 'ink (Texte principal)', hex: '#0F172A', bg: 'bg-ink', text: 'text-white', ratio: '17.4:1 sur blanc' },
+  { name: 'republic-900 (30% Principal)', hex: '#002654', bg: 'bg-republic-900', text: 'text-white', ratio: '13.9:1 sur blanc' },
+  { name: 'velvet (Patrimoine)', hex: '#8B1E2D', bg: 'bg-velvet', text: 'text-white', ratio: '8.1:1 sur blanc' },
+  { name: 'gold (10% CTA & XP)', hex: '#E8B21A', bg: 'bg-gold', text: 'text-ink', ratio: '9.4:1 avec ink' },
+  { name: 'marianne (<5% À retenir)', hex: '#CE1126', bg: 'bg-marianne', text: 'text-white', ratio: '5.6:1 avec blanc' },
+  { name: 'night (Unique fond sombre)', hex: '#0B1B3A', bg: 'bg-night', text: 'text-white', ratio: '16.5:1 avec blanc' }
+];
+---
+
+<BaseLayout
+  title="Design System & Styleguide — Carnet de voyage républicain"
+  description="Documentation vivante du Design System EdTech CM2 : couleurs 60/30/10, typographie auto-hébergée, avatars vectoriels et 16 composants accessibles WCAG 2.2 AA."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
+    <!-- Header -->
+    <header class="surface-card p-6 sm:p-8 border-t-4 border-t-gold space-y-3">
+      <span class="px-3 py-1 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+        🎨 Design System · WCAG 2.2 AA
+      </span>
+      <h1 class="font-display font-bold text-3xl sm:text-4xl text-ink">
+        Styleguide : « Un carnet de voyage républicain »
+      </h1>
+      <p class="text-base sm:text-lg text-ink-muted max-w-3xl leading-relaxed">
+        Ce guide documente les tokens, la typographie, les illustrations vectorielles et les 16 composants d’interface utilisés à travers les 12 étapes du parcours de Malik & son Papa.
+      </p>
+    </header>
+
+    <!-- 1. Palette de couleurs 60/30/10 -->
+    <section class="surface-card p-6 sm:p-8 space-y-5">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        1. Tokens de Couleurs (Règle 60 / 30 / 10 & Contrastes AA/AAA)
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {colors.map((c) => (
+          <div class="rounded-card border border-line overflow-hidden bg-paper">
+            <div class={`h-24 ${c.bg} ${c.text} p-4 flex flex-col justify-between font-display font-bold`}>
+              <span class="text-sm">{c.name}</span>
+              <span class="text-xs font-mono opacity-90">{c.hex}</span>
+            </div>
+            <div class="p-3 bg-surface text-xs text-ink-muted font-semibold">
+              Contraste mesuré : <strong class="text-ink">{c.ratio}</strong>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 2. Typographie auto-hébergée -->
+    <section class="surface-card p-6 sm:p-8 space-y-5">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        2. Typographie Auto-Hébergée (WOFF2)
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="p-5 rounded-card bg-paper border border-line space-y-2">
+          <span class="text-xs font-bold uppercase text-republic-700">Titres · Fredoka 600/700</span>
+          <p class="font-display font-bold text-2xl text-ink leading-tight">
+            Entre dans l’Assemblée nationale ! (577 sièges)
+          </p>
+          <p class="text-xs text-ink-muted">Interlignage 1.15 · Chaleureux et rond pour les 9-11 ans.</p>
+        </div>
+
+        <div class="p-5 rounded-card bg-paper border border-line space-y-2">
+          <span class="text-xs font-bold uppercase text-republic-700">Corps · Atkinson Hyperlegible</span>
+          <p class="font-sans text-base text-ink leading-relaxed">
+            Les 577 députés sont élus pour 5 ans au suffrage universel direct. Lettres distinctes : I, l, 1, 0, O.
+          </p>
+          <p class="text-xs text-ink-muted">18px desktop / 17px mobile · Max 65 caractères par ligne.</p>
+        </div>
+
+        <div class="p-5 rounded-card bg-paper border border-line space-y-2">
+          <span class="text-xs font-bold uppercase text-republic-700">Diplôme · Cinzel 700</span>
+          <p class="font-diploma font-bold text-xl text-ink tracking-wide">
+            DIPLÔME DE DÉPUTÉ JUNIOR
+          </p>
+          <p class="text-xs text-ink-muted">Réservé exclusivement au titre solennel du diplôme final.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Personnages Vectoriels & Boutons -->
+    <section class="surface-card p-6 sm:p-8 space-y-6">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        3. Illustrations Vectorielles (`Avatar`) & Boutons (`Button`)
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+        <div class="p-5 rounded-card bg-paper border border-line flex flex-wrap items-center justify-around gap-4">
+          <div class="text-center space-y-1">
+            <Avatar character="malik" size={76} />
+            <span class="block font-display font-bold text-sm text-ink">Malik (CM2)</span>
+          </div>
+          <div class="text-center space-y-1">
+            <Avatar character="papa" size={76} />
+            <span class="block font-display font-bold text-sm text-ink">Papa</span>
+          </div>
+          <div class="text-center space-y-1">
+            <Avatar character="duo" size={88} />
+            <span class="block font-display font-bold text-sm text-ink">Duo Guide</span>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-card bg-paper border border-line space-y-4">
+          <h3 class="font-display font-bold text-base text-ink">
+            Variantes de boutons (Cibles tactiles ≥ 48×48 px)
+          </h3>
+          <div class="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-sm shadow-sm min-h-[48px]"
+            >
+              <span>Primary Gold (CTA)</span>
+              <Icon name="ArrowRight" size={16} />
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-sm shadow-sm min-h-[48px]"
+            >
+              <span>Secondary Republic</span>
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-3 rounded-btn bg-surface hover:bg-republic-100 text-ink border border-line font-bold text-sm min-h-[48px]"
+            >
+              <span>Ghost / Surface</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Composants Pédagogiques : MalikBubble, KeyPoints, BadgeCard -->
+    <section class="surface-card p-6 sm:p-8 space-y-6">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        4. Composants Pédagogiques (`MalikBubble`, `KeyPoints`, `BadgeCard`, `ResponsivePicture`)
+      </h2>
+
+      <MalikBubble
+        character="malik"
+        title={sampleEtape.malikSecret.title}
+        text={sampleEtape.malikSecret.text}
+        soundEffect="bell"
+      />
+
+      <KeyPoints points={sampleEtape.keyPoints} stepNumber={1} />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div class="space-y-3">
+          <h3 class="font-display font-bold text-lg text-ink">
+            États des médailles (`BadgeCard` débloquée vs verrouillée)
+          </h3>
+          <BadgeCard badge={BADGES[0]} unlocked={true} />
+          <BadgeCard badge={BADGES[4]} unlocked={false} />
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="font-display font-bold text-lg text-ink">
+            Photo AVIF/WebP avec Lightbox & Crédit (`ResponsivePicture`)
+          </h3>
+          <ResponsivePicture photoId="palais-bourbon" aspect="16/9" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Composants Interactifs : GlossaryTerm, Stepper, ProgressBar, Accordion -->
+    <section class="surface-card p-6 sm:p-8 space-y-6">
+      <h2 class="font-display font-bold text-2xl text-ink">
+        5. Infobulle Glossaire, Barre de progression & Accordéon accessible
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-5 rounded-card bg-paper border border-line space-y-4">
+          <h3 class="font-display font-bold text-base text-ink">
+            Barre de progression (`ProgressBar`) & Terme (`GlossaryTerm`)
+          </h3>
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-bold text-ink">
+              <span>Progression exemple : Étape 6 / 12</span>
+              <span class="text-republic-700">50%</span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-line overflow-hidden">
+              <div class="h-full bg-republic-900 rounded-full" style="width: 50%"></div>
+            </div>
+          </div>
+          <p class="text-sm text-ink leading-relaxed">
+            Exemple de terme lié au glossaire : la{' '}
+            <a
+              href="/glossaire/#terme-navette"
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-gold-light border border-gold font-bold text-ink hover:bg-gold"
+            >
+              <span>navette parlementaire</span>
+              <Icon name="BookOpen" size={13} />
+            </a>{' '}
+            fait voyager le texte entre l’Assemblée et le Sénat.
+          </p>
+        </div>
+
+        <!-- Accessible Accordion -->
+        <div class="p-5 rounded-card bg-paper border border-line space-y-3">
+          <h3 class="font-display font-bold text-base text-ink">
+            Accordéon accessible (`<details>`)
+          </h3>
+          <details class="group rounded-xl bg-surface border border-line p-3.5" open>
+            <summary class="font-display font-bold text-sm text-ink cursor-pointer list-none flex items-center justify-between">
+              <span>Pourquoi le fond est-il couleur papier crème (`#FAF7F0`) ?</span>
+              <span class="text-republic-900 font-bold group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-xs sm:text-sm text-ink-muted mt-2 leading-relaxed">
+              Un blanc pur `#FFFFFF` sur tout l’écran fatigue les yeux des élèves de 9-11 ans (notamment les lecteurs dyslexiques). Le papier chaud `#FAF7F0` adoucit la lecture tout en maintenant un contraste AAA (`15.8:1`).
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+

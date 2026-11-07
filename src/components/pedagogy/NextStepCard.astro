@@ -1,0 +1,108 @@
+---
+import type { EtapeItem } from '../../data';
+import { getPhotoById } from '../../data';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  prevStep?: EtapeItem;
+  nextStep?: EtapeItem;
+}
+
+const { prevStep, nextStep } = Astro.props;
+const nextPhoto = nextStep ? getPhotoById(nextStep.heroPhoto) : undefined;
+const nextBaseName = nextPhoto ? nextPhoto.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '') : 'hemicycle';
+---
+
+<nav aria-label="Navigation entre les étapes" class="mt-10 pt-8 border-t-2 border-line no-print">
+  {nextStep ? (
+    <div class="mb-6">
+      <span class="text-xs font-bold uppercase tracking-wider text-ink-muted block mb-2.5">
+        Prêt pour la suite du parcours ?
+      </span>
+      <a
+        href={`/etape/${nextStep.slug}/`}
+        class="group block surface-card overflow-hidden border-2 border-republic-900/15 hover:border-gold transition-all"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-12 items-stretch">
+          <div class="sm:col-span-4 relative aspect-[16/9] sm:aspect-auto overflow-hidden bg-night">
+            <img
+              src={`/img/${nextBaseName}-480.webp`}
+              alt={nextPhoto?.alt || nextStep.title}
+              loading="lazy"
+              class="w-full h-full object-cover photo-warm group-hover:scale-105 transition-transform duration-300"
+            />
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-night/85 text-white text-xs font-bold">
+              Étape {nextStep.number} / 12
+            </span>
+          </div>
+          <div class="sm:col-span-8 p-5 sm:p-6 flex flex-col justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold text-republic-700 uppercase tracking-wider">
+                Partie {nextStep.partNumber} · {nextStep.partTitle} ({nextStep.duration})
+              </span>
+              <h3 class="font-display font-bold text-xl sm:text-2xl text-ink group-hover:text-republic-900 mt-1">
+                {nextStep.title}
+              </h3>
+              <p class="text-sm text-ink-muted mt-1.5 line-clamp-2">
+                {nextStep.subtitle}
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold">
+                +{nextStep.xp} XP
+              </span>
+              <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-gold group-hover:bg-gold-hover text-ink font-display font-bold text-sm shadow-sm transition">
+                <span>Continuer vers l’étape {nextStep.number}</span>
+                <Icon name="ArrowRight" size={18} />
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  ) : (
+    <div class="surface-card p-6 bg-gold-light/60 border-2 border-gold mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-republic-900">
+          Parcours terminé · 12 / 12
+        </span>
+        <h3 class="font-display font-bold text-xl text-ink mt-1">
+          Bravo ! Tu as exploré les 12 étapes du parcours citoyen !
+        </h3>
+        <p class="text-sm text-ink-muted mt-1">
+          Retourne à l’étape 11 pour imprimer ton Diplôme de Député Junior CM2 ou retourne sur la carte.
+        </p>
+      </div>
+      <a
+        href="/etape/11-quiz-diplome/"
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-gold hover:bg-gold-hover text-ink font-display font-bold text-sm shrink-0 min-h-[48px]"
+      >
+        <Icon name="GraduationCap" size={18} />
+        <span>Voir mon diplôme</span>
+      </a>
+    </div>
+  )}
+
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    {prevStep ? (
+      <a
+        href={`/etape/${prevStep.slug}/`}
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-surface hover:bg-republic-100 text-ink border border-line font-semibold text-sm transition min-h-[48px]"
+      >
+        <Icon name="ArrowLeft" size={17} />
+        <span>Étape {prevStep.number} : {prevStep.shortTitle}</span>
+      </a>
+    ) : (
+      <span></span>
+    )}
+
+    <a
+      href="/#carte-parcours"
+      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-surface hover:bg-republic-100 text-republic-900 border border-line font-semibold text-sm transition min-h-[48px]"
+    >
+      <Icon name="Compass" size={17} />
+      <span>Retour à la carte des 12 étapes</span>
+    </a>
+  </div>
+</nav>
+

@@ -1,0 +1,108 @@
+---
+import '../styles/global.css';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import MobileBottomBar from '../components/layout/MobileBottomBar.astro';
+import GlobalModals from '../components/layout/GlobalModals.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  currentStepNumber?: number;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Site éducatif gratuit et sans publicité créé par Malik (CM2) et son papa pour faire découvrir l'Assemblée nationale, la Constitution et le vote des lois aux élèves de 9 à 11 ans.",
+  currentStepNumber,
+  ogImage = '/og/og-default.jpg'
+} = Astro.props;
+
+const fullTitle = title.includes('Assemblée nationale')
+  ? title
+  : `${title} — L’Assemblée nationale (Parcours CM2 de Malik & Papa)`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LearningResource',
+  name: fullTitle,
+  description,
+  educationalLevel: 'CM2 (Cycle 3, 9-11 ans)',
+  learningResourceType: ['Interactive Resource', 'Quiz', 'Lesson Plan'],
+  inLanguage: 'fr-FR',
+  isAccessibleForFree: true,
+  author: {
+    '@type': 'Person',
+    name: 'Malik (CM2) & son Papa'
+  },
+  audience: {
+    '@type': 'EducationalAudience',
+    educationalRole: ['student', 'teacher', 'parent']
+  }
+};
+---
+
+<!doctype html>
+<html lang="fr" data-font-size="normal">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#002654" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Preload critical self-hosted WOFF2 fonts (2 weights max as specified) -->
+    <link
+      rel="preload"
+      href="/fonts/fredoka-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/atkinson-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-paper text-ink antialiased selection:bg-gold selection:text-ink">
+    <a href="#main-content" class="skip-link">
+      Aller directement au contenu principal
+    </a>
+
+    <Header currentStepNumber={currentStepNumber} />
+
+    <main id="main-content" class="flex-1 w-full">
+      <slot />
+    </main>
+
+    <Footer />
+    <MobileBottomBar />
+    <GlobalModals />
+
+    <script>
+      import { initAppClient } from '../scripts/app-client';
+      initAppClient();
+    </script>
+  </body>
+</html>
+

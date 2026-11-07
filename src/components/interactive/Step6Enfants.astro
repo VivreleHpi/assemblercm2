@@ -1,0 +1,178 @@
+---
+import Icon from '../ui/Icon.astro';
+
+const themes = [
+  {
+    id: 'ecologie',
+    label: '🌳 Écologie & Nature à l’école',
+    title: 'Proposition de loi visant à créer des cours d’école végétalisées et des refuges pour la biodiversité',
+    expose:
+      'Pour lutter contre la chaleur et protéger les oiseaux et les insectes pollinisateurs, chaque école primaire aménage un espace de pleine terre et un hôtel à insectes entretenu par les élèves.',
+    article1:
+      'Article 1er : Dans chaque commune, les cours d’école primaire comportent au moins un espace végétalisé ombragé et un récupérateur d’eau de pluie à usage pédagogique.'
+  },
+  {
+    id: 'numerique',
+    label: '📱 Écrans & Protection des enfants',
+    title: 'Proposition de loi pour un permis citoyen du numérique dès la classe de CM2',
+    expose:
+      'Les élèves utilisent de plus en plus tôt Internet et les jeux en ligne. Il est essentiel de leur apprendre à protéger leurs données personnelles et à prévenir le cyberharcèlement.',
+    article1:
+      'Article 1er : Une formation annuelle au respect d’autrui en ligne et à la vérification des sources d’information est organisée dans toutes les classes de CM1 et de CM2.'
+  },
+  {
+    id: 'sport',
+    label: '🏃‍♀️ Sport, Santé & Solidarité',
+    title: 'Proposition de loi favorisant la découverte du handisport et des jeux paralympiques à l’école',
+    expose:
+      'Le sport permet de rassembler tous les enfants. Découvrir le cécifoot, la boccia ou le basket fauteuil aide à changer de regard sur le handicap.',
+    article1:
+      'Article 1er : Chaque année scolaire, les élèves de cycle 3 participent à une journée d’initiation aux disciplines handisport en lien avec les associations locales.'
+  }
+];
+---
+
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20 space-y-8">
+  <div>
+    <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+      Opération civique nationale · Depuis 1994
+    </span>
+    <h2 class="font-display font-bold text-2xl text-ink mt-1">
+      Comment fonctionne le Parlement des enfants en CM2 ?
+    </h2>
+    <p class="text-sm sm:text-base text-ink-muted mt-1">
+      Organisé par l’Assemblée nationale et le ministère de l’Éducation nationale, il permet à <strong>577 classes de CM2</strong> (une par circonscription !) de faire le vrai métier de député.
+    </p>
+  </div>
+
+  <!-- 4 Steps of Parlement des enfants -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+      <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+        Octobre · Étape 1
+      </span>
+      <h3 class="font-display font-bold text-base text-ink">577 classes choisies</h3>
+      <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+        Une classe de CM2 (et depuis récemment une classe de 6e) est sélectionnée dans chacune des 577 circonscriptions françaises.
+      </p>
+    </div>
+
+    <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+      <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+        Nov. – Janv. · Étape 2
+      </span>
+      <h3 class="font-display font-bold text-base text-ink">Débat & Rédaction</h3>
+      <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+        Avec leur enseignant et la visite du vrai député de leur circonscription, les élèves rédigent un <strong>exposé des motifs</strong> et <strong>4 articles maximum</strong>.
+      </p>
+    </div>
+
+    <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+      <span class="px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
+        Mars – Mai · Étape 3
+      </span>
+      <h3 class="font-display font-bold text-base text-ink">Jury national</h3>
+      <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+        Des jurys académiques puis un jury national composé de députés et d’inspecteurs retiennent les propositions de loi finalistes.
+      </p>
+    </div>
+
+    <div class="p-4 rounded-card bg-gold-light border-2 border-gold space-y-2">
+      <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+        Juin · Étape 4
+      </span>
+      <h3 class="font-display font-bold text-base text-ink">Le vote national !</h3>
+      <p class="text-xs sm:text-sm text-ink leading-relaxed">
+        Toutes les classes participantes débattent des textes finalistes et votent électroniquement pour élire la proposition lauréate !
+      </p>
+    </div>
+  </div>
+
+  <!-- Interactive Bill Builder -->
+  <div class="pt-6 border-t border-line space-y-4">
+    <h3 class="font-display font-bold text-xl text-ink">
+      Atelier : Choisis le thème de la proposition de loi de ta classe de CM2
+    </h3>
+    <div class="flex flex-wrap gap-2.5" role="group" aria-label="Thèmes de proposition de loi CM2">
+      {themes.map((t, idx) => (
+        <button
+          type="button"
+          data-pde-theme={t.id}
+          class={`pde-theme-btn px-4 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
+            idx === 0
+              ? 'bg-republic-900 text-white border-republic-900 shadow-sm'
+              : 'bg-paper text-ink border-line hover:bg-republic-100'
+          }`}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+
+    <div
+      id="pde-bill-preview"
+      aria-live="polite"
+      class="p-6 rounded-card bg-paper border-2 border-republic-900/25 shadow-sm space-y-3"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
+        <span class="text-xs font-bold uppercase tracking-wider text-republic-900">
+          République Française · Parlement des enfants (Classe de CM2)
+        </span>
+        <span class="px-2.5 py-0.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+          Modèle officiel de proposition
+        </span>
+      </div>
+      <h4 id="pde-bill-title" class="font-display font-bold text-lg sm:text-xl text-ink">
+        {themes[0].title}
+      </h4>
+      <div class="p-3.5 rounded-xl bg-surface border border-line text-xs sm:text-sm text-ink-muted leading-relaxed">
+        <strong class="text-ink block mb-1">Exposé des motifs (Pourquoi cette loi ?) :</strong>
+        <span id="pde-bill-expose">{themes[0].expose}</span>
+      </div>
+      <div class="p-4 rounded-xl bg-republic-100/50 border border-republic-700/20 text-sm sm:text-base text-ink font-medium leading-relaxed">
+        <span id="pde-bill-article">{themes[0].article1}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+  id="step6-themes-json"
+  type="application/json"
+  set:html={JSON.stringify(themes)}
+/>
+
+<script>
+  function initStep6() {
+    const jsonEl = document.getElementById('step6-themes-json');
+    const themes = jsonEl ? JSON.parse(jsonEl.textContent || '[]') : [];
+    const btns = document.querySelectorAll<HTMLButtonElement>('.pde-theme-btn');
+
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-pde-theme');
+        const theme = themes.find((t: { id: string }) => t.id === id);
+        if (!theme) return;
+
+        btns.forEach((b) => {
+          const active = b.getAttribute('data-pde-theme') === id;
+          b.className = `pde-theme-btn px-4 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
+            active
+              ? 'bg-republic-900 text-white border-republic-900 shadow-sm'
+              : 'bg-paper text-ink border-line hover:bg-republic-100'
+          }`;
+        });
+
+        const titleEl = document.getElementById('pde-bill-title');
+        const expEl = document.getElementById('pde-bill-expose');
+        const artEl = document.getElementById('pde-bill-article');
+        if (titleEl) titleEl.textContent = theme.title;
+        if (expEl) expEl.textContent = theme.expose;
+        if (artEl) artEl.textContent = theme.article1;
+      });
+    });
+  }
+
+  initStep6();
+</script>
+
