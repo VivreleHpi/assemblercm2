@@ -89,10 +89,33 @@ import Avatar from '../ui/Avatar.astro';
 
     <!-- Customization Controls (shown when unlocked) -->
     <div id="diploma-controls-bar" class="hidden no-print p-5 rounded-card bg-gold-light border-2 border-gold flex flex-wrap items-end justify-between gap-4">
-      <div class="flex flex-wrap items-end gap-3 flex-1">
+      <div class="flex flex-wrap items-end gap-3.5 flex-1">
+        <div>
+          <span class="block text-xs font-bold uppercase text-ink mb-1">
+            1. Tu es un(e) futur(e) Député(e) Junior :
+          </span>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              data-select-avatar="deputee"
+              class="avatar-choice-btn inline-flex items-center gap-2 px-3.5 py-1.5 rounded-btn border border-line bg-surface text-xs font-bold text-ink min-h-[44px]"
+            >
+              <Avatar character="deputee" size={28} />
+              <span>Future Députée (Fille)</span>
+            </button>
+            <button
+              type="button"
+              data-select-avatar="depute"
+              class="avatar-choice-btn inline-flex items-center gap-2 px-3.5 py-1.5 rounded-btn border-2 border-gold bg-gold-light text-xs font-bold text-ink min-h-[44px]"
+            >
+              <Avatar character="depute" size={28} />
+              <span>Futur Député (Garçon)</span>
+            </button>
+          </div>
+        </div>
         <div class="min-w-[190px] flex-1">
           <label for="diploma-student-name" class="block text-xs font-bold uppercase text-ink mb-1">
-            Prénom et Nom de l’élève (CM2)
+            2. Ton Prénom et Nom (CM2)
           </label>
           <input
             type="text"
@@ -104,7 +127,7 @@ import Avatar from '../ui/Avatar.astro';
         </div>
         <div class="min-w-[170px]">
           <label for="diploma-school-name" class="block text-xs font-bold uppercase text-ink mb-1">
-            Classe / École (facultatif)
+            3. Classe / École (facultatif)
           </label>
           <input
             type="text"
@@ -113,29 +136,6 @@ import Avatar from '../ui/Avatar.astro';
             placeholder="Ex : Classe de CM2..."
             class="w-full px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-medium text-sm"
           />
-        </div>
-        <div>
-          <span class="block text-xs font-bold uppercase text-ink mb-1">
-            Avatar sur le diplôme
-          </span>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              data-select-avatar="deputee"
-              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-line bg-surface text-xs font-bold text-ink min-h-[42px]"
-            >
-              <Avatar character="deputee" size={26} />
-              <span>Députée (Fille)</span>
-            </button>
-            <button
-              type="button"
-              data-select-avatar="depute"
-              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border-2 border-gold bg-gold-light text-xs font-bold text-ink min-h-[42px]"
-            >
-              <Avatar character="depute" size={26} />
-              <span>Député (Garçon)</span>
-            </button>
-          </div>
         </div>
       </div>
 

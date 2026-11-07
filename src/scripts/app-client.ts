@@ -345,12 +345,19 @@ export function initAppClient() {
       document.getElementById(`diploma-avatar-${key}`)?.classList.toggle('hidden', activeAvatar !== key);
     });
 
+    const isGirl = activeAvatar === 'deputee';
+    document.getElementById('onboarding-preview-deputee')?.classList.toggle('hidden', !isGirl);
+    document.getElementById('onboarding-preview-depute')?.classList.toggle('hidden', isGirl);
+    const rolePill = document.getElementById('onboarding-role-pill');
+    if (rolePill) {
+      rolePill.textContent = isGirl ? 'Future Députée Junior (Fille)' : 'Futur Député Junior (Garçon)';
+    }
+
     const diplomaHeading = document.getElementById('diploma-main-heading');
     if (diplomaHeading) {
-      diplomaHeading.textContent =
-        activeAvatar === 'deputee'
-          ? 'DIPLÔME DE DÉPUTÉE JUNIOR CM2'
-          : 'DIPLÔME DE DÉPUTÉ JUNIOR CM2';
+      diplomaHeading.textContent = isGirl
+        ? 'DIPLÔME DE DÉPUTÉE JUNIOR CM2'
+        : 'DIPLÔME DE DÉPUTÉ JUNIOR CM2';
     }
 
     const pctEl = document.getElementById('header-progress-pct');
@@ -849,18 +856,22 @@ export function initAppClient() {
 
     document.getElementById('onboarding-next-btn')?.addEventListener('click', () => {
       const nameInput = document.getElementById('onboarding-name-input') as HTMLInputElement | null;
-      if (onboardingStep === 1 && nameInput?.value.trim()) {
+      if (nameInput && nameInput.value.trim()) {
         state.userName = nameInput.value.trim();
       }
       if (onboardingStep < 3) {
         onboardingStep++;
         updateOnboardingScreen();
+        if (onboardingStep === 2) {
+          setTimeout(() => nameInput?.focus(), 50);
+        }
       } else {
         state.onboardingDone = true;
         saveState();
         closeModal('onboarding-modal');
+        const defaultRole = state.avatar === 'deputee' ? 'Députée Junior' : 'Député Junior';
         showToast(
-          `Bienvenue ${state.userName || 'Député Junior'} !`,
+          `Bienvenue ${state.userName || defaultRole} !`,
           'Commence par l’Étape 1 pour découvrir l’Hémicycle.'
         );
       }
