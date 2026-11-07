@@ -46,8 +46,8 @@ const targetPrefixes = [
 ];
 
 const escapedPrefixes = targetPrefixes.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-// Match "/<prefix>" preceded by quote, space, comma, or url(
-const regex = new RegExp(`(["'\\s,(])\\/(${escapedPrefixes})`, 'g');
+// Match "/<prefix>" preceded by quote, backtick, space, comma, or url(
+const regex = new RegExp(`(["'\`\\s,(])\\/(${escapedPrefixes})`, 'g');
 
 const files = walk(distDir);
 for (const file of files) {

@@ -1,5 +1,7 @@
 # 🇫🇷 L’Assemblée nationale — Le parcours de Malik & son Papa (CM2)
 
+🌐 **Site en ligne (GitHub Pages)** : **[https://vivrelehpi.github.io/assemblercm2/](https://vivrelehpi.github.io/assemblercm2/)**
+
 Site éducatif gratuit, sans compte, sans cookie et sans publicité conçu par **Malik (CM2)** et **son papa** pour faire découvrir l’Assemblée nationale, la Constitution de 1958, la Justice et le vote des lois aux élèves de **Cycle 3 (9-11 ans)**.
 
 ---
@@ -59,8 +61,12 @@ npm run build
 
 # 4. Servir le site compilé (port 8957 par défaut)
 node server.js
+
+# 5. Publier directement sur GitHub Pages (branche gh-pages avec BASE_PATH=/assemblercm2)
+npm run deploy:gh
 ```
 
-### Déploiement statique (Netlify / GitHub Pages)
-Le fichier `netlify.toml` configure automatiquement la commande `npm run build` et le dossier de publication `dist` avec les en-têtes de sécurité et de cache longue durée (`immutable`) pour les polices WOFF2 et les images AVIF/WebP.
+### Déploiement statique (GitHub Pages / Netlify)
+- **GitHub Pages** : La commande `npm run deploy:gh` compile le site avec `BASE_PATH=/assemblercm2`, ajoute `.nojekyll` et publie automatiquement le dossier `dist/` sur la branche `gh-pages` (`https://vivrelehpi.github.io/assemblercm2/`).
+- **Netlify** : Le fichier `netlify.toml` configure automatiquement la commande `npm run build` et le dossier de publication `dist` avec les en-têtes de sécurité et de cache longue durée (`immutable`) pour les polices WOFF2 et les images AVIF/WebP.
 
