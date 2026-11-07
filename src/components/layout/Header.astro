@@ -79,7 +79,13 @@ const { currentStepNumber } = Astro.props;
         class="inline-flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-btn bg-gold-light hover:bg-gold/40 text-ink border-2 border-gold font-display font-bold text-xs sm:text-sm transition min-h-[44px]"
         title="Ouvrir mon profil Député Junior, mes XP et mes 9 badges"
       >
-        <span id="header-avatar-malik" class="shrink-0">
+        <span id="header-avatar-deputee" class="shrink-0 hidden">
+          <Avatar character="deputee" size={28} />
+        </span>
+        <span id="header-avatar-depute" class="shrink-0">
+          <Avatar character="depute" size={28} />
+        </span>
+        <span id="header-avatar-malik" class="shrink-0 hidden">
           <Avatar character="malik" size={28} />
         </span>
         <span id="header-avatar-papa" class="shrink-0 hidden">

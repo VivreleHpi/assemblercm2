@@ -1,12 +1,14 @@
 ---
+export type AvatarCharacter = 'deputee' | 'depute' | 'malik' | 'papa' | 'duo';
+
 interface Props {
-  character?: 'malik' | 'papa' | 'duo';
+  character?: AvatarCharacter;
   size?: number;
   class?: string;
 }
 
 const {
-  character = 'malik',
+  character = 'deputee',
   size = 56,
   class: className = ''
 } = Astro.props;
@@ -14,6 +16,123 @@ const {
 const widthPx = character === 'duo' ? Math.round(size * 1.45) : size;
 const heightPx = size;
 ---
+
+{character === 'deputee' && (
+  <svg
+    viewBox="0 0 80 80"
+    width={widthPx}
+    height={heightPx}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={`shrink-0 ${className}`}
+    role="img"
+    aria-label="Avatar Députée Junior CM2 (Fille)"
+  >
+    <!-- Fond médaillon républicain doré & bleu -->
+    <circle cx="40" cy="40" r="38" fill="#FAF7F0" stroke="#E8B21A" stroke-width="3" />
+    <circle cx="40" cy="40" r="34.5" fill="#DBE4F3" />
+
+    <!-- Cheveux longs (arrière) -->
+    <path
+      d="M20 34C18 46 19 57 24 63H56C61 57 62 46 60 34C58 20 50 13 40 13C30 13 22 20 20 34Z"
+      fill="#3B2314"
+    />
+
+    <!-- Veste de Députée Junior bleu républicain -->
+    <path d="M15 73C17 57 26 51 40 51C54 51 63 57 65 73" fill="#002654" />
+    <!-- Chemise blanche & col -->
+    <polygon points="40,51 32,64 48,64" fill="#FFFFFF" />
+    <path d="M33 51L40 59L47 51" stroke="#E5E1D8" stroke-width="1.5" fill="none" />
+
+    <!-- Écharpe tricolore de Députée (Bleu, Blanc, Rouge + frange Or) -->
+    <path d="M25 53L46 73H52L30 51.5Z" fill="#1E3A8A" />
+    <path d="M29 51.5L51 73H56L34 51Z" fill="#FFFFFF" />
+    <path d="M33 51L55 73H61L38 51Z" fill="#CE1126" />
+    <line x1="25" y1="53" x2="46" y2="73" stroke="#E8B21A" stroke-width="1.2" />
+
+    <!-- Cocarde parlementaire dorée -->
+    <circle cx="27" cy="62" r="4.2" fill="#E8B21A" stroke="#FFFFFF" stroke-width="1.3" />
+    <circle cx="27" cy="62" r="1.8" fill="#002654" />
+
+    <!-- Cou et visage -->
+    <rect x="35" y="43" width="10" height="10" rx="4" fill="#F1C29B" />
+    <circle cx="40" cy="33.5" r="14.5" fill="#F6CBA6" />
+
+    <!-- Joues rosées -->
+    <circle cx="30.5" cy="37" r="2.6" fill="#F48FB1" fill-opacity="0.45" />
+    <circle cx="49.5" cy="37" r="2.6" fill="#F48FB1" fill-opacity="0.45" />
+
+    <!-- Frange & coiffure avec serre-tête doré -->
+    <path
+      d="M24.5 31C25 19.5 32 14.5 40 14.5C48 14.5 55 19.5 55.5 31C52 25 46.5 23.5 40 23.5C33.5 23.5 28 25 24.5 31Z"
+      fill="#3B2314"
+    />
+    <path
+      d="M26 25C30 19 50 19 54 25"
+      stroke="#E8B21A"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+
+    <!-- Yeux et sourire -->
+    <circle cx="34.5" cy="33.5" r="2.1" fill="#0F172A" />
+    <circle cx="45.5" cy="33.5" r="2.1" fill="#0F172A" />
+    <circle cx="35.2" cy="32.8" r="0.7" fill="#FFFFFF" />
+    <circle cx="46.2" cy="32.8" r="0.7" fill="#FFFFFF" />
+    <path d="M35 40.2C37 42.8 43 42.8 45 40.2" stroke="#0F172A" stroke-width="2.1" stroke-linecap="round" />
+  </svg>
+)}
+
+{character === 'depute' && (
+  <svg
+    viewBox="0 0 80 80"
+    width={widthPx}
+    height={heightPx}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={`shrink-0 ${className}`}
+    role="img"
+    aria-label="Avatar Député Junior CM2 (Garçon)"
+  >
+    <!-- Fond médaillon républicain doré & bleu -->
+    <circle cx="40" cy="40" r="38" fill="#FAF7F0" stroke="#002654" stroke-width="3" />
+    <circle cx="40" cy="40" r="34.5" fill="#DBE4F3" />
+
+    <!-- Veste de Député Junior bleu républicain -->
+    <path d="M15 73C17 57 26 51 40 51C54 51 63 57 65 73" fill="#002654" />
+    <!-- Chemise blanche & cravate velours -->
+    <polygon points="40,51 32,65 48,65" fill="#FFFFFF" />
+    <polygon points="38.5,53 41.5,53 42.5,64 40,66.5 37.5,64" fill="#8B1E2D" />
+
+    <!-- Écharpe tricolore de Député (Bleu, Blanc, Rouge + frange Or) -->
+    <path d="M25 53L46 73H52L30 51.5Z" fill="#1E3A8A" />
+    <path d="M29 51.5L51 73H56L34 51Z" fill="#FFFFFF" />
+    <path d="M33 51L55 73H61L38 51Z" fill="#CE1126" />
+    <line x1="25" y1="53" x2="46" y2="73" stroke="#E8B21A" stroke-width="1.2" />
+
+    <!-- Cocarde parlementaire dorée -->
+    <circle cx="27" cy="62" r="4.2" fill="#E8B21A" stroke="#FFFFFF" stroke-width="1.3" />
+    <circle cx="27" cy="62" r="1.8" fill="#CE1126" />
+
+    <!-- Cou et visage -->
+    <rect x="35" y="43" width="10" height="10" rx="4" fill="#E5B089" />
+    <circle cx="40" cy="33.5" r="14.5" fill="#F0BE98" />
+
+    <!-- Coupe de cheveux garçon -->
+    <path
+      d="M25 31C24.5 20 31.5 14.5 40 14.5C49 14.5 55.5 20 55 31C52.5 25.5 47 23.5 40 23.5C33 23.5 27.5 25.5 25 31Z"
+      fill="#2B1B12"
+    />
+    <path d="M33 15.5C36 12.5 43 12.5 47 15.5" stroke="#2B1B12" stroke-width="3" stroke-linecap="round" />
+
+    <!-- Yeux et sourire -->
+    <circle cx="34.5" cy="33.5" r="2.1" fill="#0F172A" />
+    <circle cx="45.5" cy="33.5" r="2.1" fill="#0F172A" />
+    <circle cx="35.2" cy="32.8" r="0.7" fill="#FFFFFF" />
+    <circle cx="46.2" cy="32.8" r="0.7" fill="#FFFFFF" />
+    <path d="M35 40.5C36.8 43 43.2 43 45 40.5" stroke="#0F172A" stroke-width="2.1" stroke-linecap="round" />
+  </svg>
+)}
 
 {character === 'malik' && (
   <svg

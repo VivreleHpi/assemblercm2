@@ -120,10 +120,21 @@ const searchIndex = [
   <div class="surface-card w-full max-w-3xl overflow-hidden border-2 border-gold shadow-elevated">
     <div class="p-5 sm:p-6 bg-night text-white flex flex-wrap items-center justify-between gap-4 border-b-4 border-gold">
       <div class="flex items-center gap-3.5">
-        <Avatar character="duo" size={60} />
+        <span id="modal-avatar-deputee" class="hidden">
+          <Avatar character="deputee" size={60} />
+        </span>
+        <span id="modal-avatar-depute">
+          <Avatar character="depute" size={60} />
+        </span>
+        <span id="modal-avatar-malik" class="hidden">
+          <Avatar character="malik" size={60} />
+        </span>
+        <span id="modal-avatar-papa" class="hidden">
+          <Avatar character="papa" size={60} />
+        </span>
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-gold block">
-            Carnet de Député Junior CM2
+            Carnet de Député(e) Junior CM2
           </span>
           <h2 id="profile-modal-title" class="font-display font-bold text-xl sm:text-2xl text-white">
             Mon Profil & Mes 9 Badges
@@ -165,22 +176,53 @@ const searchIndex = [
             </button>
           </div>
 
-          <div class="flex items-center gap-3 pt-1">
-            <span class="text-xs font-bold text-ink-muted">Mon compagnon :</span>
-            <button
-              type="button"
-              data-select-avatar="malik"
-              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-gold bg-gold-light text-xs font-bold text-ink"
-            >
-              <span>👦🏽 Malik (Élève CM2)</span>
-            </button>
-            <button
-              type="button"
-              data-select-avatar="papa"
-              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-line bg-surface text-xs font-bold text-ink"
-            >
-              <span>👨🏽‍🏫 Papa (Guide)</span>
-            </button>
+          <div class="space-y-2 pt-1">
+            <span class="block text-xs font-bold uppercase tracking-wider text-ink-muted">
+              Mon avatar de Député(e) Junior CM2 :
+            </span>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                data-select-avatar="deputee"
+                class="avatar-choice-btn flex items-center gap-2.5 p-2.5 rounded-xl border border-line bg-surface text-left text-xs font-bold text-ink transition min-h-[54px]"
+              >
+                <Avatar character="deputee" size={38} />
+                <div>
+                  <span class="block font-display text-xs sm:text-sm text-ink">Députée Junior</span>
+                  <span class="block text-[11px] text-ink-muted font-normal">Fille · Écharpe tricolore</span>
+                </div>
+              </button>
+              <button
+                type="button"
+                data-select-avatar="depute"
+                class="avatar-choice-btn flex items-center gap-2.5 p-2.5 rounded-xl border-2 border-gold bg-gold-light text-left text-xs font-bold text-ink transition min-h-[54px]"
+              >
+                <Avatar character="depute" size={38} />
+                <div>
+                  <span class="block font-display text-xs sm:text-sm text-ink">Député Junior</span>
+                  <span class="block text-[11px] text-ink-muted font-normal">Garçon · Écharpe tricolore</span>
+                </div>
+              </button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="text-[11px] font-bold text-ink-muted">Ou choisir un guide :</span>
+              <button
+                type="button"
+                data-select-avatar="malik"
+                class="avatar-choice-btn inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-line bg-surface text-xs font-bold text-ink"
+              >
+                <Avatar character="malik" size={22} />
+                <span>Malik (CM2)</span>
+              </button>
+              <button
+                type="button"
+                data-select-avatar="papa"
+                class="avatar-choice-btn inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-line bg-surface text-xs font-bold text-ink"
+              >
+                <Avatar character="papa" size={22} />
+                <span>Papa (Guide)</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -374,29 +416,47 @@ const searchIndex = [
       <!-- Screen 2: Avatar -->
       <div data-onboarding-screen="2" class="hidden space-y-4">
         <h2 class="font-display font-bold text-2xl text-ink">
-          Choisis ton compagnon de visite
+          Choisis ton avatar de Député(e) Junior CM2
         </h2>
         <p class="text-sm text-ink-muted">
-          Tu pourras changer à tout moment dans ton profil en haut de la page.
+          Porte l’écharpe tricolore pendant ta visite ! Tu pourras changer d’avatar à tout moment dans ton profil.
         </p>
         <div class="grid grid-cols-2 gap-3">
           <button
             type="button"
-            data-onboarding-avatar="malik"
-            class="p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2 text-center"
+            data-onboarding-avatar="deputee"
+            class="p-4 rounded-card border-2 border-line bg-paper flex flex-col items-center gap-2 text-center transition"
           >
-            <Avatar character="malik" size={64} />
-            <span class="font-display font-bold text-base text-ink">Malik (10 ans)</span>
-            <span class="text-xs text-ink-muted">Curieux & joueur</span>
+            <Avatar character="deputee" size={72} />
+            <span class="font-display font-bold text-base text-ink">Députée Junior</span>
+            <span class="text-xs text-ink-muted">Fille · Écharpe tricolore</span>
+          </button>
+          <button
+            type="button"
+            data-onboarding-avatar="depute"
+            class="p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2 text-center transition"
+          >
+            <Avatar character="depute" size={72} />
+            <span class="font-display font-bold text-base text-ink">Député Junior</span>
+            <span class="text-xs text-ink-muted">Garçon · Écharpe tricolore</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <button
+            type="button"
+            data-onboarding-avatar="malik"
+            class="p-2.5 rounded-xl border border-line bg-paper flex items-center justify-center gap-2 text-xs font-bold text-ink transition"
+          >
+            <Avatar character="malik" size={32} />
+            <span>Malik (Guide CM2)</span>
           </button>
           <button
             type="button"
             data-onboarding-avatar="papa"
-            class="p-4 rounded-card border-2 border-line bg-paper flex flex-col items-center gap-2 text-center"
+            class="p-2.5 rounded-xl border border-line bg-paper flex items-center justify-center gap-2 text-xs font-bold text-ink transition"
           >
-            <Avatar character="papa" size={64} />
-            <span class="font-display font-bold text-base text-ink">Papa</span>
-            <span class="text-xs text-ink-muted">Histoire & anecdotes</span>
+            <Avatar character="papa" size={32} />
+            <span>Papa (Guide)</span>
           </button>
         </div>
       </div>

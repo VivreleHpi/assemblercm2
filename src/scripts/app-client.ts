@@ -1,6 +1,8 @@
+export type AvatarType = 'deputee' | 'depute' | 'malik' | 'papa';
+
 export interface AppState {
   userName: string;
-  avatar: 'malik' | 'papa';
+  avatar: AvatarType;
   xp: number;
   completedSteps: number[];
   unlockedBadges: string[];
@@ -20,7 +22,7 @@ const STORAGE_KEY = 'an_cm2_v2_state';
 
 const DEFAULT_STATE: AppState = {
   userName: '',
-  avatar: 'malik',
+  avatar: 'depute',
   xp: 0,
   completedSteps: [],
   unlockedBadges: [],
@@ -334,11 +336,21 @@ export function initAppClient() {
     const nameEl = document.getElementById('header-user-name');
     if (nameEl) nameEl.textContent = state.userName || 'Explorateur';
 
-    const avMalik = document.getElementById('header-avatar-malik');
-    const avPapa = document.getElementById('header-avatar-papa');
-    if (avMalik && avPapa) {
-      avMalik.classList.toggle('hidden', state.avatar !== 'malik');
-      avPapa.classList.toggle('hidden', state.avatar !== 'papa');
+    const avatarKeys: AvatarType[] = ['deputee', 'depute', 'malik', 'papa'];
+    const activeAvatar: AvatarType = avatarKeys.includes(state.avatar) ? state.avatar : 'depute';
+
+    avatarKeys.forEach((key) => {
+      document.getElementById(`header-avatar-${key}`)?.classList.toggle('hidden', activeAvatar !== key);
+      document.getElementById(`modal-avatar-${key}`)?.classList.toggle('hidden', activeAvatar !== key);
+      document.getElementById(`diploma-avatar-${key}`)?.classList.toggle('hidden', activeAvatar !== key);
+    });
+
+    const diplomaHeading = document.getElementById('diploma-main-heading');
+    if (diplomaHeading) {
+      diplomaHeading.textContent =
+        activeAvatar === 'deputee'
+          ? 'DIPLÔME DE DÉPUTÉE JUNIOR CM2'
+          : 'DIPLÔME DE DÉPUTÉ JUNIOR CM2';
     }
 
     const pctEl = document.getElementById('header-progress-pct');
@@ -364,10 +376,24 @@ export function initAppClient() {
     }
 
     document.querySelectorAll<HTMLButtonElement>('[data-select-avatar]').forEach((btn) => {
-      const isSelected = btn.getAttribute('data-select-avatar') === state.avatar;
-      btn.className = isSelected
-        ? 'avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-gold bg-gold-light text-xs font-bold text-ink'
-        : 'avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-line bg-surface text-xs font-bold text-ink';
+      const isSelected = btn.getAttribute('data-select-avatar') === activeAvatar;
+      btn.setAttribute('aria-pressed', String(isSelected));
+      btn.classList.toggle('border-2', isSelected);
+      btn.classList.toggle('border-gold', isSelected);
+      btn.classList.toggle('bg-gold-light', isSelected);
+      btn.classList.toggle('border', !isSelected);
+      btn.classList.toggle('border-line', !isSelected);
+      btn.classList.toggle('bg-surface', !isSelected);
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-onboarding-avatar]').forEach((btn) => {
+      const isSelected = btn.getAttribute('data-onboarding-avatar') === activeAvatar;
+      btn.setAttribute('aria-pressed', String(isSelected));
+      btn.classList.toggle('border-2', isSelected);
+      btn.classList.toggle('border-gold', isSelected);
+      btn.classList.toggle('bg-gold-light', isSelected);
+      btn.classList.toggle('border-line', !isSelected);
+      btn.classList.toggle('bg-paper', !isSelected);
     });
 
     // Badges cards across page & modal
@@ -710,7 +736,7 @@ export function initAppClient() {
 
     document.querySelectorAll<HTMLButtonElement>('[data-select-avatar]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const av = btn.getAttribute('data-select-avatar') as 'malik' | 'papa';
+        const av = btn.getAttribute('data-select-avatar') as AvatarType;
         if (av) {
           state.avatar = av;
           saveState();
@@ -842,16 +868,10 @@ export function initAppClient() {
 
     document.querySelectorAll<HTMLButtonElement>('[data-onboarding-avatar]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const av = btn.getAttribute('data-onboarding-avatar') as 'malik' | 'papa';
+        const av = btn.getAttribute('data-onboarding-avatar') as AvatarType;
         if (av) {
           state.avatar = av;
           saveState();
-          document.querySelectorAll<HTMLButtonElement>('[data-onboarding-avatar]').forEach((b) => {
-            const active = b.getAttribute('data-onboarding-avatar') === av;
-            b.className = active
-              ? 'p-4 rounded-card border-2 border-gold bg-gold-light flex flex-col items-center gap-2 text-center'
-              : 'p-4 rounded-card border-2 border-line bg-paper flex flex-col items-center gap-2 text-center';
-          });
         }
       });
     });

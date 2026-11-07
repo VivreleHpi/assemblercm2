@@ -90,7 +90,7 @@ import Avatar from '../ui/Avatar.astro';
     <!-- Customization Controls (shown when unlocked) -->
     <div id="diploma-controls-bar" class="hidden no-print p-5 rounded-card bg-gold-light border-2 border-gold flex flex-wrap items-end justify-between gap-4">
       <div class="flex flex-wrap items-end gap-3 flex-1">
-        <div class="min-w-[200px] flex-1">
+        <div class="min-w-[190px] flex-1">
           <label for="diploma-student-name" class="block text-xs font-bold uppercase text-ink mb-1">
             Prénom et Nom de l’élève (CM2)
           </label>
@@ -102,7 +102,7 @@ import Avatar from '../ui/Avatar.astro';
             class="w-full px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-bold text-sm"
           />
         </div>
-        <div class="min-w-[180px]">
+        <div class="min-w-[170px]">
           <label for="diploma-school-name" class="block text-xs font-bold uppercase text-ink mb-1">
             Classe / École (facultatif)
           </label>
@@ -113,6 +113,29 @@ import Avatar from '../ui/Avatar.astro';
             placeholder="Ex : Classe de CM2..."
             class="w-full px-3.5 py-2.5 rounded-btn bg-surface border-2 border-line text-ink font-medium text-sm"
           />
+        </div>
+        <div>
+          <span class="block text-xs font-bold uppercase text-ink mb-1">
+            Avatar sur le diplôme
+          </span>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              data-select-avatar="deputee"
+              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-line bg-surface text-xs font-bold text-ink min-h-[42px]"
+            >
+              <Avatar character="deputee" size={26} />
+              <span>Députée (Fille)</span>
+            </button>
+            <button
+              type="button"
+              data-select-avatar="depute"
+              class="avatar-choice-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border-2 border-gold bg-gold-light text-xs font-bold text-ink min-h-[42px]"
+            >
+              <Avatar character="depute" size={26} />
+              <span>Député (Garçon)</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -142,7 +165,7 @@ import Avatar from '../ui/Avatar.astro';
         <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-republic-900">
           Parcours Citoyen Cycle 3 · Enseignement Moral et Civique
         </p>
-        <h3 class="font-diploma font-bold text-2xl sm:text-4xl text-ink tracking-wide">
+        <h3 id="diploma-main-heading" class="font-diploma font-bold text-2xl sm:text-4xl text-ink tracking-wide">
           DIPLÔME DE DÉPUTÉ JUNIOR CM2
         </h3>
       </div>
@@ -151,14 +174,28 @@ import Avatar from '../ui/Avatar.astro';
         Décerné avec les félicitations de Malik & son Papa à :
       </p>
 
-      <div class="py-2">
-        <span
-          id="diploma-rendered-name"
-          class="inline-block font-display font-bold text-2xl sm:text-4xl text-republic-900 border-b-2 border-gold px-6 pb-1"
-        >
-          Jeune Citoyen(ne) de CM2
-        </span>
-        <p id="diploma-rendered-school" class="text-xs sm:text-sm font-semibold text-ink-muted mt-1.5">
+      <div class="py-2 flex flex-col items-center gap-2">
+        <div class="flex items-center justify-center gap-3">
+          <span id="diploma-avatar-deputee" class="hidden">
+            <Avatar character="deputee" size={56} />
+          </span>
+          <span id="diploma-avatar-depute">
+            <Avatar character="depute" size={56} />
+          </span>
+          <span id="diploma-avatar-malik" class="hidden">
+            <Avatar character="malik" size={56} />
+          </span>
+          <span id="diploma-avatar-papa" class="hidden">
+            <Avatar character="papa" size={56} />
+          </span>
+          <span
+            id="diploma-rendered-name"
+            class="inline-block font-display font-bold text-2xl sm:text-4xl text-republic-900 border-b-2 border-gold px-6 pb-1"
+          >
+            Jeune Citoyen(ne) de CM2
+          </span>
+        </div>
+        <p id="diploma-rendered-school" class="text-xs sm:text-sm font-semibold text-ink-muted mt-1">
           Parcours complet des 12 étapes sur l’Assemblée nationale
         </p>
       </div>
