@@ -258,7 +258,7 @@ rowCounts.forEach((count, rowIndex) => {
           Pourquoi 577 sièges en demi-cercle ?
         </h3>
         <p id="seat-zone-desc" class="text-sm sm:text-base text-ink leading-relaxed">
-          Chaque point représente 1 député élu dans une circonscription de France (métropole, Outre-mer et Français de l’étranger). Pour adopter une loi à l’unanimité des présents ou à la majorité absolue de tous les députés, le chiffre clé est <strong>289 voix</strong> (la moitié de 577 + 1) !
+          Chaque point représente 1 député élu dans une circonscription de France (hexagone, Corse, Outre-mer et Français établis hors de France). Attention à ne pas confondre : une <strong>loi ordinaire</strong> est adoptée à la <strong>majorité simple des suffrages exprimés</strong> (il suffit qu’il y ait plus de voix POUR que CONTRE parmi les votants), tandis que la <strong>majorité absolue des 577 députés</strong> (<strong>289 voix</strong>) n’est exigée que pour des votes spéciaux comme une motion de censure !
         </p>
       </div>
     </div>
@@ -278,8 +278,12 @@ rowCounts.forEach((count, rowIndex) => {
           Simule un scrutin électronique sur les écrans géants !
         </h3>
         <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold">
-          Règle : Loi adoptée si POUR &gt; CONTRE
+          Loi ordinaire : adoptée si POUR &gt; CONTRE (suffrages exprimés)
         </span>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-republic-100/60 border border-republic-700/20 text-xs sm:text-sm text-ink leading-relaxed">
+        <strong>💡 Astuce CM2 (Majorité simple vs 289 voix) :</strong> Pour adopter une loi ordinaire, il n’est <strong>pas</strong> obligatoire d’atteindre 289 voix ! On compte uniquement les <strong>suffrages exprimés</strong> (POUR + CONTRE, sans les abstentions ni les absents) : si <strong>POUR &gt; CONTRE</strong>, la loi est adoptée. Le seuil de <strong>289 députés</strong> (majorité absolue des 577 membres) ne sert que pour renverser le Gouvernement (motion de censure) ou au vote final d’une loi organique sans accord du Sénat.
       </div>
 
       <div>
@@ -302,14 +306,14 @@ rowCounts.forEach((count, rowIndex) => {
           data-vote-scenario="adopted-large"
           class="px-4 py-2.5 rounded-btn bg-success text-white font-display font-bold text-xs sm:text-sm min-h-[44px]"
         >
-          Simuler un large accord (412 Pour / 98 Contre)
+          Large accord (412 Pour / 98 Contre)
         </button>
         <button
           type="button"
           data-vote-scenario="adopted-serre"
           class="px-4 py-2.5 rounded-btn bg-republic-900 text-white font-display font-bold text-xs sm:text-sm min-h-[44px]"
         >
-          Simuler un vote très serré (275 Pour / 268 Contre)
+          Majorité simple &lt; 289 voix (245 Pour / 210 Contre)
         </button>
         <button
           type="button"
@@ -433,22 +437,42 @@ rowCounts.forEach((count, rowIndex) => {
     const hotspots = spotsJson ? JSON.parse(spotsJson.textContent || '[]') : [];
 
     // Tabs switching
-    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.hemi-tab-btn');
+    const tabBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.hemi-tab-btn'));
     const panels = document.querySelectorAll<HTMLElement>('[data-hemi-panel]');
 
-    tabBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const target = btn.getAttribute('data-hemi-tab');
-        tabBtns.forEach((b) => {
-          const active = b.getAttribute('data-hemi-tab') === target;
-          b.setAttribute('aria-selected', String(active));
-          b.className = active
-            ? 'hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]'
-            : 'hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]';
-        });
-        panels.forEach((p) => {
-          p.classList.toggle('hidden', p.getAttribute('data-hemi-panel') !== target);
-        });
+    const activateTab = (btn: HTMLButtonElement, focus = false) => {
+      const target = btn.getAttribute('data-hemi-tab');
+      tabBtns.forEach((b) => {
+        const active = b.getAttribute('data-hemi-tab') === target;
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('tabindex', active ? '0' : '-1');
+        b.className = active
+          ? 'hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]'
+          : 'hemi-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]';
+      });
+      panels.forEach((p) => {
+        p.classList.toggle('hidden', p.getAttribute('data-hemi-panel') !== target);
+      });
+      if (focus) btn.focus();
+    };
+
+    tabBtns.forEach((btn, idx) => {
+      btn.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+      btn.addEventListener('click', () => activateTab(btn, false));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          activateTab(tabBtns[(idx + 1) % tabBtns.length], true);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          activateTab(tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length], true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          activateTab(tabBtns[0], true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          activateTab(tabBtns[tabBtns.length - 1], true);
+        }
       });
     });
 
@@ -486,7 +510,7 @@ rowCounts.forEach((count, rowIndex) => {
     const zoneInfo: Record<string, { title: string; desc: string }> = {
       all: {
         title: 'Pourquoi 577 sièges en demi-cercle ?',
-        desc: 'Chaque point représente 1 député élu dans une circonscription de France. La majorité absolue de tous les députés est de 289 voix (la moitié de 577 + 1).'
+        desc: 'Chaque point représente 1 député élu dans une circonscription de France. Une loi ordinaire est adoptée à la majorité simple des suffrages exprimés (POUR > CONTRE parmi les votants), tandis que la majorité absolue des 577 députés (289 voix) est requise pour une motion de censure.'
       },
       gauche: {
         title: 'Les travées de Gauche',
@@ -528,7 +552,7 @@ rowCounts.forEach((count, rowIndex) => {
     // Vote Simulator
     const scenarios: Record<string, { pour: number; contre: number; abst: number }> = {
       'adopted-large': { pour: 412, contre: 98, abst: 35 },
-      'adopted-serre': { pour: 275, contre: 268, abst: 22 },
+      'adopted-serre': { pour: 245, contre: 210, abst: 32 },
       rejected: { pour: 190, contre: 310, abst: 40 }
     };
 
@@ -560,7 +584,7 @@ rowCounts.forEach((count, rowIndex) => {
         }
         if (expEl) {
           expEl.textContent = adopted
-            ? `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre). Comme POUR > CONTRE, l’Assemblée nationale adopte le texte !`
+            ? `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre, hors ${s.abst} abstentions). Même si ${s.pour} est inférieur à 289, POUR > CONTRE parmi les suffrages exprimés : la loi ordinaire est donc adoptée !`
             : `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre). Comme il y a plus de voix CONTRE que POUR, le texte n’est pas adopté.`;
         }
       });

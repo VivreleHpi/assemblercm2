@@ -1,111 +1,261 @@
 ---
 import { TIMELINE_EVENTS } from '../../data';
-import ResponsivePicture from '../ui/ResponsivePicture.astro';
+import Icon from '../ui/Icon.astro';
+
+const timelineClientData = TIMELINE_EVENTS.map((ev) => ({
+  ...ev,
+  avifSrcset: `/img/${ev.baseName}-480.avif 480w, /img/${ev.baseName}-960.avif 960w, /img/${ev.baseName}-1600.avif 1600w`,
+  webpSrcset: `/img/${ev.baseName}-480.webp 480w, /img/${ev.baseName}-960.webp 960w, /img/${ev.baseName}-1600.webp 1600w`,
+  jpgSrc: `/img/${ev.baseName}.jpg`
+}));
+
+const firstEvent = timelineClientData[0];
 ---
 
-<section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20 space-y-8">
-  <div>
-    <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
-      Frise chronologique interactive · Étape 5
+<section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20 space-y-6">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+        Frise chronologique interactive · Étape 5
+      </span>
+      <h2 class="font-display font-bold text-2xl text-ink mt-1">
+        8 grandes dates de notre démocratie (1789 → Aujourd’hui)
+      </h2>
+      <p class="text-sm sm:text-base text-ink-muted mt-1">
+        Clique sur une date (ou utilise les boutons Précédent / Suivant et les flèches du clavier) pour découvrir chaque événement et son illustration historique :
+      </p>
+    </div>
+
+    <span
+      id="tl-step-counter"
+      class="px-3.5 py-1.5 rounded-full bg-gold-light text-ink border border-gold font-display font-bold text-xs sm:text-sm shrink-0"
+    >
+      Événement 1 / {timelineClientData.length}
     </span>
-    <h2 class="font-display font-bold text-2xl text-ink mt-1">
-      7 grandes dates de notre démocratie (1789 → Aujourd’hui)
-    </h2>
-    <p class="text-sm sm:text-base text-ink-muted mt-1">
-      Clique sur une année de la frise pour explorer l’événement historique correspondant :
-    </p>
   </div>
 
-  <!-- Interactive Date Pills -->
+  <!-- Interactive Date Pills (8 Repères) -->
   <div
     role="tablist"
-    aria-label="Dates clés de la frise historique"
-    class="grid grid-cols-3 sm:grid-cols-7 gap-2"
+    aria-label="Dates clés de la frise historique (1789 à aujourd'hui)"
+    class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2"
   >
-    {TIMELINE_EVENTS.map((ev, idx) => (
+    {timelineClientData.map((ev, idx) => (
       <button
         type="button"
         role="tab"
+        id={`tl-tab-${ev.year}`}
         aria-selected={idx === 0 ? 'true' : 'false'}
+        aria-controls="timeline-active-card"
+        tabindex={idx === 0 ? 0 : -1}
         data-timeline-year={ev.year}
-        class={`timeline-year-btn px-3 py-3 rounded-btn font-display font-bold text-sm sm:text-base border-2 transition min-h-[48px] ${
+        data-timeline-index={idx}
+        class={`timeline-year-btn px-2.5 py-3 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[48px] text-center ${
           idx === 0
             ? 'bg-velvet text-white border-velvet shadow-sm'
             : 'bg-paper text-ink border-line hover:bg-velvet-light'
         }`}
       >
-        {ev.year}
+        {ev.buttonLabel}
       </button>
     ))}
   </div>
 
-  <!-- Active Timeline Card -->
-  <div
-    id="timeline-active-card"
-    aria-live="polite"
-    class="p-6 rounded-card bg-paper border-2 border-gold shadow-sm space-y-2.5"
-  >
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <span id="tl-year-badge" class="px-3 py-1 rounded-full bg-velvet text-white font-display font-bold text-sm">
-        {TIMELINE_EVENTS[0].year} · {TIMELINE_EVENTS[0].dateLabel}
-      </span>
-      <span class="text-xs font-bold text-ink-muted">Histoire de la République</span>
-    </div>
-    <h3 id="tl-title" class="font-display font-bold text-xl sm:text-2xl text-ink">
-      {TIMELINE_EVENTS[0].title}
-    </h3>
-    <p id="tl-desc" class="text-sm sm:text-base text-ink leading-relaxed max-w-reading">
-      {TIMELINE_EVENTS[0].description}
-    </p>
+  <!-- Previous / Next Controls -->
+  <div class="flex flex-wrap items-center justify-between gap-3 bg-paper px-4 py-2.5 rounded-xl border border-line">
+    <button
+      type="button"
+      id="tl-prev-btn"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-btn bg-surface hover:bg-velvet-light text-ink border border-line font-display font-bold text-xs sm:text-sm transition min-h-[44px]"
+    >
+      <Icon name="ArrowLeft" size={16} />
+      <span>Événement précédent</span>
+    </button>
+
+    <span id="tl-nav-status" class="text-xs font-bold text-ink-muted hidden sm:inline">
+      Repère sélectionné : {firstEvent.year}
+    </span>
+
+    <button
+      type="button"
+      id="tl-next-btn"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-btn bg-velvet hover:bg-republic-900 text-white font-display font-bold text-xs sm:text-sm transition min-h-[44px]"
+    >
+      <span>Événement suivant</span>
+      <Icon name="ArrowRight" size={16} />
+    </button>
   </div>
 
-  <!-- Napoleon Spotlight (with top-aligned portrait) -->
-  <div class="pt-6 border-t border-line">
+  <!-- Active Timeline Card (Desktop: Image Left / Text Right; Mobile: Image Top / Text Bottom) -->
+  <div
+    id="timeline-active-card"
+    role="tabpanel"
+    aria-labelledby={`tl-tab-${firstEvent.year}`}
+    aria-live="polite"
+    class="p-5 sm:p-6 rounded-card bg-paper border-2 border-gold shadow-sm space-y-6"
+  >
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-5">
-        <ResponsivePicture
-          photoId="napoleon"
-          aspect="4/3"
-          sizes="(max-width: 1024px) 100vw, 450px"
-        />
+      <!-- Left Column (Desktop) / Top (Mobile): Stable Aspect-Ratio Illustration Stage -->
+      <div class="lg:col-span-5 space-y-3">
+        <figure class="relative overflow-hidden rounded-card bg-night/10 border-2 border-line aspect-[4/3] group">
+          <picture class="block w-full h-full">
+            <source
+              id="tl-source-avif"
+              type="image/avif"
+              srcset={firstEvent.avifSrcset}
+              sizes="(max-width: 1024px) 100vw, 440px"
+            />
+            <source
+              id="tl-source-webp"
+              type="image/webp"
+              srcset={firstEvent.webpSrcset}
+              sizes="(max-width: 1024px) 100vw, 440px"
+            />
+            <img
+              id="tl-img"
+              src={firstEvent.jpgSrc}
+              alt={firstEvent.imageAlt}
+              width={firstEvent.width}
+              height={firstEvent.height}
+              style={`object-position: ${firstEvent.objectPosition};`}
+              class="w-full h-full object-cover photo-warm transition-transform duration-300 group-hover:scale-[1.015]"
+            />
+          </picture>
+
+          <button
+            type="button"
+            id="tl-lightbox-btn"
+            class="lightbox-trigger absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-night/85 hover:bg-night text-white text-xs font-bold shadow-card backdrop-blur-sm transition min-h-[38px]"
+            data-photo-id={firstEvent.photoId}
+            aria-label={`Agrandir l'illustration : ${firstEvent.title}`}
+          >
+            <Icon name="zoom-in" size={15} />
+            <span>Agrandir</span>
+          </button>
+
+          <div class="absolute bottom-2.5 right-2.5 z-10 max-w-[92%] px-2.5 py-1 rounded-md bg-night/85 text-white/95 text-xs leading-tight backdrop-blur-sm truncate">
+            📸 <span id="tl-badge-credit">{firstEvent.author} · {firstEvent.license}</span>
+          </div>
+        </figure>
+
+        <!-- Caption & Legal Attribution Box -->
+        <div class="p-3.5 rounded-xl bg-surface border border-line space-y-1.5 text-xs">
+          <p id="tl-caption" class="font-semibold text-ink leading-relaxed">
+            {firstEvent.shortDescription}
+          </p>
+          <p class="text-ink-muted leading-snug">
+            <strong>Crédit & licence :</strong>{' '}
+            <span id="tl-credit-detail">{firstEvent.author} ({firstEvent.institution}) — {firstEvent.license}</span>
+          </p>
+          <a
+            id="tl-artwork-link"
+            href={firstEvent.artworkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 font-bold text-republic-900 hover:underline pt-0.5"
+          >
+            <span>Source de l’illustration</span>
+            <Icon name="ExternalLink" size={12} />
+          </a>
+        </div>
       </div>
+
+      <!-- Right Column (Desktop) / Bottom (Mobile): Historical Explanation & Why Important Today -->
       <div class="lg:col-span-7 space-y-4">
-        <div>
-          <span class="px-2.5 py-1 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
-            Zoom Histoire CM2 · 1804 & 1807
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span
+            id="tl-year-badge"
+            class="px-3.5 py-1 rounded-full bg-velvet text-white font-display font-bold text-sm"
+          >
+            {firstEvent.year} · {firstEvent.dateLabel}
           </span>
-          <h3 class="font-display font-bold text-xl sm:text-2xl text-ink mt-2">
-            Ce que Napoléon a laissé au droit français et au Palais Bourbon
-          </h3>
+          <span class="text-xs font-bold text-ink-muted">Histoire de la République</span>
         </div>
 
-        <div class="grid grid-cols-1 gap-3">
-          <div class="p-4 rounded-xl bg-paper border border-line">
-            <h4 class="font-display font-bold text-base text-ink">
-              1. Le Code civil du 21 mars 1804
-            </h4>
-            <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
-              Avant la Révolution, chaque province avait ses propres coutumes. En 1804, Napoléon réunit 4 grands juristes (dont Portalis) pour publier un seul livre de <strong>2 281 articles</strong> identiques pour tous les Français.
-            </p>
-          </div>
+        <h3 id="tl-title" class="font-display font-bold text-xl sm:text-2xl text-ink leading-snug">
+          {firstEvent.title}
+        </h3>
 
-          <div class="p-4 rounded-xl bg-paper border border-line">
-            <h4 class="font-display font-bold text-base text-ink">
-              2. Les 12 colonnes du Palais Bourbon (1807)
-            </h4>
-            <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
-              C’est Napoléon qui demande à l’architecte Bernard Poyet de construire la grande façade façon temple antique face au pont de la Concorde et à l’église de la Madeleine.
-            </p>
-          </div>
+        <p id="tl-desc" class="text-sm sm:text-base text-ink leading-relaxed">
+          {firstEvent.description}
+        </p>
 
-          <div class="p-4 rounded-xl bg-paper border border-line">
-            <h4 class="font-display font-bold text-base text-ink">
-              3. Les grandes institutions modernes
-            </h4>
-            <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
-              Sous le Consulat et l’Empire naissent aussi les <strong>lycées</strong>, le <strong>baccalauréat</strong>, les <strong>préfets</strong> dans chaque département, le Conseil d’État, la Cour des comptes et la Légion d’honneur.
-            </p>
+        <!-- Callout: Pourquoi est-ce important aujourd'hui ? -->
+        <div class="p-4 rounded-xl bg-gold-light/70 border-2 border-gold space-y-1.5">
+          <div class="flex items-center gap-2 font-display font-bold text-sm text-ink">
+            <span>💡</span>
+            <h4>Pourquoi est-ce important aujourd’hui ?</h4>
           </div>
+          <p id="tl-why-today" class="text-xs sm:text-sm text-ink leading-relaxed">
+            {firstEvent.whyImportantToday}
+          </p>
+        </div>
+
+        <!-- En savoir plus (Official Institutional Source Link) -->
+        <div class="pt-1 flex flex-wrap items-center justify-between gap-3">
+          <a
+            id="tl-official-link"
+            href={firstEvent.officialSourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-btn bg-surface hover:bg-republic-100 text-republic-900 border border-line font-display font-bold text-xs sm:text-sm transition min-h-[44px]"
+          >
+            <span>En savoir plus : <span id="tl-official-label">{firstEvent.officialSourceLabel}</span></span>
+            <Icon name="ExternalLink" size={14} />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contextual Napoleon Zoom (ONLY visible when 1804 is selected, hidden on all other dates) -->
+    <div id="tl-napoleon-zoom-wrapper" class="hidden pt-5 border-t-2 border-line space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-gold text-ink text-xs font-bold">
+            Zoom Histoire CM2 · 1804 & 1806–1810
+          </span>
+          <h4 class="font-display font-bold text-lg text-ink">
+            Ce que Napoléon a laissé au droit français et au Palais Bourbon
+          </h4>
+        </div>
+
+        <button
+          type="button"
+          id="tl-napoleon-toggle-btn"
+          aria-expanded="true"
+          aria-controls="tl-napoleon-details"
+          class="px-3.5 py-2 rounded-btn bg-surface hover:bg-republic-100 text-republic-900 border border-line text-xs font-bold transition min-h-[40px]"
+        >
+          Masquer le zoom détaillé ▲
+        </button>
+      </div>
+
+      <div id="tl-napoleon-details" class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+        <div class="p-4 rounded-xl bg-surface border border-line">
+          <h5 class="font-display font-bold text-base text-ink">
+            1. Le Code civil du 21 mars 1804
+          </h5>
+          <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
+            Avant la Révolution, chaque province avait ses propres coutumes. Le 21 mars 1804, Napoléon promulgue un seul recueil de <strong>2 281 articles</strong> identiques pour tous les Français.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-surface border border-line">
+          <h5 class="font-display font-bold text-base text-ink">
+            2. Les 12 colonnes (1806–1810)
+          </h5>
+          <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
+            Napoléon confie à l’architecte Bernard Poyet la construction de la grande façade à 12 colonnes face au pont de la Concorde et à la Madeleine : les travaux durent de <strong>1806 à 1810</strong>.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-surface border border-line">
+          <h5 class="font-display font-bold text-base text-ink">
+            3. Les institutions administratives
+          </h5>
+          <p class="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
+            Sous le Consulat et l’Empire naissent aussi les <strong>lycées</strong>, le <strong>baccalauréat</strong>, les <strong>préfets</strong> dans chaque département, le Conseil d’État, la Cour des comptes et la Légion d’honneur.
+          </p>
         </div>
       </div>
     </div>
@@ -115,41 +265,154 @@ import ResponsivePicture from '../ui/ResponsivePicture.astro';
 <script
   id="step5-timeline-json"
   type="application/json"
-  set:html={JSON.stringify(TIMELINE_EVENTS)}
+  set:html={JSON.stringify(timelineClientData)}
 />
 
 <script>
   function initStep5() {
     const jsonEl = document.getElementById('step5-timeline-json');
     const events = jsonEl ? JSON.parse(jsonEl.textContent || '[]') : [];
-    const btns = document.querySelectorAll<HTMLButtonElement>('.timeline-year-btn');
+    if (!events.length) return;
 
-    btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const year = btn.getAttribute('data-timeline-year');
-        const ev = events.find((e: { year: string }) => e.year === year);
-        if (!ev) return;
+    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('.timeline-year-btn'));
+    const prevBtn = document.getElementById('tl-prev-btn');
+    const nextBtn = document.getElementById('tl-next-btn');
+    const counterEl = document.getElementById('tl-step-counter');
+    const navStatusEl = document.getElementById('tl-nav-status');
+    const activeCard = document.getElementById('timeline-active-card');
 
-        btns.forEach((b) => {
-          const active = b.getAttribute('data-timeline-year') === year;
-          b.setAttribute('aria-selected', String(active));
-          b.className = `timeline-year-btn px-3 py-3 rounded-btn font-display font-bold text-sm sm:text-base border-2 transition min-h-[48px] ${
-            active
-              ? 'bg-velvet text-white border-velvet shadow-sm'
-              : 'bg-paper text-ink border-line hover:bg-velvet-light'
-          }`;
-        });
+    const sourceAvif = document.getElementById('tl-source-avif') as HTMLSourceElement | null;
+    const sourceWebp = document.getElementById('tl-source-webp') as HTMLSourceElement | null;
+    const imgEl = document.getElementById('tl-img') as HTMLImageElement | null;
+    const lightboxBtn = document.getElementById('tl-lightbox-btn') as HTMLButtonElement | null;
+    const badgeCreditEl = document.getElementById('tl-badge-credit');
+    const captionEl = document.getElementById('tl-caption');
+    const creditDetailEl = document.getElementById('tl-credit-detail');
+    const artworkLinkEl = document.getElementById('tl-artwork-link') as HTMLAnchorElement | null;
 
-        const badge = document.getElementById('tl-year-badge');
-        const title = document.getElementById('tl-title');
-        const desc = document.getElementById('tl-desc');
-        if (badge) badge.textContent = `${ev.year} · ${ev.dateLabel}`;
-        if (title) title.textContent = ev.title;
-        if (desc) desc.textContent = ev.description;
+    const badgeEl = document.getElementById('tl-year-badge');
+    const titleEl = document.getElementById('tl-title');
+    const descEl = document.getElementById('tl-desc');
+    const whyTodayEl = document.getElementById('tl-why-today');
+    const officialLinkEl = document.getElementById('tl-official-link') as HTMLAnchorElement | null;
+    const officialLabelEl = document.getElementById('tl-official-label');
+
+    const napoleonWrapper = document.getElementById('tl-napoleon-zoom-wrapper');
+    const napoleonToggleBtn = document.getElementById('tl-napoleon-toggle-btn');
+    const napoleonDetails = document.getElementById('tl-napoleon-details');
+
+    let currentIndex = 0;
+
+    function selectIndex(idx: number, focusTab = false) {
+      const total = events.length;
+      currentIndex = ((idx % total) + total) % total;
+      const ev = events[currentIndex];
+      if (!ev) return;
+
+      btns.forEach((b, i) => {
+        const active = i === currentIndex;
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('tabindex', active ? '0' : '-1');
+        b.className = `timeline-year-btn px-2.5 py-3 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[48px] text-center ${
+          active
+            ? 'bg-velvet text-white border-velvet shadow-sm'
+            : 'bg-paper text-ink border-line hover:bg-velvet-light'
+        }`;
+        if (active && focusTab) {
+          b.focus();
+        }
       });
+
+      if (activeCard) {
+        activeCard.setAttribute('aria-labelledby', `tl-tab-${ev.year}`);
+      }
+      if (counterEl) {
+        counterEl.textContent = `Événement ${currentIndex + 1} / ${total}`;
+      }
+      if (navStatusEl) {
+        navStatusEl.textContent = `Repère sélectionné : ${ev.year}`;
+      }
+
+      // Update Picture & Image
+      if (sourceAvif) sourceAvif.srcset = ev.avifSrcset;
+      if (sourceWebp) sourceWebp.srcset = ev.webpSrcset;
+      if (imgEl) {
+        imgEl.src = ev.jpgSrc;
+        imgEl.alt = ev.imageAlt;
+        imgEl.width = ev.width;
+        imgEl.height = ev.height;
+        imgEl.style.objectPosition = ev.objectPosition || 'center center';
+      }
+      if (lightboxBtn) {
+        lightboxBtn.setAttribute('data-photo-id', ev.photoId);
+        lightboxBtn.setAttribute('aria-label', `Agrandir l'illustration : ${ev.title}`);
+      }
+      if (badgeCreditEl) {
+        badgeCreditEl.textContent = `${ev.author} · ${ev.license}`;
+      }
+      if (captionEl) {
+        captionEl.textContent = ev.shortDescription;
+      }
+      if (creditDetailEl) {
+        creditDetailEl.textContent = `${ev.author} (${ev.institution}) — ${ev.license}`;
+      }
+      if (artworkLinkEl) {
+        artworkLinkEl.href = ev.artworkUrl;
+      }
+
+      // Update Text Content
+      if (badgeEl) badgeEl.textContent = `${ev.year} · ${ev.dateLabel}`;
+      if (titleEl) titleEl.textContent = ev.title;
+      if (descEl) descEl.textContent = ev.description;
+      if (whyTodayEl) whyTodayEl.textContent = ev.whyImportantToday;
+      if (officialLinkEl) officialLinkEl.href = ev.officialSourceUrl;
+      if (officialLabelEl) officialLabelEl.textContent = ev.officialSourceLabel;
+
+      // Show Napoleon Zoom ONLY on 1804
+      if (napoleonWrapper) {
+        napoleonWrapper.classList.toggle('hidden', ev.year !== '1804');
+      }
+    }
+
+    btns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        selectIndex(idx, false);
+      });
+
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          selectIndex(currentIndex + 1, true);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          selectIndex(currentIndex - 1, true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          selectIndex(0, true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          selectIndex(events.length - 1, true);
+        }
+      });
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      selectIndex(currentIndex - 1, false);
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      selectIndex(currentIndex + 1, false);
+    });
+
+    napoleonToggleBtn?.addEventListener('click', () => {
+      if (!napoleonDetails) return;
+      const isHidden = napoleonDetails.classList.toggle('hidden');
+      napoleonToggleBtn.setAttribute('aria-expanded', String(!isHidden));
+      napoleonToggleBtn.textContent = isHidden
+        ? 'Pour aller plus loin : afficher le zoom 1804 ▼'
+        : 'Masquer le zoom détaillé ▲';
     });
   }
 
   initStep5();
 </script>
-

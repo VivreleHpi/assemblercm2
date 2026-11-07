@@ -1,5 +1,5 @@
 ---
-import { PHOTOS } from '../../data';
+import { GALLERY_PHOTOS } from '../../data';
 import ResponsivePicture from '../ui/ResponsivePicture.astro';
 import Icon from '../ui/Icon.astro';
 ---
@@ -20,7 +20,7 @@ import Icon from '../ui/Icon.astro';
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {PHOTOS.map((photo, idx) => (
+    {GALLERY_PHOTOS.map((photo, idx) => (
       <article class="rounded-card bg-paper border border-line overflow-hidden flex flex-col justify-between shadow-sm">
         <div>
           <ResponsivePicture
@@ -32,7 +32,7 @@ import Icon from '../ui/Icon.astro';
           <div class="p-5">
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900">
-                Photo {idx + 1} / {PHOTOS.length}
+                Photo {idx + 1} / {GALLERY_PHOTOS.length}
               </span>
               <span class="text-xs text-ink-muted font-medium">
                 {photo.license}

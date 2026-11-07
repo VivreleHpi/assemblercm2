@@ -3,22 +3,31 @@ import Icon from '../ui/Icon.astro';
 
 const themes = [
   {
+    id: 'culture',
+    label: '🎭 Accès à la culture (Thème 30e éd. 2026–2027)',
+    title: 'Proposition de loi visant à créer un « Carnet Découverte Culture » pour chaque élève de CM2 et de 6e',
+    expose:
+      'S’inspirant du thème officiel de la 30e édition (« Favoriser l’accès à la culture pour toutes et tous »), cet exemple fictif propose que chaque enfant puisse visiter gratuitement un musée, un théâtre, une médiathèque ou un monument historique près de chez lui avec sa classe et sa famille.',
+    article1:
+      'Article 1er : Un parcours culturel annuel comprenant au moins deux sorties artistiques ou patrimoniales et une rencontre avec un artiste ou un artisan d’art est organisé dans toutes les classes de cycle 3 (CM1, CM2, 6e).'
+  },
+  {
     id: 'ecologie',
     label: '🌳 Écologie & Nature à l’école',
     title: 'Proposition de loi visant à créer des cours d’école végétalisées et des refuges pour la biodiversité',
     expose:
-      'Pour lutter contre la chaleur et protéger les oiseaux et les insectes pollinisateurs, chaque école primaire aménage un espace de pleine terre et un hôtel à insectes entretenu par les élèves.',
+      'Pour lutter contre la chaleur et protéger les oiseaux et les insectes pollinisateurs, chaque école primaire et collège aménage un espace de pleine terre et un hôtel à insectes entretenu par les élèves.',
     article1:
       'Article 1er : Dans chaque commune, les cours d’école primaire comportent au moins un espace végétalisé ombragé et un récupérateur d’eau de pluie à usage pédagogique.'
   },
   {
     id: 'numerique',
     label: '📱 Écrans & Protection des enfants',
-    title: 'Proposition de loi pour un permis citoyen du numérique dès la classe de CM2',
+    title: 'Proposition de loi pour un permis citoyen du numérique en CM2 et en 6e',
     expose:
       'Les élèves utilisent de plus en plus tôt Internet et les jeux en ligne. Il est essentiel de leur apprendre à protéger leurs données personnelles et à prévenir le cyberharcèlement.',
     article1:
-      'Article 1er : Une formation annuelle au respect d’autrui en ligne et à la vérification des sources d’information est organisée dans toutes les classes de CM1 et de CM2.'
+      'Article 1er : Une formation annuelle au respect d’autrui en ligne et à la vérification des sources d’information est organisée dans toutes les classes de CM2 et de 6e.'
   },
   {
     id: 'sport',
@@ -33,67 +42,92 @@ const themes = [
 ---
 
 <section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20 space-y-8">
-  <div>
-    <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
-      Opération civique nationale · Depuis 1994
-    </span>
-    <h2 class="font-display font-bold text-2xl text-ink mt-1">
-      Comment fonctionne le Parlement des enfants en CM2 ?
+  <div class="space-y-3">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+        Opération civique nationale · Créée en 1994 · 30e édition (2026–2027)
+      </span>
+      <a
+        href="https://www.parlementdesenfants.fr/site/tout-savoir-sur-l-operation"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 text-xs font-bold text-republic-900 underline hover:text-velvet"
+      >
+        Site officiel parlementdesenfants.fr ↗
+      </a>
+    </div>
+    <h2 class="font-display font-bold text-2xl text-ink">
+      Comment fonctionne le Parlement des enfants (classes de CM2 et de 6e) ?
     </h2>
-    <p class="text-sm sm:text-base text-ink-muted mt-1">
-      Organisé par l’Assemblée nationale et le ministère de l’Éducation nationale, il permet à <strong>577 classes de CM2</strong> (une par circonscription !) de faire le vrai métier de député.
+    <p class="text-sm sm:text-base text-ink-muted leading-relaxed">
+      Organisé par l’Assemblée nationale et le ministère de l’Éducation nationale, le Parlement des enfants réunit des classes de <strong>CM2</strong> et de <strong>6e</strong> (577 circonscriptions + classes des Français de l’étranger). Pour la <strong>30e édition (année scolaire 2026–2027)</strong>, le thème officiel est : <strong>« Favoriser l’accès à la culture pour toutes et tous »</strong>.
     </p>
   </div>
 
-  <!-- 4 Steps of Parlement des enfants -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <!-- 5 Official Steps of Parlement des enfants (30e édition 2026-2027) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
     <div class="p-4 rounded-card bg-paper border border-line space-y-2">
       <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
-        Octobre · Étape 1
+        1 · Sept. – Oct. 2026
       </span>
-      <h3 class="font-display font-bold text-base text-ink">577 classes choisies</h3>
+      <h3 class="font-display font-bold text-base text-ink">Sélection des classes</h3>
       <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
-        Une classe de CM2 (et depuis récemment une classe de 6e) est sélectionnée dans chacune des 577 circonscriptions françaises.
+        Les classes candidates de <strong>CM2</strong> et de <strong>6e</strong> sont sélectionnées par les autorités académiques dans les 577 circonscriptions et à l’étranger.
       </p>
     </div>
 
     <div class="p-4 rounded-card bg-paper border border-line space-y-2">
       <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
-        Nov. – Janv. · Étape 2
+        2 · Nov. 2026 – Janv. 2027
       </span>
-      <h3 class="font-display font-bold text-base text-ink">Débat & Rédaction</h3>
+      <h3 class="font-display font-bold text-base text-ink">Rédaction en classe</h3>
       <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
-        Avec leur enseignant et la visite du vrai député de leur circonscription, les élèves rédigent un <strong>exposé des motifs</strong> et <strong>4 articles maximum</strong>.
+        Avec leur enseignant et la visite du député de leur circonscription, les élèves débattent du thème et rédigent leur proposition de loi.
       </p>
     </div>
 
     <div class="p-4 rounded-card bg-paper border border-line space-y-2">
       <span class="px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
-        Mars – Mai · Étape 3
+        3 · 3 ou 4 février 2027
       </span>
-      <h3 class="font-display font-bold text-base text-ink">Jury national</h3>
+      <h3 class="font-display font-bold text-base text-ink">Jurys & Jury national</h3>
       <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
-        Des jurys académiques puis un jury national composé de députés et d’inspecteurs retiennent les propositions de loi finalistes.
+        Après les jurys académiques, le <strong>jury national</strong> (programmation officielle : 3 ou 4 février 2027) sélectionne les propositions finalistes (CM2 et 6e).
+      </p>
+    </div>
+
+    <div class="p-4 rounded-card bg-paper border border-line space-y-2">
+      <span class="px-2.5 py-0.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
+        4 · Jusqu’au 5 mars 2027
+      </span>
+      <h3 class="font-display font-bold text-base text-ink">Vote électronique</h3>
+      <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+        Toutes les classes participantes étudient les textes finalistes, débattent et votent en ligne (fin des votes programmée le <strong>5 mars 2027</strong>).
       </p>
     </div>
 
     <div class="p-4 rounded-card bg-gold-light border-2 border-gold space-y-2">
       <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
-        Juin · Étape 4
+        5 · 10 mars 2027
       </span>
-      <h3 class="font-display font-bold text-base text-ink">Le vote national !</h3>
+      <h3 class="font-display font-bold text-base text-ink">Accueil au Palais Bourbon</h3>
       <p class="text-xs sm:text-sm text-ink leading-relaxed">
-        Toutes les classes participantes débattent des textes finalistes et votent électroniquement pour élire la proposition lauréate !
+        Les classes finalistes sont accueillies à l’Assemblée nationale (date programmée : <strong>10 mars 2027</strong>) pour la proclamation des lauréats !
       </p>
     </div>
   </div>
 
   <!-- Interactive Bill Builder -->
   <div class="pt-6 border-t border-line space-y-4">
-    <h3 class="font-display font-bold text-xl text-ink">
-      Atelier : Choisis le thème de la proposition de loi de ta classe de CM2
-    </h3>
-    <div class="flex flex-wrap gap-2.5" role="group" aria-label="Thèmes de proposition de loi CM2">
+    <div class="space-y-1">
+      <h3 class="font-display font-bold text-xl text-ink">
+        Atelier d’entraînement : Explore 4 exemples fictifs de propositions de loi
+      </h3>
+      <p class="text-xs sm:text-sm text-ink-muted">
+        Ces exemples sont des <strong>simulations pédagogiques imaginées pour t’entraîner sur ce site</strong> : ils ne constituent pas le règlement ni un formulaire officiel du concours.
+      </p>
+    </div>
+    <div class="flex flex-wrap gap-2.5" role="group" aria-label="Thèmes d'exemples pédagogiques de proposition de loi">
       {themes.map((t, idx) => (
         <button
           type="button"
@@ -116,10 +150,10 @@ const themes = [
     >
       <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
         <span class="text-xs font-bold uppercase tracking-wider text-republic-900">
-          République Française · Parlement des enfants (Classe de CM2)
+          Exercice de simulation citoyenne · Cycle 3 (CM2 &amp; 6e)
         </span>
         <span class="px-2.5 py-0.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
-          Modèle officiel de proposition
+          Exemple fictif et pédagogique (non officiel)
         </span>
       </div>
       <h4 id="pde-bill-title" class="font-display font-bold text-lg sm:text-xl text-ink">

@@ -19,7 +19,7 @@ Site éducatif gratuit, sans compte, sans cookie et sans publicité conçu par *
   - `src/content/etapes/etapes.json` : Les 12 leçons complètes, bulles de Malik, 3 points « Je retiens », objectifs enseignants et 36 questions de mini-quiz.
   - `src/content/glossaire/termes.json` : 23 termes civiques et juridiques expliqués à hauteur d’enfant de 10 ans.
   - `src/content/badges/badges.json` : Les 9 médailles républicaines à collectionner.
-  - `src/content/photos/photos.json` : Les 8 photographies historiques et patrimoniales avec leurs métadonnées et licences.
+  - `src/content/photos/photos.json` : Les 14 photographies et illustrations historiques (8 lieux/portraits de la galerie + 6 illustrations dédiées à la frise historique) avec leurs métadonnées et licences.
 
 ---
 
@@ -29,17 +29,17 @@ Site éducatif gratuit, sans compte, sans cookie et sans publicité conçu par *
 | :--- | :--- |
 | `/` | Accueil : Hero Hémicycle, Carte illustrée des 12 étapes (3 parties), Histoire de Malik & Papa, Espace Enseignants |
 | `/etape/1-hemicycle/` | Étape 1 : L’Hémicycle et ses 577 députés (Photo à 6 repères, Plan des 577 sièges, Simulateur de vote, Pupitre) |
-| `/etape/2-galerie-photo/` | Étape 2 : La galerie photo des 8 lieux et portraits avec Lightbox |
-| `/etape/3-secrets-palais/` | Étape 3 : Les 6 secrets insolites du Palais Bourbon (Cartes mystères à retourner) |
+| `/etape/2-galerie/` | Étape 2 : La galerie photo des 8 lieux et portraits avec Lightbox |
+| `/etape/3-secrets/` | Étape 3 : Les 6 secrets insolites du Palais Bourbon (Cartes mystères à retourner) |
 | `/etape/4-constitution-justice/` | Étape 4 : Constitution, Codes & Tribunaux (Pyramide des normes, Code civil/pénal, 10 tribunaux, Jeu « Quel tribunal ? ») |
-| `/etape/5-frise-histoire-napoleon/` | Étape 5 : Frise historique (1789 → Aujourd’hui) & Napoléon (Code civil 1804, colonnade 1807) |
-| `/etape/6-parlement-des-enfants/` | Étape 6 : Le Parlement des enfants (depuis 1994) + atelier de rédaction d’une proposition de loi CM2 |
+| `/etape/5-frise-napoleon/` | Étape 5 : Frise historique interactive à 8 dates illustrées (1789 → 2026) & Zoom Histoire CM2 sur Napoléon (1804, colonnade 1806–1810) |
+| `/etape/6-parlement-enfants/` | Étape 6 : Le Parlement des enfants (CM2 & 6e, 30e édition 2026–2027) + atelier pédagogique d’entraînement |
 | `/etape/7-contre-pouvoir-senat/` | Étape 7 : Contre-pouvoir, Gouvernement & Sénat + simulateur de la navette parlementaire |
 | `/etape/8-videos/` | Étape 8 : 4 vidéos « 1 jour, 1 question » en façade sans cookie (`youtube-nocookie`) + 6 portails officiels |
 | `/etape/9-carte-mentale/` | Étape 9 : Carte mentale à 6 branches + Mode « Cache-Cache » de révision |
 | `/etape/10-mini-jeux/` | Étape 10 : 3 mini-jeux (« Fais voter ta loi », « Qui fait quoi ? », « Vrai ou Faux Express ») |
 | `/etape/11-quiz-diplome/` | Étape 11 : Grand Quiz final (8 questions) + Diplôme de Député Junior CM2 imprimable en A4 paysage |
-| `/etape/12-sources-credits/` | Étape 12 : Sources officielles, crédits photos CC BY-SA & charte de confidentialité |
+| `/etape/12-sources-credits/` | Étape 12 : Sources officielles, crédits des 14 photos/illustrations & charte de confidentialité |
 | `/enseignants/` | Guide EMC Cycle 3, découpage en 4 séances de 15 min, Mode Classe TBI, traces écrites et corrigés imprimables |
 | `/glossaire/` | Dictionnaire citoyen interactif des 23 mots clés avec recherche et synthèse vocale |
 | `/credits/` | Crédits complets Wikimedia Commons, vidéos et mentions pédagogiques |

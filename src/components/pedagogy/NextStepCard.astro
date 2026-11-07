@@ -10,7 +10,7 @@ interface Props {
 
 const { prevStep, nextStep } = Astro.props;
 const nextPhoto = nextStep ? getPhotoById(nextStep.heroPhoto) : undefined;
-const nextBaseName = nextPhoto ? nextPhoto.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '') : 'hemicycle';
+const nextBaseName = nextPhoto ? nextPhoto.baseName : 'hemicycle';
 ---
 
 <nav aria-label="Navigation entre les étapes" class="mt-10 pt-8 border-t-2 border-line no-print">

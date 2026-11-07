@@ -29,7 +29,7 @@ if (!photo) {
   throw new Error(`Photo "${photoId}" introuvable dans photos.json`);
 }
 
-const baseName = photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '');
+const baseName = photo.baseName || photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '');
 const aspectClass =
   aspect === '16/9'
     ? 'aspect-[16/9]'

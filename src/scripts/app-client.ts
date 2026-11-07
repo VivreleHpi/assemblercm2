@@ -10,6 +10,10 @@ export interface AppState {
   soundEnabled: boolean;
   onboardingDone: boolean;
   finalQuizBestScore: number;
+  finalQuizXpAwarded: boolean;
+  diplomaUnlocked: boolean;
+  diplomaUnlockMode: 'quiz' | 'teacher' | null;
+  diplomaSchoolName: string;
 }
 
 const STORAGE_KEY = 'an_cm2_v2_state';
@@ -25,7 +29,11 @@ const DEFAULT_STATE: AppState = {
   classroomMode: false,
   soundEnabled: true,
   onboardingDone: false,
-  finalQuizBestScore: 0
+  finalQuizBestScore: 0,
+  finalQuizXpAwarded: false,
+  diplomaUnlocked: false,
+  diplomaUnlockMode: null,
+  diplomaSchoolName: ''
 };
 
 export function initAppClient() {
@@ -41,17 +49,39 @@ export function initAppClient() {
   let state: AppState = loadState();
   let toastTimeout: number | undefined;
   let currentLightboxIndex = 0;
+  let lastFocusedTrigger: HTMLElement | null = null;
 
   function loadState(): AppState {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return { ...DEFAULT_STATE };
       const parsed = JSON.parse(raw);
+      const completedSteps = Array.isArray(parsed.completedSteps) ? parsed.completedSteps : [];
+      const unlockedBadges = Array.isArray(parsed.unlockedBadges) ? parsed.unlockedBadges : [];
+      const bestScore = typeof parsed.finalQuizBestScore === 'number' ? parsed.finalQuizBestScore : 0;
+      const diplomaUnlocked =
+        typeof parsed.diplomaUnlocked === 'boolean' ? parsed.diplomaUnlocked : bestScore >= 6;
+      const diplomaUnlockMode =
+        parsed.diplomaUnlockMode === 'quiz' || parsed.diplomaUnlockMode === 'teacher'
+          ? parsed.diplomaUnlockMode
+          : bestScore >= 6
+            ? 'quiz'
+            : null;
+      const finalQuizXpAwarded =
+        typeof parsed.finalQuizXpAwarded === 'boolean'
+          ? parsed.finalQuizXpAwarded
+          : bestScore >= 6 && unlockedBadges.includes('quiz');
+
       return {
         ...DEFAULT_STATE,
         ...parsed,
-        completedSteps: Array.isArray(parsed.completedSteps) ? parsed.completedSteps : [],
-        unlockedBadges: Array.isArray(parsed.unlockedBadges) ? parsed.unlockedBadges : []
+        completedSteps,
+        unlockedBadges,
+        finalQuizBestScore: bestScore,
+        finalQuizXpAwarded,
+        diplomaUnlocked,
+        diplomaUnlockMode,
+        diplomaSchoolName: typeof parsed.diplomaSchoolName === 'string' ? parsed.diplomaSchoolName : ''
       };
     } catch {
       return { ...DEFAULT_STATE };
@@ -191,6 +221,53 @@ export function initAppClient() {
         badgeObj ? `Médaille « ${badgeObj.title} » débloquée !` : 'Continue ton parcours de Député Junior !'
       );
     }
+  }
+
+  function completeFinalQuiz(score: number) {
+    if (score > state.finalQuizBestScore) {
+      state.finalQuizBestScore = score;
+    }
+    if (score >= 6) {
+      state.diplomaUnlocked = true;
+      state.diplomaUnlockMode = 'quiz';
+      const isFirstFinalQuizReward = !state.finalQuizXpAwarded;
+      if (isFirstFinalQuizReward) {
+        state.xp += 50;
+        state.finalQuizXpAwarded = true;
+      }
+      const isNewBadge = !state.unlockedBadges.includes('quiz');
+      if (isNewBadge) {
+        state.unlockedBadges.push('quiz');
+      }
+      saveState();
+      if (isFirstFinalQuizReward || isNewBadge) {
+        playSound('bell');
+        showToast(
+          isFirstFinalQuizReward ? '🎓 Grand Quiz réussi (+50 XP) !' : `🎓 Grand Quiz : ${score} / 8 !`,
+          'Médaille « Grand Lauréat du Quiz Final » et Diplôme CM2 débloqués !'
+        );
+      }
+    } else {
+      saveState();
+    }
+  }
+
+  function unlockDiplomaByTeacher() {
+    state.diplomaUnlocked = true;
+    if (!state.diplomaUnlockMode) {
+      state.diplomaUnlockMode = 'teacher';
+    }
+    saveState();
+  }
+
+  function setDiplomaDetails(userName?: string, schoolName?: string) {
+    if (typeof userName === 'string') {
+      state.userName = userName.trim();
+    }
+    if (typeof schoolName === 'string') {
+      state.diplomaSchoolName = schoolName.trim();
+    }
+    saveState();
   }
 
   function syncUI() {
@@ -359,26 +436,40 @@ export function initAppClient() {
   function openModal(id: string) {
     const modal = document.getElementById(id);
     if (!modal) return;
+    if (document.activeElement instanceof HTMLElement) {
+      lastFocusedTrigger = document.activeElement;
+    }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     if (id === 'search-modal') {
       const input = document.getElementById('global-search-input') as HTMLInputElement | null;
       renderSearchResults('');
       setTimeout(() => input?.focus(), 50);
+    } else {
+      const focusable = modal.querySelector<HTMLElement>(
+        'input, button:not([disabled]), [href], select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      setTimeout(() => focusable?.focus(), 50);
     }
   }
 
   function closeModal(id: string) {
     const modal = document.getElementById(id);
-    if (!modal) return;
+    if (!modal || modal.classList.contains('hidden')) return;
     modal.classList.add('hidden');
     modal.classList.remove('flex');
+    if (lastFocusedTrigger && document.body.contains(lastFocusedTrigger)) {
+      lastFocusedTrigger.focus();
+      lastFocusedTrigger = null;
+    }
   }
 
-  // Search Engine
+  // Search Engine (safe DOM construction — zero innerHTML injection)
   function renderSearchResults(query: string) {
     const container = document.getElementById('global-search-results');
     if (!container) return;
+    container.replaceChildren();
+
     const q = query.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const items = (globalData.searchIndex || []).filter((item: { title: string; description: string; keywords: string }) => {
       if (!q) return true;
@@ -390,26 +481,60 @@ export function initAppClient() {
     }).slice(0, 12);
 
     if (items.length === 0) {
-      container.innerHTML = `<div class="p-6 text-center text-sm text-ink-muted bg-paper rounded-xl border border-line">Aucun résultat pour « <strong>${query}</strong> ». Essaie « Hémicycle », « loi », « Sénat » ou « Napoléon ».</div>`;
+      const emptyBox = document.createElement('div');
+      emptyBox.className = 'p-6 text-center text-sm text-ink-muted bg-paper rounded-xl border border-line';
+      emptyBox.append('Aucun résultat pour « ');
+      const strongEl = document.createElement('strong');
+      strongEl.textContent = query;
+      emptyBox.append(strongEl);
+      emptyBox.append(' ». Essaie « Hémicycle », « loi », « Sénat » ou « Napoléon ».');
+      container.appendChild(emptyBox);
       return;
     }
 
-    container.innerHTML = items
-      .map(
-        (item: { type: string; title: string; description: string; url: string }) => `
-        <a href="${item.url}" class="block p-3.5 rounded-xl bg-paper hover:bg-republic-100/70 border border-line transition group">
-          <div class="flex items-center justify-between gap-2">
-            <span class="font-display font-bold text-sm sm:text-base text-ink group-hover:text-republic-900">${item.title}</span>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-surface text-republic-700 border border-line shrink-0">${item.type}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-ink-muted mt-1 line-clamp-2">${item.description}</p>
-        </a>
-      `
-      )
-      .join('');
+    const fragment = document.createDocumentFragment();
+    items.forEach((item: { type: string; title: string; description: string; url: string }) => {
+      const link = document.createElement('a');
+      link.href = item.url;
+      link.className = 'block p-3.5 rounded-xl bg-paper hover:bg-republic-100/70 border border-line transition group';
+
+      const topRow = document.createElement('div');
+      topRow.className = 'flex items-center justify-between gap-2';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'font-display font-bold text-sm sm:text-base text-ink group-hover:text-republic-900';
+      titleSpan.textContent = item.title;
+
+      const typeSpan = document.createElement('span');
+      typeSpan.className = 'text-xs font-bold px-2 py-0.5 rounded-full bg-surface text-republic-700 border border-line shrink-0';
+      typeSpan.textContent = item.type;
+
+      topRow.appendChild(titleSpan);
+      topRow.appendChild(typeSpan);
+
+      const descP = document.createElement('p');
+      descP.className = 'text-xs sm:text-sm text-ink-muted mt-1 line-clamp-2';
+      descP.textContent = item.description;
+
+      link.appendChild(topRow);
+      link.appendChild(descP);
+      fragment.appendChild(link);
+    });
+
+    container.appendChild(fragment);
   }
 
   // Lightbox Engine
+  function resolveImgBasePrefix(sampleSrc?: string): string {
+    if (sampleSrc) {
+      const match = sampleSrc.match(/^(.*?)\/img\//);
+      if (match && match[1]) {
+        return match[1].replace(/\/+$/, '');
+      }
+    }
+    return '';
+  }
+
   function openLightboxByPhotoId(photoId: string) {
     const photos = globalData.photos || [];
     const index = photos.findIndex((p: { id: string }) => p.id === photoId);
@@ -422,7 +547,11 @@ export function initAppClient() {
     const photos = globalData.photos || [];
     if (!photos.length) return;
     const photo = photos[currentLightboxIndex];
-    const baseName = photo.src.replace(/^\/img\//, '').replace(/\.[a-z]+$/, '');
+    const rawFile = (photo.baseName || photo.src || '').split('/').pop() || '';
+    const cleanBaseName = rawFile.replace(/\.[a-z0-9]+$/i, '');
+    const prefix = resolveImgBasePrefix(photo.src);
+    const normalizedSrc = `${prefix}/img/${cleanBaseName}-1600.webp`.replace(/\/{2,}/g, '/');
+
     const imgEl = document.getElementById('lightbox-img') as HTMLImageElement | null;
     const titleEl = document.getElementById('lightbox-title');
     const counterEl = document.getElementById('lightbox-counter');
@@ -432,7 +561,11 @@ export function initAppClient() {
     const sourceLinkEl = document.getElementById('lightbox-source-link') as HTMLAnchorElement | null;
 
     if (imgEl) {
-      imgEl.src = `/img/${baseName}-1600.webp`;
+      imgEl.onerror = () => {
+        const fallback = `${prefix}/img/${cleanBaseName}.jpg`.replace(/\/{2,}/g, '/');
+        if (imgEl.src !== fallback) imgEl.src = fallback;
+      };
+      imgEl.src = normalizedSrc;
       imgEl.alt = photo.alt;
     }
     if (titleEl) titleEl.textContent = photo.title;
@@ -808,19 +941,20 @@ export function initAppClient() {
     addXP,
     unlockBadge,
     completeStep,
+    completeFinalQuiz,
+    unlockDiplomaByTeacher,
+    setDiplomaDetails,
     playSound,
     showToast,
     openLightboxByPhotoId,
     setFinalQuizScore: (score: number) => {
-      if (score > state.finalQuizBestScore) {
-        state.finalQuizBestScore = score;
-      }
-      saveState();
+      completeFinalQuiz(score);
     }
   };
 
   syncUI();
   setupEventListeners();
+  window.dispatchEvent(new CustomEvent('an:ready', { detail: state }));
 
   // Register Service Worker for offline PWA use in classroom
   if ('serviceWorker' in navigator) {

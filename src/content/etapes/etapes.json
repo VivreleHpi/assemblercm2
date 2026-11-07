@@ -72,7 +72,7 @@
       "heading": "Un palais du XVIIIe siècle devenu le temple de la République",
       "lead": "Avant d'accueillir les députés en 1798, le Palais Bourbon était la résidence d'une princesse, la duchesse de Bourbon, fille de Louis XIV.",
       "paragraphs": [
-        "Au fil des siècles, les plus grands architectes, peintres et sculpteurs français ont embelli ce palais pour honorer la souveraineté du peuple : Bernard Poyet a dressé ses 12 colonnes grecques en 1806, Eugène Delacroix a peint les coupoles de la Bibliothèque, et Horace Vernet a décoré la Salle des Pas Perdus.",
+        "Au fil des siècles, les plus grands architectes, peintres et sculpteurs français ont embelli ce palais pour honorer la souveraineté du peuple : Bernard Poyet a élevé ses 12 colonnes corinthiennes entre 1806 et 1810, Eugène Delacroix a peint les coupoles de la Bibliothèque, et Horace Vernet a décoré la Salle des Pas Perdus.",
         "Clique sur chacune des 8 œuvres ci-dessous pour l'ouvrir en plein écran, naviguer au clavier ou au doigt, et découvrir ses secrets de fabrication."
       ],
       "glossaryIds": ["hemicycle", "perchoir", "parlement"]
@@ -81,19 +81,19 @@
     "malikBubble": {
       "speaker": "Papa",
       "title": "L'astuce de Papa : Pourquoi les 12 colonnes regardent-elles la Seine ?",
-      "text": "Si tu te places sur le pont de la Concorde à Paris, tu verras que les 12 colonnes du Palais Bourbon font exactement face aux colonnes de l'église de la Madeleine ! Napoléon Ier a voulu créer une perspective symétrique grandiose de chaque côté du fleuve."
+      "text": "Si tu te places sur le pont de la Concorde à Paris, tu verras que les 12 colonnes du Palais Bourbon (construites de 1806 à 1810) font exactement face aux colonnes de l'église de la Madeleine ! Napoléon Ier a voulu créer une perspective symétrique grandiose de chaque côté du fleuve."
     },
     "keyPoints": [
-      "La façade à 12 colonnes grecques du Palais Bourbon a été commandée par Napoléon Ier en 1806 à l'architecte Bernard Poyet.",
+      "La façade à 12 colonnes du Palais Bourbon a été commandée par Napoléon Ier à l'architecte Bernard Poyet et construite de 1806 à 1810.",
       "La Bibliothèque de l'Assemblée a été peinte par Eugène Delacroix et conserve plus de 700 000 livres et manuscrits précieux.",
       "La Salle des Pas Perdus est la grande galerie où les députés et les journalistes discutent avant d'entrer dans l'Hémicycle."
     ],
     "microQuiz": [
       {
-        "q": "Combien de colonnes grecques ornent la façade du Palais Bourbon face à la Seine ?",
+        "q": "Combien de colonnes ornent la façade néoclassique du Palais Bourbon face à la Seine ?",
         "options": ["6 colonnes", "12 colonnes", "24 colonnes"],
         "correct": 1,
-        "exp": "Bien vu ! La colonnade néoclassique dessinée par Bernard Poyet en 1806 compte exactement 12 colonnes."
+        "exp": "Bien vu ! La colonnade néoclassique édifiée par Bernard Poyet entre 1806 et 1810 compte exactement 12 colonnes."
       },
       {
         "q": "Quel célèbre artiste du XIXe siècle a peint les coupoles de la Bibliothèque de l'Assemblée ?",
@@ -140,7 +140,7 @@
       "soundAction": "drum"
     },
     "keyPoints": [
-      "Le nombre de 577 députés est un nombre impair (fixé en 1986) correspondant aux 577 circonscriptions, avec une majorité absolue à 289 voix.",
+      "Il y a 577 députés (un par circonscription) : une loi ordinaire est adoptée à la majorité simple des suffrages exprimés (POUR > CONTRE), tandis qu'une motion de censure exige la majorité absolue des membres (289 voix).",
       "Les huissiers de séance portent un habit noir et une chaîne en argent depuis 1789 pour faire respecter le calme et le protocole.",
       "Au nom de la séparation des pouvoirs, le Président de la République n'a pas le droit d'entrer dans l'Hémicycle (sauf réunion du Congrès à Versailles)."
     ],
@@ -227,9 +227,9 @@
     "legacyId": "histoire",
     "part": "institutions",
     "partLabel": "Partie 2 • Les Institutions",
-    "title": "La Grande Frise (1789 – 1994) & Napoléon Ier",
-    "shortTitle": "5. Frise & Napoléon",
-    "subtitle": "Voyage à travers 7 grandes dates historiques, du Serment du Jeu de Paume en 1789 jusqu'au droit de vote des femmes et aux élèves de CM2.",
+    "title": "La Grande Frise (1789 – Aujourd'hui) & l'Histoire Républicaine",
+    "shortTitle": "5. Frise & Histoire",
+    "subtitle": "Voyage à travers 8 grandes dates illustrées, de la naissance de l'Assemblée en juin 1789 jusqu'au droit de vote des femmes et à aujourd'hui.",
     "duration": "6 min",
     "xpReward": 20,
     "badgeId": "histoire",
@@ -238,8 +238,8 @@
       "heading": "Plus de deux siècles de conquêtes pour la liberté et le droit de vote",
       "lead": "La démocratie française ne s'est pas construite en un seul jour ! Avant 1789, le roi décidait presque seul des lois du royaume.",
       "paragraphs": [
-        "Le 20 juin 1789, à Versailles, les députés du Tiers-État prêtent le célèbre Serment du Jeu de Paume et créent l'Assemblée nationale. En août 1789, ils votent la Déclaration des Droits de l'Homme et du Citoyen.",
-        "Il a ensuite fallu de grandes étapes pour que tous les citoyens puissent voter : le suffrage universel masculin au printemps 1848 (en même temps que l'abolition définitive de l'esclavage par Victor Schœlcher), puis le droit de vote et d'éligibilité des femmes le 21 avril 1944, et le vote dès 18 ans en 1974 !"
+        "Le 17 juin 1789, les députés du Tiers-État se constituent en Assemblée nationale. Trois jours plus tard, le 20 juin 1789 à Versailles, ils prêtent le Serment du Jeu de paume, puis adoptent la Déclaration des droits de l'homme et du citoyen le 26 août 1789. Le 21 janvier 1798, la première salle des séances du Palais Bourbon est inaugurée pour le Conseil des Cinq-Cents.",
+        "De grandes étapes ont ensuite élargi nos droits : le Code civil (21 mars 1804) et les 12 colonnes du Palais Bourbon (1806–1810), puis au printemps 1848 deux réformes distinctes majeures — le suffrage universel masculin direct (5 mars 1848) et l'abolition définitive de l'esclavage (27 avril 1848, sous l'impulsion de Victor Schœlcher) — suivies par le droit de vote et d'éligibilité des femmes le 21 avril 1944 (premier vote en 1945) et la Constitution du 4 octobre 1958 !"
       ],
       "glossaryIds": ["constitution", "suffrage-direct", "hemicycle"]
     },
@@ -250,31 +250,31 @@
       "text": "Sous Napoléon Ier, les 300 députés du Palais Bourbon s'appelaient le « Corps législatif ». Napoléon n'aimait pas qu'on contredise ses projets : les députés devaient écouter les orateurs en silence et déposer une boule blanche (pour) ou noire (contre) dans l'urne sans prononcer un seul mot !"
     },
     "keyPoints": [
-      "L'Assemblée nationale est née le 20 juin 1789 (Serment du Jeu de Paume) et s'est installée au Palais Bourbon en 1798.",
-      "En 1804, Napoléon Ier promulgue le Code civil, puis fait construire la façade aux 12 colonnes du Palais Bourbon en 1806.",
-      "Le droit de vote s'est élargi à tous les hommes majeurs en mars 1848, aux femmes le 21 avril 1944, et aux jeunes dès 18 ans en 1974."
+      "En 1789, l'Assemblée nationale se constitue le 17 juin, prête le Serment du Jeu de paume le 20 juin et vote la Déclaration des droits le 26 août ; la première salle des séances du Palais Bourbon est inaugurée le 21 janvier 1798.",
+      "Le 21 mars 1804, Napoléon promulgue le Code civil, puis fait bâtir la façade aux 12 colonnes du Palais Bourbon entre 1806 et 1810.",
+      "En 1848 sont instaurés le suffrage universel masculin (5 mars) et l'abolition de l'esclavage (27 avril) ; l'ordonnance du 21 avril 1944 accorde le droit de vote et d'éligibilité aux femmes (premier vote en 1945)."
     ],
     "microQuiz": [
       {
-        "q": "Quel événement fondateur a donné naissance à l'Assemblée nationale le 20 juin 1789 ?",
-        "options": ["Le Serment du Jeu de Paume à Versailles", "La construction de la Tour Eiffel", "Le sacre de Napoléon"],
+        "q": "Quel serment prêté le 20 juin 1789 à Versailles engage les députés à rédiger une Constitution pour la France ?",
+        "options": ["Le Serment du Jeu de paume", "La construction de la Tour Eiffel", "Le sacre de Napoléon"],
         "correct": 0,
-        "exp": "Exact ! Réunis dans la salle du Jeu de Paume le 20 juin 1789, les députés ont juré de rédiger une Constitution."
+        "exp": "Exact ! Constitués en Assemblée nationale le 17 juin 1789, les députés prêtent le Serment du Jeu de paume le 20 juin 1789."
       },
       {
-        "q": "En quelle année les Françaises ont-elles enfin obtenu le droit de vote et d'être élues députées ?",
-        "options": ["En 1789", "En 1848", "En 1944"],
+        "q": "Quelle date accorde le droit de vote et d'éligibilité aux Françaises (qui votent pour la première fois en 1945) ?",
+        "options": ["Le 20 juin 1789", "Le 5 mars 1848", "L'ordonnance du 21 avril 1944"],
         "correct": 2,
-        "exp": "Bravo ! C'est l'ordonnance du 21 avril 1944 qui a rendu le suffrage véritablement universel en l'ouvrant aux femmes."
+        "exp": "Bravo ! L'ordonnance du 21 avril 1944 accorde le droit de vote et d'éligibilité aux femmes, qui votent pour la première fois en 1945."
       },
       {
-        "q": "Pourquoi surnommait-on les députés du Palais Bourbon « les Muets » sous Napoléon Ier ?",
-        "options": ["Parce qu'ils votaient les lois sans avoir le droit de parler pendant la séance", "Parce qu'ils chuchotaient", "Parce qu'ils parlaient en latin"],
+        "q": "Quelles sont les deux grandes décisions distinctes adoptées au printemps 1848 par la IIe République ?",
+        "options": ["Le suffrage universel masculin (5 mars) et l'abolition de l'esclavage (27 avril)", "L'invention de la télévision et du train", "Le retour du roi et la suppression du vote"],
         "correct": 0,
-        "exp": "Bien joué ! Sous l'Empire, le Corps législatif votait en silence après avoir écouté les orateurs."
+        "exp": "Bien joué ! La IIe République établit le suffrage universel masculin le 5 mars 1848 et abolit définitivement l'esclavage le 27 avril 1848 sous l'impulsion de Victor Schœlcher."
       }
     ],
-    "teacherObjective": "Histoire Cycle 3 — Repérer les grandes étapes de la construction de la République et de la conquête du suffrage universel (1789, 1804-1806, 1848, 1944, 1958, 1974)."
+    "teacherObjective": "Histoire Cycle 3 — Repérer les grandes étapes de la construction de la République, de l'abolition de l'esclavage et de la conquête du suffrage universel (1789, 1798, 1804, 1848, 1944–1945, 1958, 1994, 2026)."
   },
   {
     "order": 6,
@@ -282,54 +282,54 @@
     "legacyId": "enfants",
     "part": "institutions",
     "partLabel": "Partie 2 • Les Institutions",
-    "title": "Le Parlement des Enfants (Depuis 1994)",
+    "title": "Le Parlement des Enfants (De 1994 à la 30e édition 2026–2027)",
     "shortTitle": "6. Parlement des Enfants",
-    "subtitle": "Découvre comment 577 classes de CM2 rédigent et votent chaque année une vraie proposition de loi pour la France !",
+    "subtitle": "Découvre comment les classes de CM2 et de 6e s'initient au métier de député en rédigeant et en votant une proposition de loi pédagogique !",
     "duration": "5 min",
     "xpReward": 20,
     "badgeId": "enfants",
     "heroPhotoId": "hemicycle",
     "discover": {
-      "heading": "Quand les élèves de CM2 deviennent législateurs !",
-      "lead": "Savais-tu que des enfants de ton âge ont déjà écrit de vraies lois de la République française ?",
+      "heading": "Quand les élèves de CM2 et de 6e découvrent le travail de législateur !",
+      "lead": "Savais-tu que des élèves de Cycle 3 apprennent chaque année à rédiger une proposition de loi comme de vrais députés ?",
       "paragraphs": [
-        "En juin 1994, Philippe Séguin (alors Président de l'Assemblée nationale) a créé le « Parlement des Enfants » avec le ministère de l'Éducation nationale. Le 4 juin 1994, pour la toute première fois de l'Histoire, 577 délégués d'école primaire (CM2) ont pris place sur les fauteuils rouges de l'Hémicycle !",
-        "Chaque année, 577 classes sélectionnées dans toute la France travaillent sur un grand thème civique (protection de l'environnement, lutte contre le harcèlement, égalité, alimentation), rédigent une proposition de loi avec l'aide de leur député, et votent au scrutin national pour élire le meilleur texte."
+        "Créé en 1994 à l'initiative de Philippe Séguin (alors Président de l'Assemblée nationale) avec le ministère de l'Éducation nationale, le « Parlement des enfants » a réuni pour la première fois 577 délégués de CM2 dans l'Hémicycle le 4 juin 1994.",
+        "Aujourd'hui, l'opération s'adresse aux classes de CM2 et aux classes de 6e. Pour la 30e édition (année scolaire 2026–2027), le thème officiel est « Favoriser l'accès à la culture pour toutes et tous ». Après la sélection des classes et la rédaction des textes, le jury national est programmé les 3 ou 4 février 2027, la fin du vote électronique des classes le 5 mars 2027 et l'accueil des classes finalistes au Palais Bourbon le 10 mars 2027."
       ],
       "glossaryIds": ["projet-proposition", "amendement", "circonscription", "parlement"]
     },
     "interactiveWidget": "enfants",
     "malikBubble": {
       "speaker": "Malik",
-      "title": "La question de Malik : Est-ce que ces lois écrites par des CM2 deviennent de vraies lois ?",
-      "text": "Oui ! Plusieurs propositions gagnantes du Parlement des Enfants ont été reprises par de vrais députés et votées définitivement par le Parlement : par exemple sur les droits des enfants, la protection des océans ou le maintien des liens entre frères et sœurs !"
+      "title": "La question de Malik : Est-ce que les textes du Parlement des enfants deviennent automatiquement des lois ?",
+      "text": "Non, pas automatiquement ! La proposition de loi rédigée par les élèves est un exercice pédagogique et citoyen. Pour devenir une vraie loi de la République, un député doit décider de reprendre l'idée et la faire voter par l'Assemblée nationale et le Sénat : c'est d'ailleurs arrivé plusieurs fois depuis 1994 !"
     },
     "keyPoints": [
-      "Le Parlement des Enfants a été créé en juin 1994 par Philippe Séguin pour faire vivre la démocratie aux élèves de CM2 (Cycle 3).",
-      "Chaque année, 577 classes (une par circonscription) débattent et rédigent une vraie proposition de loi avec leur professeur.",
-      "Après un vote national de toutes les classes participantes, le texte lauréat peut inspirer une véritable loi de la République."
+      "Créé en 1994, le Parlement des enfants associe aujourd'hui les classes de CM2 et de 6e autour d'un grand thème civique annuel.",
+      "Pour la 30e édition (2026–2027), le thème est « Favoriser l'accès à la culture pour toutes et tous » (jury national prévu les 3-4 février 2027, fin des votes le 5 mars 2027, accueil des finalistes le 10 mars 2027).",
+      "Les propositions rédigées par les classes sont des travaux pédagogiques : elles ne sont pas automatiquement adoptées comme lois, mais initient les élèves au débat démocratique."
     ],
     "microQuiz": [
       {
-        "q": "En quelle année a eu lieu la toute première séance du Parlement des Enfants à l'Assemblée nationale ?",
-        "options": ["En 1806", "Le 4 juin 1994", "En 2018"],
-        "correct": 1,
-        "exp": "Exact ! Le 4 juin 1994, 577 élèves de CM2 ont siégé pour la première fois dans l'Hémicycle sous la présidence de Philippe Séguin."
-      },
-      {
-        "q": "Combien de classes sont sélectionnées chaque année en France pour participer au Parlement des Enfants ?",
-        "options": ["10 classes", "100 classes", "577 classes (autant que de députés)"],
-        "correct": 2,
-        "exp": "Bravo ! Une classe est choisie dans chacune des 577 circonscriptions législatives françaises."
-      },
-      {
-        "q": "Quel est le travail réalisé par les élèves pendant le Parlement des Enfants ?",
-        "options": ["Ils rédigent et votent une proposition de loi sur un thème citoyen", "Ils repeignent l'Hémicycle", "Ils élisent le maire de Paris"],
+        "q": "Quels niveaux de classe du Cycle 3 peuvent aujourd'hui participer au Parlement des enfants ?",
+        "options": ["Les classes de CM2 et les classes de 6e", "Uniquement les étudiants d'université", "Les classes de maternelle"],
         "correct": 0,
-        "exp": "Parfait ! Les élèves apprennent le métier de législateur en rédigeant des articles de loi et un exposé des motifs."
+        "exp": "Exact ! Le Parlement des enfants concerne les classes de CM2 ainsi que les classes de 6e."
+      },
+      {
+        "q": "Quel est le thème officiel de la 30e édition (2026–2027) du Parlement des enfants ?",
+        "options": ["« Favoriser l'accès à la culture pour toutes et tous »", "« Remplacer les livres par des jeux vidéo »", "« Supprimer les vacances d'été »"],
+        "correct": 0,
+        "exp": "Bravo ! Le thème officiel de la 30e édition (2026–2027) est « Favoriser l'accès à la culture pour toutes et tous »."
+      },
+      {
+        "q": "Une proposition de loi rédigée par les élèves au Parlement des enfants devient-elle automatiquement une loi officielle ?",
+        "options": ["Non, c'est un travail pédagogique citoyen (qui peut toutefois inspirer les députés)", "Oui, elle s'applique dès le lendemain matin sans vote du Parlement", "Oui, elle remplace la Constitution"],
+        "correct": 0,
+        "exp": "Parfait ! C'est un projet pédagogique d'apprentissage de la démocratie : seul le Parlement (Assemblée nationale et Sénat) peut voter une loi officielle."
       }
     ],
-    "teacherObjective": "EMC Cycle 3 — S'engager dans un projet collectif citoyen, débattre de manière argumentée et comprendre le passage d'un besoin collectif à la rédaction d'une règle de droit."
+    "teacherObjective": "EMC Cycle 3 — S'engager dans un projet collectif citoyen (Parlement des enfants, CM2/6e), débattre de manière argumentée et distinguer un exercice pédagogique de la procédure législative constitutionnelle."
   },
   {
     "order": 7,
@@ -562,7 +562,7 @@
     "subtitle": "Réponds aux 8 questions du défi final de Malik & son Papa (objectif : au moins 6/8) pour débloquer et imprimer ton Diplôme de Député Junior !",
     "duration": "6 min",
     "xpReward": 20,
-    "badgeId": "quiz",
+    "badgeId": null,
     "heroPhotoId": "hemicycle",
     "discover": {
       "heading": "L'épreuve finale du parcours citoyen !",

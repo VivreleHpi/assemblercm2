@@ -17,7 +17,7 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
       </h2>
     </div>
     <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-gold-light text-ink border border-gold">
-      🏅 Bonus : Débloque le badge « Maître de la Justice » à l’onglet 4 !
+      🏅 Bonus : Débloque le badge « Juge Citoyen CM2 » à l’onglet 4 !
     </span>
   </div>
 
@@ -30,6 +30,8 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
     <button
       type="button"
       role="tab"
+      id="justice-tab-pyramide"
+      aria-controls="justice-panel-pyramide"
       aria-selected="true"
       data-justice-tab="pyramide"
       class="justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-velvet text-white shadow-sm transition min-h-[48px]"
@@ -39,6 +41,8 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
     <button
       type="button"
       role="tab"
+      id="justice-tab-parcours-loi"
+      aria-controls="justice-panel-parcours-loi"
       aria-selected="false"
       data-justice-tab="parcours-loi"
       class="justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-velvet-light transition min-h-[48px]"
@@ -48,6 +52,8 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
     <button
       type="button"
       role="tab"
+      id="justice-tab-tribunaux"
+      aria-controls="justice-panel-tribunaux"
       aria-selected="false"
       data-justice-tab="tribunaux"
       class="justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-velvet-light transition min-h-[48px]"
@@ -57,6 +63,8 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
     <button
       type="button"
       role="tab"
+      id="justice-tab-jeu-tribunal"
+      aria-controls="justice-panel-jeu-tribunal"
       aria-selected="false"
       data-justice-tab="jeu-tribunal"
       class="justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-velvet-light transition min-h-[48px]"
@@ -66,7 +74,7 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
   </div>
 
   <!-- TAB 1: Pyramide des normes + Code civil vs Code pénal -->
-  <div data-justice-panel="pyramide" class="space-y-8">
+  <div id="justice-panel-pyramide" role="tabpanel" aria-labelledby="justice-tab-pyramide" data-justice-panel="pyramide" class="space-y-8">
     <div>
       <h3 class="font-display font-bold text-xl text-ink mb-2">
         A. La pyramide des règles de droit (clique sur un étage)
@@ -163,7 +171,7 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
   </div>
 
   <!-- TAB 2: Parcours d'une loi en 5 étapes -->
-  <div data-justice-panel="parcours-loi" class="hidden space-y-4">
+  <div id="justice-panel-parcours-loi" role="tabpanel" aria-labelledby="justice-tab-parcours-loi" data-justice-panel="parcours-loi" class="hidden space-y-4">
     <h3 class="font-display font-bold text-xl text-ink">
       Les 5 grandes étapes de la naissance d’une loi
     </h3>
@@ -210,7 +218,7 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
   </div>
 
   <!-- TAB 3: Arbre des 10 tribunaux -->
-  <div data-justice-panel="tribunaux" class="hidden space-y-6">
+  <div id="justice-panel-tribunaux" role="tabpanel" aria-labelledby="justice-tab-tribunaux" data-justice-panel="tribunaux" class="hidden space-y-6">
     <div>
       <h3 class="font-display font-bold text-xl text-ink mb-2">
         L’arbre de la Justice en France (2 grandes familles + les 9 Sages)
@@ -272,14 +280,14 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
   </div>
 
   <!-- TAB 4: Mini-jeu « Quel tribunal ? » (5 affaires -> débloque le badge Justice) -->
-  <div data-justice-panel="jeu-tribunal" class="hidden space-y-5">
+  <div id="justice-panel-jeu-tribunal" role="tabpanel" aria-labelledby="justice-tab-jeu-tribunal" data-justice-panel="jeu-tribunal" class="hidden space-y-5">
     <div class="flex flex-wrap items-center justify-between gap-3 bg-paper p-4 rounded-card border border-line">
       <div>
         <h3 class="font-display font-bold text-lg sm:text-xl text-ink">
           Mini-jeu : Oriente ces 5 affaires vers le bon tribunal !
         </h3>
         <p class="text-xs sm:text-sm text-ink-muted">
-          Trouve les 5 bonnes juridictions pour gagner la médaille <strong>« Maître de la Justice »</strong>.
+          Trouve les 5 bonnes juridictions pour gagner la médaille <strong>« Juge Citoyen CM2 »</strong>.
         </p>
       </div>
       <span id="justice-game-score" class="px-3 py-1.5 rounded-full bg-gold-light text-ink border border-gold text-xs font-bold">
@@ -331,22 +339,42 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
     const pyramidLevels = pyrEl ? JSON.parse(pyrEl.textContent || '[]') : [];
 
     // Tabs
-    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.justice-tab-btn');
+    const tabBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.justice-tab-btn'));
     const panels = document.querySelectorAll<HTMLElement>('[data-justice-panel]');
 
-    tabBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const target = btn.getAttribute('data-justice-tab');
-        tabBtns.forEach((b) => {
-          const active = b.getAttribute('data-justice-tab') === target;
-          b.setAttribute('aria-selected', String(active));
-          b.className = active
-            ? 'justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-velvet text-white shadow-sm transition min-h-[48px]'
-            : 'justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-velvet-light transition min-h-[48px]';
-        });
-        panels.forEach((p) => {
-          p.classList.toggle('hidden', p.getAttribute('data-justice-panel') !== target);
-        });
+    const activateTab = (btn: HTMLButtonElement, focus = false) => {
+      const target = btn.getAttribute('data-justice-tab');
+      tabBtns.forEach((b) => {
+        const active = b.getAttribute('data-justice-tab') === target;
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('tabindex', active ? '0' : '-1');
+        b.className = active
+          ? 'justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-velvet text-white shadow-sm transition min-h-[48px]'
+          : 'justice-tab-btn px-3 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-velvet-light transition min-h-[48px]';
+      });
+      panels.forEach((p) => {
+        p.classList.toggle('hidden', p.getAttribute('data-justice-panel') !== target);
+      });
+      if (focus) btn.focus();
+    };
+
+    tabBtns.forEach((btn, idx) => {
+      btn.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+      btn.addEventListener('click', () => activateTab(btn, false));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          activateTab(tabBtns[(idx + 1) % tabBtns.length], true);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          activateTab(tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length], true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          activateTab(tabBtns[0], true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          activateTab(tabBtns[tabBtns.length - 1], true);
+        }
       });
     });
 

@@ -19,6 +19,13 @@ const {
   ogImage = '/og/og-default.jpg'
 } = Astro.props;
 
+const siteOrigin = 'https://vivrelehpi.github.io/assemblercm2';
+const normalizedPath = Astro.url.pathname.replace(/^\/assemblercm2/, '') || '/';
+const canonicalUrl = `${siteOrigin}${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`;
+const absoluteOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : `${siteOrigin}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
+
 const fullTitle = title.includes('Assemblée nationale')
   ? title
   : `${title} — L’Assemblée nationale (Parcours CM2 de Malik & Papa)`;
@@ -53,6 +60,7 @@ const jsonLd = {
     <meta name="theme-color" content="#002654" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="canonical" href={canonicalUrl} />
 
     <!-- Preload critical self-hosted WOFF2 fonts (2 weights max as specified) -->
     <link
@@ -73,13 +81,14 @@ const jsonLd = {
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={absoluteOgImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={absoluteOgImage} />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

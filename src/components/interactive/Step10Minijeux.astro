@@ -26,6 +26,8 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
     <button
       type="button"
       role="tab"
+      id="game-tab-voter-loi"
+      aria-controls="game-panel-voter-loi"
       aria-selected="true"
       data-game-tab="voter-loi"
       class="game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]"
@@ -35,6 +37,8 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
     <button
       type="button"
       role="tab"
+      id="game-tab-qui-fait-quoi"
+      aria-controls="game-panel-qui-fait-quoi"
       aria-selected="false"
       data-game-tab="qui-fait-quoi"
       class="game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
@@ -44,6 +48,8 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
     <button
       type="button"
       role="tab"
+      id="game-tab-vrai-faux"
+      aria-controls="game-panel-vrai-faux"
       aria-selected="false"
       data-game-tab="vrai-faux"
       class="game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]"
@@ -53,7 +59,7 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
   </div>
 
   <!-- GAME 1: Fais voter ta loi en 4 étapes -->
-  <div data-game-panel="voter-loi" class="space-y-5">
+  <div id="game-panel-voter-loi" role="tabpanel" aria-labelledby="game-tab-voter-loi" data-game-panel="voter-loi" class="space-y-5">
     <div class="p-5 rounded-card bg-paper border border-line space-y-4">
       <div class="flex items-center justify-between">
         <span id="law-rpg-step-pill" class="px-2.5 py-1 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
@@ -85,7 +91,7 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
   </div>
 
   <!-- GAME 2: Qui fait quoi ? (5 rôles) -->
-  <div data-game-panel="qui-fait-quoi" class="hidden space-y-4">
+  <div id="game-panel-qui-fait-quoi" role="tabpanel" aria-labelledby="game-tab-qui-fait-quoi" data-game-panel="qui-fait-quoi" class="hidden space-y-4">
     <div class="flex flex-wrap items-center justify-between gap-2 bg-paper p-4 rounded-card border border-line">
       <p class="text-sm font-medium text-ink">
         Associe chacune des <strong>5 missions républicaines</strong> au bon acteur :
@@ -126,7 +132,7 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
   </div>
 
   <!-- GAME 3: Vrai ou Faux Express (6 questions) -->
-  <div data-game-panel="vrai-faux" class="hidden space-y-4">
+  <div id="game-panel-vrai-faux" role="tabpanel" aria-labelledby="game-tab-vrai-faux" data-game-panel="vrai-faux" class="hidden space-y-4">
     <div class="flex flex-wrap items-center justify-between gap-2 bg-paper p-4 rounded-card border border-line">
       <p class="text-sm font-medium text-ink">
         Clique sur <strong>VRAI</strong> ou <strong>FAUX</strong> pour chacune de ces 6 affirmations :
@@ -181,22 +187,42 @@ import { ROLES_GAME_DATA, VF_QUESTIONS } from '../../data';
 <script>
   function initStep10() {
     // Tabs
-    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.game-tab-btn');
+    const tabBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.game-tab-btn'));
     const panels = document.querySelectorAll<HTMLElement>('[data-game-panel]');
 
-    tabBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const target = btn.getAttribute('data-game-tab');
-        tabBtns.forEach((b) => {
-          const active = b.getAttribute('data-game-tab') === target;
-          b.setAttribute('aria-selected', String(active));
-          b.className = active
-            ? 'game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]'
-            : 'game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]';
-        });
-        panels.forEach((p) => {
-          p.classList.toggle('hidden', p.getAttribute('data-game-panel') !== target);
-        });
+    const activateTab = (btn: HTMLButtonElement, focus = false) => {
+      const target = btn.getAttribute('data-game-tab');
+      tabBtns.forEach((b) => {
+        const active = b.getAttribute('data-game-tab') === target;
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('tabindex', active ? '0' : '-1');
+        b.className = active
+          ? 'game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-republic-900 text-white shadow-sm transition min-h-[48px]'
+          : 'game-tab-btn px-4 py-3 rounded-btn font-display font-bold text-xs sm:text-sm bg-surface text-ink hover:bg-republic-100 transition min-h-[48px]';
+      });
+      panels.forEach((p) => {
+        p.classList.toggle('hidden', p.getAttribute('data-game-panel') !== target);
+      });
+      if (focus) btn.focus();
+    };
+
+    tabBtns.forEach((btn, idx) => {
+      btn.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+      btn.addEventListener('click', () => activateTab(btn, false));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          activateTab(tabBtns[(idx + 1) % tabBtns.length], true);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          activateTab(tabBtns[(idx - 1 + tabBtns.length) % tabBtns.length], true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          activateTab(tabBtns[0], true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          activateTab(tabBtns[tabBtns.length - 1], true);
+        }
       });
     });
 

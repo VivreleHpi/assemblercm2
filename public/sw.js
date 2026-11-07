@@ -1,6 +1,19 @@
-const CACHE_NAME = 'assemblee-cm2-v2';
+const CACHE_PREFIX = 'assemblee-cm2-';
+const CACHE_NAME = 'assemblee-cm2-v3';
 const PRECACHE_URLS = [
   '/',
+  '/etape/1-hemicycle/',
+  '/etape/2-galerie/',
+  '/etape/3-secrets/',
+  '/etape/4-constitution-justice/',
+  '/etape/5-frise-napoleon/',
+  '/etape/6-parlement-enfants/',
+  '/etape/7-contre-pouvoir-senat/',
+  '/etape/8-videos/',
+  '/etape/9-carte-mentale/',
+  '/etape/10-mini-jeux/',
+  '/etape/11-quiz-diplome/',
+  '/etape/12-sources-credits/',
   '/enseignants/',
   '/glossaire/',
   '/credits/',
@@ -8,6 +21,7 @@ const PRECACHE_URLS = [
   '/favicon.svg',
   '/manifest.webmanifest',
   '/fonts/fredoka-600.woff2',
+  '/fonts/fredoka-700.woff2',
   '/fonts/atkinson-400.woff2',
   '/fonts/atkinson-700.woff2'
 ];
@@ -21,7 +35,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter((k) => k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME)
+          .map((k) => caches.delete(k))
+      )
     ).then(() => self.clients.claim())
   );
 });
@@ -46,4 +64,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-

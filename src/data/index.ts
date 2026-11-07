@@ -76,6 +76,8 @@ export const PHOTOS: PhotoItem[] = photosRaw.map((p) => ({
   objectPosition: p.objectPosition === 'top' ? 'top center' : 'center center'
 }));
 
+export const GALLERY_PHOTOS: PhotoItem[] = PHOTOS.slice(0, 8);
+
 export const GLOSSAIRE: GlossaireItem[] = glossaireRaw.map((g) => ({
   id: g.id,
   term: g.term,
@@ -400,55 +402,237 @@ export const JUSTICE_CASES = [
   }
 ];
 
-export const TIMELINE_EVENTS = [
+export interface TimelineEventItem {
+  id: string;
+  year: string;
+  buttonLabel: string;
+  dateLabel: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  whyImportantToday: string;
+  photoId: string;
+  baseName: string;
+  imageAlt: string;
+  author: string;
+  institution: string;
+  license: string;
+  artworkUrl: string;
+  officialSourceUrl: string;
+  officialSourceLabel: string;
+  objectPosition: string;
+  width: number;
+  height: number;
+}
+
+export const TIMELINE_EVENTS: TimelineEventItem[] = [
   {
+    id: 'tl-1789',
     year: '1789',
-    dateLabel: '20 juin & 26 août 1789',
-    title: "Le Serment du Jeu de Paume & la Déclaration des Droits de l'Homme",
+    buttonLabel: '1789',
+    dateLabel: '17 juin, 20 juin & 26 août 1789',
+    title: "Naissance de l'Assemblée nationale, Serment du Jeu de paume & Déclaration des droits",
+    shortDescription:
+      'Le 20 juin 1789 à Versailles, les députés réunis dans la salle du Jeu de paume jurent de rédiger une Constitution pour la France.',
     description:
-      "À Versailles, les députés du Tiers-État réunis dans la salle du Jeu de Paume jurent de donner une Constitution à la France : c'est la naissance de l'Assemblée nationale ! Le 26 août 1789, ils votent la Déclaration des Droits de l'Homme et du Citoyen."
+      "Le 17 juin 1789, les députés du Tiers-État se constituent en Assemblée nationale. Trois jours plus tard, le 20 juin 1789, trouvant leur salle fermée, ils prêtent le Serment du Jeu de paume et jurent de ne pas se séparer avant d'avoir donné une Constitution à la France. Le 26 août 1789, ils adoptent la Déclaration des droits de l'homme et du citoyen.",
+    whyImportantToday:
+      "C'est l'acte de naissance de notre démocratie parlementaire : depuis 1789, la souveraineté appartient à la Nation et la Déclaration du 26 août 1789 protège toujours nos libertés fondamentales.",
+    photoId: 'jeu-de-paume',
+    baseName: 'jeu-de-paume',
+    imageAlt:
+      'Tableau Le Serment du Jeu de Paume par Jacques-Louis David montrant les députés du 20 juin 1789 levant la main à Versailles',
+    author: 'Jacques-Louis David (1748–1825)',
+    institution: 'Musée Carnavalet – Histoire de Paris / Paris Musées',
+    license: 'CC0 Domaine public',
+    artworkUrl: 'https://commons.wikimedia.org/wiki/File:Le_Serment_du_Jeu_de_paume.jpg',
+    officialSourceUrl: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire',
+    officialSourceLabel: "Histoire de l'Assemblée nationale (portail officiel)",
+    objectPosition: 'center center',
+    width: 1280,
+    height: 845
   },
   {
+    id: 'tl-1798',
     year: '1798',
+    buttonLabel: '1798',
     dateLabel: '21 janvier 1798',
-    title: "L'installation des députés au Palais Bourbon",
+    title: 'Inauguration de la première salle des séances au Palais Bourbon',
+    shortDescription:
+      'Première salle en hémicycle du Conseil des Cinq-Cents aménagée au Palais Bourbon par les architectes Gisors et Leconte (1798).',
     description:
-      "Sous la Première République, le Conseil des Cinq-Cents s'installe pour la première fois au Palais Bourbon à Paris, au bord de la Seine. Depuis cette date, ce palais est resté la maison des députés français."
+      "Sous la Première République (Directoire), les architectes Jacques-Pierre Gisors et Étienne-Chérubin Leconte aménagent un premier hémicycle dans le Palais Bourbon, au bord de la Seine. Le 21 janvier 1798, les députés du Conseil des Cinq-Cents y tiennent leur première séance.",
+    whyImportantToday:
+      "Depuis le 21 janvier 1798, le Palais Bourbon est resté le cœur de la vie parlementaire française et la « maison des députés » à Paris.",
+    photoId: 'conseil-cinq-cents-1798',
+    baseName: 'conseil-cinq-cents-1798',
+    imageAlt:
+      'Estampe historique représentant la première salle des séances en hémicycle du Conseil des Cinq-Cents au Palais Bourbon en 1798',
+    author: "D'après les architectes Jacques-Pierre Gisors et Étienne-Chérubin Leconte",
+    institution: 'Musée Carnavalet – Histoire de Paris (G.33213) / Paris Musées',
+    license: 'CC0 Domaine public',
+    artworkUrl: 'https://commons.wikimedia.org/wiki/File:Le_Palais_national_du_Conseil_des_Cinq-Cents,_G.33213.jpg',
+    officialSourceUrl: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/patrimoine/le-palais-bourbon-et-l-hotel-de-lassay',
+    officialSourceLabel: 'Le Palais Bourbon (patrimoine officiel de l’Assemblée)',
+    objectPosition: 'center center',
+    width: 1600,
+    height: 1204
   },
   {
+    id: 'tl-1804',
     year: '1804',
-    dateLabel: '1804 – 1807 (Napoléon)',
-    title: 'Le Code civil (1804) et les 12 colonnes du Palais Bourbon (1807)',
+    buttonLabel: '1804',
+    dateLabel: '21 mars 1804 & travaux 1806–1810',
+    title: 'Le Code civil (21 mars 1804) et la façade aux 12 colonnes (1806–1810)',
+    shortDescription:
+      'Napoléon Ier promulgue le Code civil le 21 mars 1804, puis fait édifier la colonnade du Palais Bourbon entre 1806 et 1810.',
     description:
-      "En 1804, Napoléon promulgue le Code civil (2 281 articles) qui unifie les règles de vie des Français. Il fait ensuite ériger la célèbre façade à 12 colonnes corinthiennes du Palais Bourbon face à l'église de la Madeleine."
+      "Le 21 mars 1804, Napoléon promulgue le Code civil des Français (2 281 articles) qui unifie les règles du droit civil dans tout le pays. Il confie ensuite à l'architecte Bernard Poyet la construction de la célèbre façade néoclassique à 12 colonnes du Palais Bourbon, dont les travaux s'étendent de 1806 à 1810 face à l'église de la Madeleine.",
+    whyImportantToday:
+      "Le Code civil règle toujours notre vie quotidienne (famille, contrats, propriété), et les 12 colonnes bâties de 1806 à 1810 sont devenues le symbole visuel de l'Assemblée nationale.",
+    photoId: 'napoleon',
+    baseName: 'napoleon',
+    imageAlt:
+      'Portrait en pied de Napoléon Ier en costume de sacre par le peintre François Gérard (1805)',
+    author: 'François Gérard (1770–1837)',
+    institution: "Musée de l'Armée / RMN-Grand Palais / Wikimedia Commons",
+    license: 'Domaine public',
+    artworkUrl: 'https://commons.wikimedia.org/wiki/Category:Napoleon_I_in_Coronation_Robes_by_Fran%C3%A7ois_G%C3%A9rard',
+    officialSourceUrl: 'https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006070721/',
+    officialSourceLabel: 'Le Code civil sur Légifrance',
+    objectPosition: 'top center',
+    width: 1280,
+    height: 2010
   },
   {
+    id: 'tl-1848',
     year: '1848',
-    dateLabel: 'Mars & Avril 1848',
-    title: "Suffrage universel masculin (5 mars) & Abolition de l'esclavage (27 avril)",
+    buttonLabel: '1848',
+    dateLabel: '5 mars & 27 avril 1848',
+    title: "Suffrage universel masculin (5 mars) et abolition de l'esclavage (27 avril)",
+    shortDescription:
+      "Portrait de Victor Schœlcher par Henri Decaisne : en 1848, la IIe République adopte deux réformes majeures mais distinctes.",
     description:
-      "La IIe République supprime le suffrage censitaire réservé aux riches le 5 mars 1848 (tous les hommes majeurs peuvent voter) et abolit définitivement l'esclavage le 27 avril 1848 sous l'impulsion de Victor Schœlcher."
+      "Au printemps 1848, la IIe République prend deux grandes décisions historiques distinctes : d'une part, le décret du 5 mars 1848 abolit le suffrage censitaire (réservé aux plus riches) et instaure le suffrage universel masculin direct ; d'autre part, le décret du 27 avril 1848, préparé sous l'impulsion de Victor Schœlcher, abolit définitivement l'esclavage dans les colonies françaises.",
+    whyImportantToday:
+      "1848 proclame que la liberté et la dignité humaine appartiennent à tous et que le droit de vote ne dépend jamais de la fortune d'un citoyen.",
+    photoId: 'schoelcher-1848',
+    baseName: 'schoelcher-1848',
+    imageAlt:
+      "Portrait peint de Victor Schœlcher par Henri Decaisne, artisan du décret d'abolition de l'esclavage du 27 avril 1848",
+    author: 'Henri Decaisne (1799–1852)',
+    institution: 'Collections publiques / Wikimedia Commons',
+    license: 'Domaine public',
+    artworkUrl: 'https://commons.wikimedia.org/wiki/File:Victor_Sch%C5%93lcher_par_Henri_Decaisne.jpg',
+    officialSourceUrl: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/histoire-de-l-assemblee-nationale/la-deuxieme-republique-1848-1851',
+    officialSourceLabel: 'La IIe République (1848) sur le site de l’Assemblée',
+    objectPosition: 'top center',
+    width: 1280,
+    height: 1708
   },
   {
+    id: 'tl-1944',
     year: '1944',
-    dateLabel: '21 avril 1944',
-    title: "Les Françaises obtiennent le droit de vote et d'éligibilité !",
+    buttonLabel: '1944',
+    dateLabel: '21 avril 1944 & votes de 1945',
+    title: "Droit de vote et d'éligibilité des femmes (1944) et premiers votes (1945)",
+    shortDescription:
+      "Illustration pédagogique de l'article 17 de l'ordonnance du 21 avril 1944 et du premier vote des citoyennes françaises en 1945.",
     description:
-      "L'ordonnance signée par le général de Gaulle accorde enfin aux femmes le droit de voter et d'être élues. En octobre 1945, les 33 premières femmes députées font leur entrée sur les bancs du Palais Bourbon."
+      "Par l'ordonnance du 21 avril 1944 signée à Alger par le général de Gaulle, la République accorde aux femmes le droit de vote et d'éligibilité : « Les femmes sont électrices et éligibles dans les mêmes conditions que les hommes. » Les Françaises votent pour la première fois aux élections municipales du 29 avril 1945, puis élisent les 33 premières femmes députées le 21 octobre 1945.",
+    whyImportantToday:
+      "Sans le vote et l'éligibilité des femmes, le suffrage n'était pas réellement universel : depuis 1944–1945, femmes et hommes ont exactement les mêmes droits politiques.",
+    photoId: 'vote-femmes-1944',
+    baseName: 'vote-femmes-1944',
+    imageAlt:
+      "Illustration pédagogique présentant l'article 17 de l'ordonnance du 21 avril 1944 accordant le droit de vote et d'éligibilité aux femmes, ainsi qu'une carte d'électrice et une urne de 1945",
+    author: 'Illustration pédagogique originale (Le parcours de Malik & son Papa)',
+    institution: "D'après l'article 17 de l'Ordonnance du 21 avril 1944 (Journal officiel)",
+    license: 'CC0 Domaine public (Illustration pédagogique originale)',
+    artworkUrl: 'https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000698684/',
+    officialSourceUrl: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/les-femmes-et-le-pouvoir',
+    officialSourceLabel: "La conquête de la citoyenneté des femmes (Assemblée nationale)",
+    objectPosition: 'center center',
+    width: 1280,
+    height: 960
   },
   {
+    id: 'tl-1958',
     year: '1958',
+    buttonLabel: '1958',
     dateLabel: '4 octobre 1958',
-    title: 'La Constitution de la Ve République',
+    title: 'Naissance de la Ve République et adoption de la Constitution',
+    shortDescription:
+      'Exemplaire scellé de la Constitution du 4 octobre 1958 accompagné du Grand Sceau de la République française.',
     description:
-      "Approuvée par référendum, la Constitution du 4 octobre 1958 organise nos institutions actuelles : Président de la République, Gouvernement, Conseil constitutionnel et Parlement bicaméral (Assemblée + Sénat)."
+      "Approuvée par les citoyens lors du référendum du 28 septembre 1958 et promulguée le 4 octobre 1958, la Constitution fonde la Ve République. Elle définit l'équilibre entre le Président de la République, le Gouvernement, le Parlement bicaméral (Assemblée nationale et Sénat) et le Conseil constitutionnel.",
+    whyImportantToday:
+      "C'est la Constitution qui nous gouverne aujourd'hui : située tout au sommet de la pyramide des normes, elle organise le vote des lois et protège nos droits.",
+    photoId: 'constitution-1958',
+    baseName: 'constitution-1958',
+    imageAlt:
+      'Exemplaire scellé de la Constitution du 4 octobre 1958 portant les signatures officielles et le Grand Sceau de la République française sur ruban tricolore',
+    author: 'Tangopaso (Wikimedia Commons) / Document : Archives nationales',
+    institution: 'Archives nationales / Assemblée nationale / Wikimedia Commons',
+    license: 'Domaine public',
+    artworkUrl: 'https://commons.wikimedia.org/wiki/File:Constitution_de_1958.jpg',
+    officialSourceUrl: 'https://www.conseil-constitutionnel.fr/le-bloc-de-constitutionnalite/texte-integral-de-la-constitution-du-4-octobre-1958-en-vigueur',
+    officialSourceLabel: 'Texte intégral de la Constitution de 1958 (Conseil constitutionnel)',
+    objectPosition: 'center center',
+    width: 1600,
+    height: 1200
   },
   {
+    id: 'tl-1994',
     year: '1994',
+    buttonLabel: '1994',
     dateLabel: '4 juin 1994',
-    title: 'Création du Parlement des Enfants (Classes de CM2)',
+    title: 'Création du Parlement des enfants',
+    shortDescription:
+      'Illustration pédagogique du premier Parlement des enfants réuni au Palais Bourbon le 4 juin 1994.',
     description:
-      "Créé par Philippe Séguin avec l'Éducation nationale, le Parlement des Enfants réunit pour la première fois 577 délégués de CM2 dans l'Hémicycle pour débattre et voter de vraies propositions de loi."
+      "Créé en 1994 à l'initiative de Philippe Séguin (Président de l'Assemblée nationale) avec le ministère de l'Éducation nationale, le Parlement des enfants réunit pour la première fois 577 délégués de CM2 dans l'Hémicycle le 4 juin 1994. Les classes rédigent une proposition de loi pédagogique : ce texte est un exercice citoyen qui n'a pas valeur de loi officielle, même s'il a parfois inspiré de vrais députés.",
+    whyImportantToday:
+      "Le Parlement des enfants permet aux élèves de Cycle 3 de pratiquer le débat argumenté, la rédaction collective et le vote démocratique dès l'école.",
+    photoId: 'parlement-enfants-1994',
+    baseName: 'parlement-enfants-1994',
+    imageAlt:
+      "Illustration pédagogique représentant le premier Parlement des enfants réuni dans l'Hémicycle le 4 juin 1994 autour du débat, de la rédaction et du vote citoyen en CM2",
+    author: 'Illustration pédagogique originale (Le parcours de Malik & son Papa)',
+    institution: "D'après l'opération civique de l'Assemblée nationale et de l'Éducation nationale",
+    license: 'CC0 Domaine public (Illustration pédagogique originale)',
+    artworkUrl: 'https://www.parlementdesenfants.fr/',
+    officialSourceUrl: 'https://www.parlementdesenfants.fr/site/tout-savoir-sur-l-operation',
+    officialSourceLabel: 'Tout savoir sur le Parlement des enfants (site officiel)',
+    objectPosition: 'center center',
+    width: 1280,
+    height: 960
+  },
+  {
+    id: 'tl-2026',
+    year: '2026',
+    buttonLabel: '2026 · Aujourd’hui',
+    dateLabel: 'Année scolaire 2026–2027',
+    title: "Aujourd'hui : l'Assemblée nationale et la 30e édition du Parlement des enfants",
+    shortDescription:
+      "Illustration pédagogique du travail actuel des 577 députés et du calendrier programmé de la 30e édition (2026–2027) du Parlement des enfants.",
+    description:
+      "Aujourd'hui, les 577 députés débattent, votent les lois et contrôlent le Gouvernement en direct au Palais Bourbon. Parallèlement, la 30e édition du Parlement des enfants (année scolaire 2026–2027) associe les classes de CM2 et de 6e autour du thème « Favoriser l'accès à la culture pour toutes et tous », avec un calendrier programmé : jury national prévu les 3 ou 4 février 2027, fin des votes le 5 mars 2027 et accueil des classes finalistes prévu le 10 mars 2027.",
+    whyImportantToday:
+      "La démocratie est vivante : chaque citoyen peut suivre les séances de l'Assemblée, et les élèves de CM2 et de 6e participent directement à la réflexion civique !",
+    photoId: 'assemblee-2026',
+    baseName: 'assemblee-2026',
+    imageAlt:
+      'Illustration pédagogique présentant les missions actuelles des 577 députés au Palais Bourbon et le calendrier programmé de la 30e édition 2026-2027 du Parlement des enfants',
+    author: 'Illustration pédagogique originale (Le parcours de Malik & son Papa)',
+    institution: 'Sources : Assemblée nationale & Parlement des enfants (30e édition 2026–2027)',
+    license: 'CC0 Domaine public (Illustration pédagogique originale)',
+    artworkUrl: 'https://www.parlementdesenfants.fr/site/tout-savoir-sur-l-operation',
+    officialSourceUrl: 'https://www.parlementdesenfants.fr/site/tout-savoir-sur-l-operation',
+    officialSourceLabel: 'Calendrier officiel de la 30e édition (parlementdesenfants.fr)',
+    objectPosition: 'center center',
+    width: 1280,
+    height: 960
   }
 ];
 
@@ -570,7 +754,7 @@ export const MINDMAP_BRANCHES = [
     accent: 'republic' as const,
     items: [
       "La salle des séances en demi-cercle s'appelle l'Hémicycle (fauteuils en velours rouge).",
-      'Sa façade à 12 colonnes a été commandée par Napoléon Ier face à la Madeleine.',
+      'Sa façade à 12 colonnes a été commandée par Napoléon Ier (travaux de 1806 à 1810) face à la Madeleine.',
       'Les députés siègent par groupe politique, de la Gauche vers la Droite.'
     ]
   },
@@ -605,9 +789,9 @@ export const MINDMAP_BRANCHES = [
     title: '6. ET NOUS ? De 1789 au CM2',
     accent: 'gold' as const,
     items: [
-      '20 juin 1789 : naissance de l’Assemblée nationale lors du Serment du Jeu de Paume.',
-      '1848 : suffrage masculin & abolition de l’esclavage ; 1944 : droit de vote des femmes.',
-      'Depuis 1994 : le Parlement des Enfants permet à 577 classes de CM2 de rédiger une loi !'
+      '17 juin & 20 juin 1789 : constitution de l’Assemblée nationale et Serment du Jeu de paume (puis DDHC le 26 août).',
+      '1848 : suffrage universel masculin (5 mars) & abolition de l’esclavage (27 avril) ; 1944 : droit de vote des femmes (1er vote en 1945).',
+      'Depuis 1994 : le Parlement des enfants initie les classes de CM2 (et de 6e) à la rédaction d’une proposition de loi pédagogique !'
     ]
   }
 ];
@@ -662,14 +846,14 @@ export const VF_QUESTIONS = [
     explanation: 'VRAI ! Car les députés sont élus directement par tous les citoyens.'
   },
   {
-    statement: 'C’est Napoléon Ier qui a fait construire la façade aux 12 colonnes du Palais Bourbon.',
+    statement: 'C’est Napoléon Ier qui a fait construire la façade aux 12 colonnes du Palais Bourbon (1806–1810).',
     isTrue: true,
-    explanation: 'VRAI ! L’architecte Bernard Poyet l’a construite pour répondre en miroir à l’église de la Madeleine.'
+    explanation: 'VRAI ! L’architecte Bernard Poyet l’a construite de 1806 à 1810 pour répondre en miroir à l’église de la Madeleine.'
   },
   {
-    statement: "Les élèves de CM2 n'ont jamais eu le droit de rédiger une proposition de loi pour l'Assemblée.",
+    statement: "Les élèves de CM2 n'ont jamais eu l'occasion de rédiger une proposition de loi pédagogique pour l'Assemblée.",
     isTrue: false,
-    explanation: 'FAUX ! Depuis juin 1994, le Parlement des Enfants associe chaque année 577 classes de CM2 !'
+    explanation: 'FAUX ! Depuis juin 1994, le Parlement des enfants associe chaque année des classes de CM2 (et de 6e) !'
   },
   {
     statement: 'Il faut au minimum 289 voix pour adopter une Motion de censure et obliger le Gouvernement à démissionner.',

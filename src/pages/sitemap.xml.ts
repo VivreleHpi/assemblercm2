@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { ETAPES } from '../data';
 
 export const GET: APIRoute = () => {
-  const baseUrl = 'https://assemblee-cm2-malik.netlify.app';
+  const baseUrl = 'https://vivrelehpi.github.io/assemblercm2';
   const staticUrls = ['/', '/enseignants/', '/glossaire/', '/credits/', '/styleguide/'];
   const stepUrls = ETAPES.map((e) => `/etape/${e.slug}/`);
   const allUrls = [...staticUrls, ...stepUrls];
@@ -26,4 +26,3 @@ ${allUrls
     }
   });
 };
-

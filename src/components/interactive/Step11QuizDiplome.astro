@@ -193,6 +193,34 @@ import Avatar from '../ui/Avatar.astro';
 </section>
 
 <script>
+  interface StoredState {
+    userName?: string;
+    diplomaSchoolName?: string;
+    finalQuizBestScore?: number;
+    diplomaUnlocked?: boolean;
+    diplomaUnlockMode?: 'quiz' | 'teacher' | null;
+  }
+
+  interface ANAppApi {
+    getState: () => StoredState;
+    completeFinalQuiz: (score: number) => void;
+    unlockDiplomaByTeacher: () => void;
+    setDiplomaDetails: (userName?: string, schoolName?: string) => void;
+  }
+
+  function readStoredState(): StoredState {
+    const app = (window as unknown as { ANApp?: ANAppApi }).ANApp;
+    if (app?.getState) {
+      return app.getState();
+    }
+    try {
+      const raw = localStorage.getItem('an_cm2_v2_state');
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
   function initStep11() {
     const correctQuestions = new Set<number>();
     const scorePill = document.getElementById('final-quiz-score-pill');
@@ -224,29 +252,36 @@ import Avatar from '../ui/Avatar.astro';
       }
       if (renderedScore) renderedScore.textContent = scoreLabel;
 
-      const app = (window as unknown as {
-        ANApp?: {
-          getState: () => { userName: string };
-          unlockBadge: (id: string, r: string) => void;
-          completeStep: (s: number, xp: number, b: string) => void;
-          setFinalQuizScore: (n: number) => void;
-        };
-      }).ANApp;
-
-      const savedName = app?.getState()?.userName;
-      if (savedName && nameInput && !nameInput.value) {
-        nameInput.value = savedName;
-        if (renderedName) renderedName.textContent = savedName;
+      const st = readStoredState();
+      if (st.userName && nameInput && !nameInput.value) {
+        nameInput.value = st.userName;
+        if (renderedName) renderedName.textContent = st.userName;
+      }
+      if (st.diplomaSchoolName && schoolInput && !schoolInput.value) {
+        schoolInput.value = st.diplomaSchoolName;
+        if (renderedSchool) renderedSchool.textContent = st.diplomaSchoolName;
       }
     };
 
-    // Check if already unlocked in localStorage
-    const appInit = (window as unknown as {
-      ANApp?: { getState: () => { finalQuizBestScore: number; userName: string } };
-    }).ANApp;
-    if (appInit?.getState()?.finalQuizBestScore && appInit.getState().finalQuizBestScore >= 6) {
-      unlockDiplomaUI(`${appInit.getState().finalQuizBestScore} / 8 au Grand Quiz`);
-    }
+    const syncFromStoredState = () => {
+      const st = readStoredState();
+      const bestScore = typeof st.finalQuizBestScore === 'number' ? st.finalQuizBestScore : 0;
+      const isUnlocked = Boolean(st.diplomaUnlocked || bestScore >= 6);
+      if (isUnlocked) {
+        const label =
+          bestScore >= 6
+            ? `${bestScore} / 8 au Grand Quiz`
+            : st.diplomaUnlockMode === 'teacher'
+              ? 'Validé en classe ✓'
+              : 'Validé avec succès ✓';
+        unlockDiplomaUI(label);
+      }
+    };
+
+    // Immediate check on script execution + reactive listeners for ANApp ready/updates
+    syncFromStoredState();
+    window.addEventListener('an:ready', syncFromStoredState);
+    window.addEventListener('an:state-updated', syncFromStoredState);
 
     document.querySelectorAll<HTMLElement>('.final-q-card').forEach((card) => {
       const qIdx = Number(card.getAttribute('data-fq-index'));
@@ -277,14 +312,10 @@ import Avatar from '../ui/Avatar.astro';
             }
 
             if (count >= 6) {
-              const app = (window as unknown as {
-                ANApp?: {
-                  completeStep: (s: number, xp: number, b: string) => void;
-                  setFinalQuizScore: (n: number) => void;
-                };
-              }).ANApp;
-              app?.setFinalQuizScore(count);
-              app?.completeStep(11, 50, 'quiz');
+              const app = (window as unknown as { ANApp?: ANAppApi }).ANApp;
+              if (app?.completeFinalQuiz) {
+                app.completeFinalQuiz(count);
+              }
               unlockDiplomaUI(`${count} / 8 au Grand Quiz`);
             }
           } else {
@@ -299,23 +330,43 @@ import Avatar from '../ui/Avatar.astro';
       });
     });
 
-    // Teacher direct unlock button
+    // Teacher direct unlock button (persists across reloads)
     document.getElementById('teacher-unlock-diploma-btn')?.addEventListener('click', () => {
+      const app = (window as unknown as { ANApp?: ANAppApi }).ANApp;
+      if (app?.unlockDiplomaByTeacher) {
+        app.unlockDiplomaByTeacher();
+      } else {
+        try {
+          const st = readStoredState();
+          localStorage.setItem(
+            'an_cm2_v2_state',
+            JSON.stringify({ ...st, diplomaUnlocked: true, diplomaUnlockMode: 'teacher' })
+          );
+        } catch {
+          // ignore
+        }
+      }
       unlockDiplomaUI('Validé en classe ✓');
     });
 
-    // Live update Diploma Name & School
+    // Live update Diploma Name & School (persisted)
     nameInput?.addEventListener('input', () => {
+      const val = nameInput.value.trim();
       if (renderedName) {
-        renderedName.textContent = nameInput.value.trim() || 'Jeune Citoyen(ne) de CM2';
+        renderedName.textContent = val || 'Jeune Citoyen(ne) de CM2';
       }
+      const app = (window as unknown as { ANApp?: ANAppApi }).ANApp;
+      app?.setDiplomaDetails?.(val, undefined);
     });
 
     schoolInput?.addEventListener('input', () => {
+      const val = schoolInput.value.trim();
       if (renderedSchool) {
         renderedSchool.textContent =
-          schoolInput.value.trim() || 'Parcours complet des 12 étapes sur l’Assemblée nationale';
+          val || 'Parcours complet des 12 étapes sur l’Assemblée nationale';
       }
+      const app = (window as unknown as { ANApp?: ANAppApi }).ANApp;
+      app?.setDiplomaDetails?.(undefined, val);
     });
 
     document.getElementById('print-diploma-btn')?.addEventListener('click', () => {

@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://assemblee-cm2.netlify.app/sitemap.xml
-
+Sitemap: https://vivrelehpi.github.io/assemblercm2/sitemap.xml

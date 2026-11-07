@@ -78,7 +78,10 @@ import ResponsivePicture from '../ui/ResponsivePicture.astro';
             <button
               type="button"
               role="tab"
+              id={`navette-tab-${ns.step}`}
+              aria-controls="navette-detail-card"
               aria-selected={idx === 0 ? 'true' : 'false'}
+              tabindex={idx === 0 ? '0' : '-1'}
               data-navette-step={ns.step}
               class={`navette-step-btn px-3 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
                 idx === 0
@@ -93,6 +96,8 @@ import ResponsivePicture from '../ui/ResponsivePicture.astro';
 
         <div
           id="navette-detail-card"
+          role="tabpanel"
+          aria-labelledby="navette-tab-1"
           aria-live="polite"
           class="p-5 rounded-card bg-paper border-2 border-gold space-y-2.5"
         >
@@ -132,30 +137,51 @@ import ResponsivePicture from '../ui/ResponsivePicture.astro';
   function initStep7() {
     const jsonEl = document.getElementById('step7-navette-json');
     const steps = jsonEl ? JSON.parse(jsonEl.textContent || '[]') : [];
-    const btns = document.querySelectorAll<HTMLButtonElement>('.navette-step-btn');
+    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('.navette-step-btn'));
+    const cardEl = document.getElementById('navette-detail-card');
 
-    btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const sNum = Number(btn.getAttribute('data-navette-step'));
-        const item = steps.find((s: { step: number }) => s.step === sNum);
-        if (!item) return;
+    const activateStep = (btn: HTMLButtonElement, focus = false) => {
+      const sNum = Number(btn.getAttribute('data-navette-step'));
+      const item = steps.find((s: { step: number }) => s.step === sNum);
+      if (!item) return;
 
-        btns.forEach((b) => {
-          const active = Number(b.getAttribute('data-navette-step')) === sNum;
-          b.setAttribute('aria-selected', String(active));
-          b.className = `navette-step-btn px-3 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
-            active
-              ? 'bg-republic-900 text-white border-republic-900 shadow-sm'
-              : 'bg-paper text-ink border-line hover:bg-republic-100'
-          }`;
-        });
+      btns.forEach((b) => {
+        const active = Number(b.getAttribute('data-navette-step')) === sNum;
+        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('tabindex', active ? '0' : '-1');
+        b.className = `navette-step-btn px-3 py-2.5 rounded-btn font-display font-bold text-xs sm:text-sm border-2 transition min-h-[46px] ${
+          active
+            ? 'bg-republic-900 text-white border-republic-900 shadow-sm'
+            : 'bg-paper text-ink border-line hover:bg-republic-100'
+        }`;
+      });
+      if (cardEl) cardEl.setAttribute('aria-labelledby', `navette-tab-${sNum}`);
 
-        const placeEl = document.getElementById('navette-place-badge');
-        const titleEl = document.getElementById('navette-title');
-        const descEl = document.getElementById('navette-desc');
-        if (placeEl) placeEl.textContent = `📍 ${item.place}`;
-        if (titleEl) titleEl.textContent = item.title;
-        if (descEl) descEl.textContent = item.detail;
+      const placeEl = document.getElementById('navette-place-badge');
+      const titleEl = document.getElementById('navette-title');
+      const descEl = document.getElementById('navette-desc');
+      if (placeEl) placeEl.textContent = `📍 ${item.place}`;
+      if (titleEl) titleEl.textContent = item.title;
+      if (descEl) descEl.textContent = item.detail;
+      if (focus) btn.focus();
+    };
+
+    btns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => activateStep(btn, false));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          activateStep(btns[(idx + 1) % btns.length], true);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          activateStep(btns[(idx - 1 + btns.length) % btns.length], true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          activateStep(btns[0], true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          activateStep(btns[btns.length - 1], true);
+        }
       });
     });
   }
