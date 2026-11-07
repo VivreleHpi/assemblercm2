@@ -3,139 +3,175 @@
     "id": "amendement",
     "term": "Amendement",
     "category": "Vote de la loi",
+    "simpleDef": "Une proposition pour changer, ajouter ou enlever quelques mots dans un article de loi afin de l'améliorer avant le vote.",
     "shortDef": "Une modification proposée par un député, un sénateur ou le Gouvernement pour corriger, ajouter ou supprimer des mots dans un texte de loi avant son vote."
   },
   {
     "id": "bicameral",
     "term": "Bicaméral (Bicamérisme)",
     "category": "Institutions",
+    "simpleDef": "Cela veut dire que les lois sont examinées par deux assemblées différentes (les députés ET les sénateurs) pour réfléchir deux fois avant de décider.",
     "shortDef": "Un Parlement composé de deux chambres (« bi » = deux) : en France, l'Assemblée nationale (577 députés) et le Sénat (348 sénateurs)."
   },
   {
     "id": "circonscription",
     "term": "Circonscription législative",
     "category": "Élections",
-    "shortDef": "Une portion du territoire français qui élit un député. La France est découpée en 577 circonscriptions d'environ 125 000 habitants chacune."
+    "simpleDef": "La zone géographique (quelques villes ou quartiers) où les habitants votent pour élire leur député. Il y en a 577 en tout.",
+    "shortDef": "Une portion du territoire français (ou des Français établis hors de France) qui élit un député. La France est découpée en 577 circonscriptions législatives."
   },
   {
     "id": "cmp",
     "term": "Commission Mixte Paritaire (CMP)",
     "category": "Vote de la loi",
+    "simpleDef": "Une petite réunion de conciliation avec 7 députés et 7 sénateurs pour trouver un accord quand les deux chambres ne votent pas le même texte.",
     "shortDef": "Une réunion de 7 députés et 7 sénateurs chargée de trouver un texte commun quand l'Assemblée et le Sénat ne sont pas d'accord sur une loi."
   },
   {
     "id": "constitution",
     "term": "Constitution de 1958",
     "category": "Droit & Justice",
-    "shortDef": "Le texte suprême de la République française (voté le 4 octobre 1958). Il fixe les droits des citoyens et le rôle du Président, du Gouvernement et du Parlement."
+    "simpleDef": "La « règle des règles » de la République : aucune loi n'a le droit de la contredire.",
+    "shortDef": "Le texte suprême de la République française (approuvé par référendum le 28 septembre 1958 et promulgué le 4 octobre 1958). Il fixe les droits des citoyens et le rôle du Président, du Gouvernement et du Parlement."
   },
   {
     "id": "conseil-constitutionnel",
     "term": "Conseil constitutionnel",
     "category": "Droit & Justice",
-    "shortDef": "Composé de 9 membres (« les 9 Sages »), il vérifie lorsqu'il est saisi qu'aucune loi votée par le Parlement ne contredit la Constitution ni nos libertés."
+    "simpleDef": "L'arbitre suprême des lois (les « 9 Sages ») : il annule une loi si elle ne respecte pas la Constitution ou nos libertés.",
+    "shortDef": "Institution indépendante (placée hors de l'ordre judiciaire et de l'ordre administratif) composée de 9 membres (« les 9 Sages »), qui vérifie qu'aucune loi votée par le Parlement ne contredit la Constitution."
   },
   {
     "id": "conseil-etat",
     "term": "Conseil d'État",
     "category": "Droit & Justice",
+    "simpleDef": "Le plus haut tribunal pour juger les désaccords entre un citoyen et l'administration (l'État, un ministère ou une mairie).",
     "shortDef": "Le tribunal suprême de l'ordre administratif : il juge en dernier ressort les conflits entre les citoyens et l'administration, et conseille le Gouvernement sur ses projets de loi."
   },
   {
     "id": "contre-pouvoir",
     "term": "Contre-pouvoir",
     "category": "Institutions",
+    "simpleDef": "Un pouvoir qui surveille et pose des questions à un autre pouvoir pour empêcher qu'une seule personne décide de tout sans contrôle.",
     "shortDef": "Une institution qui surveille, questionne et limite le pouvoir du Gouvernement pour empêcher tout abus d'autorité en démocratie."
   },
   {
     "id": "cour-assises",
     "term": "Cour d'assises",
     "category": "Droit & Justice",
-    "shortDef": "Le tribunal qui juge les crimes les plus graves (meurtres, braquages). Six citoyens tirés au sort (les jurés) y votent le verdict avec trois juges professionnels."
+    "simpleDef": "Le tribunal qui juge les crimes les plus graves, avec des juges professionnels et 6 citoyens tirés au sort.",
+    "shortDef": "Le tribunal de l'ordre judiciaire qui juge les crimes les plus graves (meurtres, braquages). Six citoyens tirés au sort (les jurés) y votent le verdict avec trois juges professionnels."
   },
   {
     "id": "cour-cassation",
     "term": "Cour de cassation",
     "category": "Droit & Justice",
-    "shortDef": "Située à Paris, c'est le sommet de la justice judiciaire : elle ne rejuge pas les faits, mais vérifie que les juges ont appliqué la loi sans erreur."
+    "simpleDef": "Le tribunal situé tout en haut de l'ordre judiciaire : il vérifie que tous les juges de France ont bien respecté la règle du droit.",
+    "shortDef": "Située à Paris, c'est le sommet de l'ordre judiciaire : elle ne rejuge pas les faits, mais vérifie que les tribunaux ont appliqué la loi sans erreur."
   },
   {
     "id": "decret",
     "term": "Décret et Arrêté",
     "category": "Droit & Justice",
-    "shortDef": "Des règles pratiques signées par le Président, le Premier ministre, un préfet ou un maire pour appliquer les lois au quotidien (situées sous la loi dans la pyramide)."
+    "simpleDef": "Des décisions pratiques prises par le Gouvernement ou le maire pour appliquer une loi dans la vie de tous les jours.",
+    "shortDef": "Des règles d'application signées par le Président, le Premier ministre, un préfet ou un maire pour mettre en œuvre les lois au quotidien (situées sous la loi dans la pyramide)."
   },
   {
     "id": "hemicycle",
     "term": "Hémicycle",
     "category": "Le Palais Bourbon",
+    "simpleDef": "La grande salle en demi-cercle où les 577 députés s'assoient pour débattre et voter.",
     "shortDef": "Grande salle en demi-cercle inspirée des théâtres grecs antiques où les 577 députés se font face pour débattre et voter les lois."
   },
   {
     "id": "huissier",
     "term": "Huissier de séance",
     "category": "Le Palais Bourbon",
+    "simpleDef": "La personne en costume noir avec une chaîne d'argent qui apporte les papiers et veille au calme dans l'Hémicycle.",
     "shortDef": "Agent de l'Assemblée reconnaissable à son habit noir et sa chaîne d'argent. Depuis 1789, il veille au calme, apporte les documents et fait passer les urnes."
   },
   {
     "id": "kelsen",
     "term": "Hiérarchie des normes (Pyramide de Kelsen)",
     "category": "Droit & Justice",
-    "shortDef": "Règle fondamentale expliquée par le juriste Hans Kelsen : une règle inférieure (arrêté, décret, loi) doit toujours respecter les règles placées au-dessus d'elle (Constitution)."
+    "simpleDef": "Une pyramide où chaque règle du bas (comme un règlement ou un décret) doit obligatoirement obéir aux règles placées plus haut (la Loi et, tout en haut, la Constitution).",
+    "shortDef": "Principe fondamental du droit expliqué par Hans Kelsen : une norme inférieure (arrêté, décret, loi) doit toujours être conforme aux normes supérieures (Constitution au sommet)."
+  },
+  {
+    "id": "majorite-absolue",
+    "term": "Majorité absolue",
+    "category": "Vote de la loi",
+    "simpleDef": "Plus de la moitié des voix (la moitié + 1). Sur l'ensemble des 577 députés, la majorité absolue est de 289 députés minimum.",
+    "shortDef": "Nombre de voix supérieur à la moitié du total des votants (majorité absolue des suffrages exprimés) ou de l'ensemble des 577 membres de l'Assemblée (289 voix, exigée pour une motion de censure)."
   },
   {
     "id": "motion-censure",
     "term": "Motion de censure",
     "category": "Institutions",
-    "shortDef": "Vote solennel par lequel les députés peuvent obliger le Premier ministre et tout son Gouvernement à démissionner s'ils réunissent au moins 289 voix."
+    "simpleDef": "Un grand vote des députés qui dit au Gouvernement : « Nous ne vous faisons plus confiance, vous devez démissionner » (il faut au moins 289 députés POUR).",
+    "shortDef": "Vote solennel (article 49 alinéa 2 de la Constitution) par lequel l'Assemblée nationale oblige le Premier ministre et son Gouvernement à démissionner si au moins 289 députés sur 577 la votent."
   },
   {
     "id": "navette",
     "term": "Navette parlementaire",
     "category": "Vote de la loi",
+    "simpleDef": "Les allers-retours d'un texte de loi entre l'Assemblée nationale et le Sénat jusqu'à ce qu'il soit adopté.",
     "shortDef": "Le va-et-vient d'un texte de loi entre l'Assemblée nationale et le Sénat jusqu'à ce que les deux chambres votent le même texte (ou que l'Assemblée ait le dernier mot)."
   },
   {
     "id": "parlement",
     "term": "Parlement",
     "category": "Institutions",
+    "simpleDef": "L'ensemble formé par l'Assemblée nationale (577 députés) et le Sénat (348 sénateurs).",
     "shortDef": "L'institution qui détient le pouvoir législatif (discuter et voter la loi, contrôler le Gouvernement). En France, Parlement = Assemblée nationale + Sénat."
   },
   {
     "id": "perchoir",
     "term": "Perchoir",
     "category": "Le Palais Bourbon",
+    "simpleDef": "Le grand fauteuil situé tout en haut (à 3 mètres du sol) d'où le Président de l'Assemblée dirige la séance.",
     "shortDef": "Surnom donné au fauteuil du Président de l'Assemblée nationale, perché à 3 mètres de hauteur au-dessus de la Tribune pour voir tous les députés."
   },
   {
     "id": "projet-proposition",
     "term": "Projet de loi vs Proposition de loi",
     "category": "Vote de la loi",
-    "shortDef": "Un « projet de loi » est un texte proposé par le Gouvernement (Premier ministre et ministres), tandis qu'une « proposition de loi » est écrite par un ou plusieurs députés ou sénateurs."
+    "simpleDef": "Si l'idée de loi vient des ministres, c'est un « projet de loi » ; si elle vient des députés ou sénateurs, c'est une « proposition de loi ».",
+    "shortDef": "Un « projet de loi » est un texte déposé par le Gouvernement (Premier ministre et ministres), tandis qu'une « proposition de loi » est déposée par un ou plusieurs députés ou sénateurs."
   },
   {
     "id": "promulgation",
     "term": "Promulgation",
     "category": "Vote de la loi",
-    "shortDef": "L'acte par lequel le Président de la République signe officiellement une loi votée par le Parlement et ordonne sa publication au Journal officiel."
+    "simpleDef": "La signature officielle du Président de la République qui rend la loi applicable dans tout le pays.",
+    "shortDef": "L'acte par lequel le Président de la République signe officiellement une loi définitivement votée par le Parlement et ordonne sa publication au Journal officiel."
   },
   {
     "id": "separation-pouvoirs",
     "term": "Séparation des pouvoirs",
     "category": "Institutions",
+    "simpleDef": "La règle qui partage le pouvoir entre trois équipes différentes : ceux qui font les lois, ceux qui dirigent le pays et les juges.",
     "shortDef": "Principe démocratique théorisé par Montesquieu (1748) : pour protéger la liberté des citoyens, le pouvoir d'exécuter les lois, celui de les voter et celui de juger doivent être séparés."
+  },
+  {
+    "id": "suffrages-exprimes",
+    "term": "Suffrages exprimés",
+    "category": "Vote de la loi",
+    "simpleDef": "On compte seulement les députés qui ont voté « POUR » ou « CONTRE » (ceux qui ont voté « Abstention » ne comptent pas dans le calcul du gagnant).",
+    "shortDef": "Ensemble des votes « POUR » et « CONTRE » lors d'un scrutin, hors abstentions et bulletins blancs ou nuls. Une loi ordinaire est adoptée si les voix POUR dépassent les voix CONTRE."
   },
   {
     "id": "suffrage-direct",
     "term": "Suffrage universel direct",
     "category": "Élections",
+    "simpleDef": "Une élection où tous les citoyens adultes (dès 18 ans) choisissent directement leur représentant en mettant un bulletin dans l'urne.",
     "shortDef": "Mode d'élection où tous les citoyens français majeurs (18 ans et plus) votent directement dans l'urne pour choisir leurs représentants, comme les 577 députés."
   },
   {
     "id": "suffrage-indirect",
     "term": "Suffrage universel indirect",
     "category": "Élections",
-    "shortDef": "Mode d'élection où les citoyens élisent d'abord des élus locaux (maires, conseillers), qui votent ensuite à leur tour pour élire les 348 sénateurs."
+    "simpleDef": "Une élection en deux étapes : les citoyens élisent d'abord les maires et élus locaux, qui votent ensuite pour élire les sénateurs.",
+    "shortDef": "Mode d'élection où les citoyens élisent d'abord des grands électeurs (maires, conseillers locaux), qui votent ensuite à leur tour pour élire les 348 sénateurs."
   }
 ]
-

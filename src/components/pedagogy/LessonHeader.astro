@@ -55,11 +55,11 @@ const speechText = `${etape.title}. ${etape.subtitle}. ${etape.discoverText.join
         <span aria-hidden="true">·</span>
         <span>{etape.partTitle}</span>
       </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-paper text-ink-muted border border-line">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-paper text-ink border border-line">
         <Icon name="Clock" size={14} />
-        <span>Durée : {etape.duration}</span>
+        <span>Durée : {etape.duration} ({etape.readingMinutes} min lecture · {etape.activityMinutes} min activité)</span>
       </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gold-light text-ink border border-gold">
+      <span class="student-xp-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gold-light text-ink border border-gold">
         <Icon name="Award" size={14} />
         <span>+{etape.xp} XP à gagner</span>
       </span>

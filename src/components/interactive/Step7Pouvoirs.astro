@@ -73,6 +73,22 @@ import ResponsivePicture from '../ui/ResponsivePicture.astro';
           </p>
         </div>
 
+        <!-- 2-Level Explanation Box: Bicamérisme & Motion de censure -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-xl bg-gold-light/70 border border-gold text-xs sm:text-sm text-ink leading-relaxed">
+            <strong class="font-display font-bold text-republic-900 block mb-0.5">
+              💡 En mots d’enfant (Bicamérisme & Censure) :
+            </strong>
+            Deux assemblées (députés + sénateurs) relisent chaque loi pour éviter les erreurs. Et si le Gouvernement perd la confiance d’au moins <strong>289 députés sur 577</strong>, il doit démissionner !
+          </div>
+          <div class="p-3.5 rounded-xl bg-paper border border-line text-xs sm:text-sm text-ink leading-relaxed">
+            <strong class="font-display font-bold text-ink-muted block mb-0.5">
+              ⚖️ Le vrai mot juridique :
+            </strong>
+            Le <strong>bicamérisme</strong> désigne un Parlement à deux chambres (art. 24). La <strong>motion de censure</strong> (art. 49 al. 2) exige la majorité absolue des membres de l’Assemblée (289 voix).
+          </div>
+        </div>
+
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" role="tablist" aria-label="Étapes de la navette parlementaire">
           {NAVETTE_STEPS.map((ns, idx) => (
             <button

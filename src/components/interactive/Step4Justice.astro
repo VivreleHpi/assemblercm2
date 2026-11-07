@@ -3,7 +3,8 @@ import { PYRAMID_LEVELS, TRIBUNALS_DATA, JUSTICE_CASES } from '../../data';
 import Icon from '../ui/Icon.astro';
 
 const judicialCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'judiciaire');
-const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' || t.branch === 'constitutionnel');
+const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif');
+const constitutionalCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'constitutionnel');
 ---
 
 <section class="surface-card p-5 sm:p-8 my-8 border-2 border-velvet/20">
@@ -82,6 +83,21 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
       <p class="text-sm sm:text-base text-ink-muted mb-4">
         En France, toutes les règles n’ont pas la même force. Chaque étage doit obligatoirement respecter l’étage situé au-dessus de lui !
       </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+        <div class="p-3.5 rounded-xl bg-gold-light/70 border border-gold text-xs sm:text-sm text-ink leading-relaxed">
+          <strong class="font-display font-bold text-republic-900 block mb-0.5">
+            💡 En mots d’enfant :
+          </strong>
+          Imagine une pyramide : les petites règles du bas (arrêté du maire, décret) doivent toujours obéir aux grandes règles du haut (la Loi et, tout au sommet, la Constitution).
+        </div>
+        <div class="p-3.5 rounded-xl bg-paper border border-line text-xs sm:text-sm text-ink leading-relaxed">
+          <strong class="font-display font-bold text-ink-muted block mb-0.5">
+            ⚖️ Le vrai mot juridique (Hiérarchie des normes) :
+          </strong>
+          Théorisée par le juriste Hans Kelsen, la <strong>hiérarchie des normes</strong> impose qu’aucune norme juridique inférieure ne puisse contredire une norme supérieure placée au-dessus d’elle.
+        </div>
+      </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <div class="lg:col-span-6 flex flex-col items-center space-y-2.5">
@@ -217,26 +233,26 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
     </ol>
   </div>
 
-  <!-- TAB 3: Arbre des 10 tribunaux -->
+  <!-- TAB 3: Arbre des juridictions (2 ordres + Conseil constitutionnel à part) -->
   <div id="justice-panel-tribunaux" role="tabpanel" aria-labelledby="justice-tab-tribunaux" data-justice-panel="tribunaux" class="hidden space-y-6">
     <div>
       <h3 class="font-display font-bold text-xl text-ink mb-2">
-        L’arbre de la Justice en France (2 grandes familles + les 9 Sages)
+        L’organisation de la Justice en France : 2 ordres de juridiction + le Conseil constitutionnel à part
       </h3>
       <p class="text-sm text-ink-muted">
-        Les députés votent la loi, mais ce sont les <strong>magistrats (juges)</strong>, indépendants des hommes politiques, qui l’appliquent dans les tribunaux.
+        Les députés votent la loi, mais ce sont les <strong>magistrats (juges)</strong>, indépendants du pouvoir politique, qui l’appliquent dans deux grands ordres de tribunaux. En dehors de ces deux ordres siège une institution spéciale : le <strong>Conseil constitutionnel</strong>.
       </p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Ordre Judiciaire -->
+      <!-- 1. Ordre Judiciaire -->
       <div class="p-5 rounded-card bg-paper border-2 border-republic-900/20 space-y-3">
         <div class="flex items-center justify-between border-b border-line pb-2.5">
           <h4 class="font-display font-bold text-lg text-republic-900">
-            1. Ordre Judiciaire (entre personnes & infractions)
+            1. L’Ordre Judiciaire (entre citoyens & pénal)
           </h4>
           <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900">
-            6 juridictions
+            Sommet : Cour de cassation
           </span>
         </div>
         <div class="space-y-2.5">
@@ -253,16 +269,19 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
         </div>
       </div>
 
-      <!-- Ordre Administratif & Conseil constitutionnel -->
+      <!-- 2. Ordre Administratif (uniquement les 3 juridictions administratives) -->
       <div class="p-5 rounded-card bg-paper border-2 border-velvet/25 space-y-3">
         <div class="flex items-center justify-between border-b border-line pb-2.5">
           <h4 class="font-display font-bold text-lg text-velvet">
-            2. Ordre Administratif & Constitution
+            2. L’Ordre Administratif (citoyen contre administration)
           </h4>
           <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet">
-            4 institutions
+            Sommet : Conseil d’État
           </span>
         </div>
+        <p class="text-xs sm:text-sm text-ink-muted">
+          Cet ordre juge uniquement les litiges entre un citoyen et une administration publique (mairie, préfecture, ministère, État).
+        </p>
         <div class="space-y-2.5">
           {adminCourts.map((c) => (
             <div class="p-3.5 rounded-xl bg-surface border border-line">
@@ -276,6 +295,36 @@ const adminCourts = TRIBUNALS_DATA.filter((t) => t.branch === 'administratif' ||
           ))}
         </div>
       </div>
+    </div>
+
+    <!-- 3. À part (hors des deux ordres de juridiction) : Le Conseil constitutionnel -->
+    <div class="p-5 sm:p-6 rounded-card bg-gold-light/70 border-2 border-gold space-y-3 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gold/60 pb-2.5">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-republic-900 block">
+            3. Institution à part (placée hors de l’ordre judiciaire et de l’ordre administratif)
+          </span>
+          <h4 class="font-display font-bold text-lg sm:text-xl text-ink">
+            🏛️ Le Conseil constitutionnel (« Les 9 Sages »)
+          </h4>
+        </div>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-gold text-ink">
+          Gardien de la Constitution de 1958
+        </span>
+      </div>
+      <p class="text-xs sm:text-sm text-ink leading-relaxed">
+        <strong>Attention à ne pas le confondre avec un tribunal ordinaire !</strong> Le Conseil constitutionnel n’appartient ni à l’ordre judiciaire ni à l’ordre administratif : il ne juge pas les conflits entre personnes ni les crimes. Son rôle est de <strong>vérifier que les lois votées par le Parlement respectent la Constitution</strong> et de contrôler la régularité des élections nationales (présidentielle, législatives, sénatoriales et référendums).
+      </p>
+      {constitutionalCourts.map((c) => (
+        <div class="p-3.5 rounded-xl bg-surface border border-gold/60">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-display font-bold text-sm sm:text-base text-ink">{c.name}</span>
+            <span class="text-xs font-bold text-republic-900 shrink-0">{c.level}</span>
+          </div>
+          <p class="text-xs sm:text-sm text-ink-muted mt-1">{c.role}</p>
+          <p class="text-xs text-ink font-semibold mt-1">Ex : {c.example}</p>
+        </div>
+      ))}
     </div>
   </div>
 

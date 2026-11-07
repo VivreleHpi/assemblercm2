@@ -72,11 +72,21 @@ const { currentStepNumber } = Astro.props;
         </kbd>
       </button>
 
+      <!-- Badge Mode Classe TBI (visible uniquement quand Mode Classe est actif) -->
+      <span
+        id="header-classroom-pill"
+        class="classroom-only-pill hidden items-center gap-1.5 px-3 py-1.5 rounded-btn bg-republic-900 text-gold border-2 border-gold font-display font-bold text-xs sm:text-sm min-h-[44px]"
+        title="Projection collective en classe (compteurs XP individuels masqués)"
+      >
+        <span>👩‍🏫 Mode Classe / TBI</span>
+      </span>
+
       <!-- 4. Bouton Profil (Avatar + XP + Badges) -->
       <button
         type="button"
+        id="header-profile-btn"
         data-open-modal="profile-modal"
-        class="inline-flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-btn bg-gold-light hover:bg-gold/40 text-ink border-2 border-gold font-display font-bold text-xs sm:text-sm transition min-h-[44px]"
+        class="student-profile-btn inline-flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-btn bg-gold-light hover:bg-gold/40 text-ink border-2 border-gold font-display font-bold text-xs sm:text-sm transition min-h-[44px]"
         title="Ouvrir mon profil Député Junior, mes XP et mes 9 badges"
       >
         <span id="header-avatar-deputee" class="shrink-0 hidden">

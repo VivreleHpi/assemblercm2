@@ -258,8 +258,11 @@ rowCounts.forEach((count, rowIndex) => {
           Pourquoi 577 sièges en demi-cercle ?
         </h3>
         <p id="seat-zone-desc" class="text-sm sm:text-base text-ink leading-relaxed">
-          Chaque point représente 1 député élu dans une circonscription de France (hexagone, Corse, Outre-mer et Français établis hors de France). Attention à ne pas confondre : une <strong>loi ordinaire</strong> est adoptée à la <strong>majorité simple des suffrages exprimés</strong> (il suffit qu’il y ait plus de voix POUR que CONTRE parmi les votants), tandis que la <strong>majorité absolue des 577 députés</strong> (<strong>289 voix</strong>) n’est exigée que pour des votes spéciaux comme une motion de censure !
+          Chaque point représente 1 député élu dans l’une des <strong>577 circonscriptions législatives</strong> (hexagone, Corse, Outre-mer et Français établis hors de France). Attention à ne pas confondre : une <strong>loi ordinaire</strong> est adoptée à la <strong>majorité simple des suffrages exprimés</strong> (plus de voix POUR que CONTRE parmi les votants), tandis que la <strong>majorité absolue des 577 députés</strong> (<strong>289 voix</strong>) n’est exigée que pour des votes spéciaux comme une motion de censure !
         </p>
+        <div class="p-3 rounded-xl bg-surface border border-line text-xs text-ink-muted leading-relaxed">
+          <strong>📌 Note pédagogique :</strong> Les effectifs par zone affichés sur ce schéma (<em>Gauche ~208, Centre ~173, Droite ~196</em>) sont <strong>fictifs et purement illustratifs</strong> pour apprendre à calculer une majorité sur 577 sièges ; ils ne représentent pas la composition politique réelle d’une législature en cours.
+        </div>
       </div>
     </div>
   </div>
@@ -282,8 +285,19 @@ rowCounts.forEach((count, rowIndex) => {
         </span>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-republic-100/60 border border-republic-700/20 text-xs sm:text-sm text-ink leading-relaxed">
-        <strong>💡 Astuce CM2 (Majorité simple vs 289 voix) :</strong> Pour adopter une loi ordinaire, il n’est <strong>pas</strong> obligatoire d’atteindre 289 voix ! On compte uniquement les <strong>suffrages exprimés</strong> (POUR + CONTRE, sans les abstentions ni les absents) : si <strong>POUR &gt; CONTRE</strong>, la loi est adoptée. Le seuil de <strong>289 députés</strong> (majorité absolue des 577 membres) ne sert que pour renverser le Gouvernement (motion de censure) ou au vote final d’une loi organique sans accord du Sénat.
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="p-3.5 rounded-xl bg-gold-light/70 border border-gold text-xs sm:text-sm text-ink leading-relaxed">
+          <strong class="font-display font-bold text-republic-900 block mb-0.5">
+            💡 En mots d’enfant (Comment gagne un vote ?) :
+          </strong>
+          Pour adopter une loi normale, on compte seulement les députés qui ont appuyé sur <strong>POUR</strong> ou <strong>CONTRE</strong> (on laisse de côté les abstentions). S’il y a au moins 1 voix POUR de plus que de voix CONTRE, la loi est adoptée !
+        </div>
+        <div class="p-3.5 rounded-xl bg-republic-100/60 border border-republic-700/20 text-xs sm:text-sm text-ink leading-relaxed">
+          <strong class="font-display font-bold text-republic-900 block mb-0.5">
+            ⚖️ Le vrai mot juridique (Suffrages exprimés vs 289 voix) :
+          </strong>
+          Une loi ordinaire est adoptée à la majorité des <strong>suffrages exprimés</strong> (POUR &gt; CONTRE). La <strong>majorité absolue des membres composant l’Assemblée (289 voix sur 577)</strong> n’est exigée que pour voter une <em>motion de censure</em> ou adopter définitivement une loi organique sans accord du Sénat.
+        </div>
       </div>
 
       <div>

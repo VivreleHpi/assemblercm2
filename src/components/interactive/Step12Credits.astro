@@ -1,5 +1,5 @@
 ---
-import { PHOTOS, VIDEOS_DATA, INSTITUTION_LINKS } from '../../data';
+import { PHOTOS, VIDEOS_DATA, INSTITUTION_LINKS, getSourceLinkLabel } from '../../data';
 import Icon from '../ui/Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 ---
@@ -79,7 +79,7 @@ import Avatar from '../ui/Avatar.astro';
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1 text-xs font-bold text-republic-900 hover:underline pt-0.5"
             >
-              <span>Voir la fiche Wikimedia Commons</span>
+              <span>{getSourceLinkLabel(photo.sourceUrl)}</span>
               <Icon name="ExternalLink" size={12} />
             </a>
           </div>
@@ -116,6 +116,28 @@ import Avatar from '../ui/Avatar.astro';
         </li>
       </ul>
     </div>
+  </div>
+
+  <!-- 4. Bannière de fin de parcours (Étape 12/12 -> Retour vers l'impression du Diplôme complet) -->
+  <div class="p-5 sm:p-6 rounded-card bg-gold-light border-2 border-gold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
+    <div class="space-y-1">
+      <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+        🎓 Dernière étape du parcours (12 / 12)
+      </span>
+      <h3 class="font-display font-bold text-lg sm:text-xl text-ink">
+        Validation finale du parcours complet & Diplôme A4
+      </h3>
+      <p class="text-xs sm:text-sm text-ink-muted">
+        Valide le mini-quiz ci-dessous pour atteindre 12 / 12 étapes complétées, puis imprime ton Diplôme officiel de Député(e) Junior CM2 !
+      </p>
+    </div>
+    <a
+      href="/etape/11-quiz-diplome/#diploma-printable-card"
+      class="inline-flex items-center gap-2 px-5 py-3 rounded-btn bg-republic-900 hover:bg-republic-700 text-white font-display font-bold text-xs sm:text-sm shadow-sm transition shrink-0 min-h-[46px]"
+    >
+      <Icon name="GraduationCap" size={18} />
+      <span>Ouvrir & Imprimer mon Diplôme →</span>
+    </a>
   </div>
 </section>
 

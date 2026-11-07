@@ -16,7 +16,14 @@ import Avatar from '../ui/Avatar.astro';
           Le Grand Quiz des 8 questions (Score requis : 6 / 8)
         </h2>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          id="final-quiz-classroom-reveal-btn"
+          class="classroom-only-btn hidden px-3.5 py-1.5 rounded-full bg-republic-900 text-white font-display font-bold text-xs hover:bg-republic-700 transition min-h-[38px]"
+        >
+          👁️ Mode Classe : Afficher le corrigé (8/8)
+        </button>
         <span id="final-quiz-score-pill" class="px-3.5 py-1.5 rounded-full bg-gold-light text-ink border-2 border-gold font-display font-bold text-sm">
           Bonnes réponses : 0 / 8
         </span>
@@ -221,13 +228,17 @@ import Avatar from '../ui/Avatar.astro';
           </span>
         </div>
         <p id="diploma-rendered-school" class="text-xs sm:text-sm font-semibold text-ink-muted mt-1">
-          Parcours complet des 12 étapes sur l’Assemblée nationale
+          A validé l’épreuve finale du Grand Quiz d’EMC (Cycle 3 — CM2) sur l’Assemblée nationale
         </p>
       </div>
 
       <p class="text-xs sm:text-sm text-ink max-w-2xl mx-auto leading-relaxed">
-        Pour avoir exploré le Palais Bourbon et l’Hémicycle des 577 députés, compris la Constitution de 1958, la séparation des pouvoirs, l’organisation de la Justice et le vote de la loi par la navette parlementaire.
+        Pour avoir étudié le Palais Bourbon et l’Hémicycle des 577 députés, compris la Constitution de 1958, la séparation des pouvoirs, l’organisation de la Justice et le vote de la loi par la navette parlementaire.
       </p>
+
+      <div id="diploma-step12-hint" class="no-print p-3 rounded-xl bg-paper border border-line text-xs text-ink-muted max-w-xl mx-auto">
+        💡 <strong>Astuce parcours 12/12 :</strong> N’oublie pas de visiter ensuite l’<a href="/etape/12-sources-credits/" class="font-bold text-republic-900 underline">Étape 12 (Sources & Crédits)</a> pour compléter 100 % des 12 étapes du parcours !
+      </div>
 
       <div class="pt-4 grid grid-cols-3 gap-4 items-center text-xs text-ink border-t border-line max-w-2xl mx-auto">
         <div class="text-left">
@@ -261,6 +272,7 @@ import Avatar from '../ui/Avatar.astro';
     finalQuizBestScore?: number;
     diplomaUnlocked?: boolean;
     diplomaUnlockMode?: 'quiz' | 'teacher' | null;
+    completedSteps?: number[];
   }
 
   interface ANAppApi {
@@ -314,6 +326,16 @@ import Avatar from '../ui/Avatar.astro';
       if (renderedScore) renderedScore.textContent = scoreLabel;
 
       const st = readStoredState();
+      const doneStepsCount = Array.isArray(st.completedSteps) ? st.completedSteps.length : 0;
+      const defaultSubtitle =
+        doneStepsCount >= 12
+          ? 'Parcours complet des 12 étapes et Grand Quiz d’EMC validés ✓'
+          : `Grand Quiz d’EMC validé ✓ (${Math.max(doneStepsCount, 1)} / 12 étapes explorées)`;
+      const step12Hint = document.getElementById('diploma-step12-hint');
+      if (step12Hint) {
+        step12Hint.classList.toggle('hidden', doneStepsCount >= 12);
+      }
+
       if (st.userName && nameInput && !nameInput.value) {
         nameInput.value = st.userName;
         if (renderedName) renderedName.textContent = st.userName;
@@ -321,6 +343,8 @@ import Avatar from '../ui/Avatar.astro';
       if (st.diplomaSchoolName && schoolInput && !schoolInput.value) {
         schoolInput.value = st.diplomaSchoolName;
         if (renderedSchool) renderedSchool.textContent = st.diplomaSchoolName;
+      } else if (renderedSchool && (!schoolInput || !schoolInput.value.trim())) {
+        renderedSchool.textContent = defaultSubtitle;
       }
     };
 
@@ -422,12 +446,53 @@ import Avatar from '../ui/Avatar.astro';
 
     schoolInput?.addEventListener('input', () => {
       const val = schoolInput.value.trim();
+      const st = readStoredState();
+      const doneStepsCount = Array.isArray(st.completedSteps) ? st.completedSteps.length : 0;
+      const fallback =
+        doneStepsCount >= 12
+          ? 'Parcours complet des 12 étapes et Grand Quiz d’EMC validés ✓'
+          : 'A validé l’épreuve finale du Grand Quiz d’EMC (Cycle 3 — CM2)';
       if (renderedSchool) {
-        renderedSchool.textContent =
-          val || 'Parcours complet des 12 étapes sur l’Assemblée nationale';
+        renderedSchool.textContent = val || fallback;
       }
       const app = (window as unknown as { ANApp?: ANAppApi }).ANApp;
       app?.setDiplomaDetails?.(undefined, val);
+    });
+
+    // Mode Classe teacher answer-key reveal for the 8 questions
+    let classroomRevealed = false;
+    const classroomRevealBtn = document.getElementById('final-quiz-classroom-reveal-btn');
+    classroomRevealBtn?.addEventListener('click', () => {
+      classroomRevealed = !classroomRevealed;
+      classroomRevealBtn.textContent = classroomRevealed
+        ? '🙈 Mode Classe : Masquer le corrigé'
+        : '👁️ Mode Classe : Afficher le corrigé (8/8)';
+      document.querySelectorAll<HTMLElement>('.final-q-card').forEach((card) => {
+        const correctIdx = Number(card.getAttribute('data-fq-correct'));
+        const exp = card.getAttribute('data-fq-exp') || '';
+        const feed = card.querySelector<HTMLElement>('.fq-feedback');
+        const btns = card.querySelectorAll<HTMLButtonElement>('.fq-opt-btn');
+        if (classroomRevealed) {
+          btns.forEach((b) => {
+            const i = Number(b.getAttribute('data-fq-opt'));
+            b.className =
+              i === correctIdx
+                ? 'fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-success-light border-2 border-success text-success font-bold text-xs sm:text-sm min-h-[46px]'
+                : 'fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-surface opacity-55 border border-line text-ink-muted text-xs sm:text-sm min-h-[46px]';
+          });
+          if (feed) {
+            feed.className =
+              'fq-feedback p-3 rounded-xl bg-success-light border border-success/40 text-ink text-xs font-medium leading-relaxed';
+            feed.innerHTML = `<strong class="text-success">✓ Corrigé :</strong> ${exp}`;
+          }
+        } else {
+          btns.forEach((b) => {
+            b.className =
+              'fq-opt-btn w-full text-left px-3.5 py-2.5 rounded-btn bg-surface hover:bg-republic-100 border-2 border-line text-ink font-medium text-xs sm:text-sm transition min-h-[46px]';
+          });
+          feed?.classList.add('hidden');
+        }
+      });
     });
 
     document.getElementById('print-diploma-btn')?.addEventListener('click', () => {

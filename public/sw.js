@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'assemblee-cm2-';
-const CACHE_NAME = 'assemblee-cm2-v5';
+const CACHE_NAME = 'assemblee-cm2-v6';
 const PRECACHE_URLS = [
   '/',
   '/etape/1-hemicycle/',

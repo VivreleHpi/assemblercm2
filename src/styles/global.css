@@ -144,9 +144,17 @@ html[data-dys="true"] li {
   line-height: 1.85 !important;
 }
 
-/* Mode Classe TBI (Projection grand écran en classe) */
+/* Mode Classe TBI (Projection grand écran en classe : grands caractères, masquage des compteurs individuels XP et affichage des boutons corrigés) */
 html[data-classroom="true"] {
   --font-scale: 1.2;
+}
+html[data-classroom="true"] .student-profile-btn,
+html[data-classroom="true"] .student-xp-badge {
+  display: none !important;
+}
+html[data-classroom="true"] .classroom-only-pill,
+html[data-classroom="true"] .classroom-only-btn {
+  display: inline-flex !important;
 }
 
 /* Respect strict de prefers-reduced-motion */

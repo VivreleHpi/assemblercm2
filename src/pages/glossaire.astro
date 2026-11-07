@@ -7,7 +7,7 @@ const categories = ['Tous', ...Array.from(new Set(GLOSSAIRE.map((g) => g.categor
 ---
 
 <BaseLayout
-  title="Glossaire Civique CM2 (23 mots expliqués)"
+  title={`Glossaire Civique CM2 (${GLOSSAIRE.length} mots expliqués)`}
   description="Tous les mots de l'Assemblée nationale, de la Constitution et de la Justice expliqués simplement pour les élèves de CM2 (9-11 ans)."
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
@@ -68,10 +68,10 @@ const categories = ['Tous', ...Array.from(new Set(GLOSSAIRE.map((g) => g.categor
           id={`terme-${item.id}`}
           data-term-card
           data-term-cat={item.category}
-          data-term-search={`${item.term} ${item.definition} ${item.example}`.toLowerCase()}
-          class="surface-card p-5 sm:p-6 border border-line flex flex-col justify-between gap-4 scroll-mt-24"
+          data-term-search={`${item.term} ${item.simpleDef} ${item.preciseDef} ${item.example}`.toLowerCase()}
+          class="surface-card p-5 sm:p-6 border border-line flex flex-col justify-between gap-3.5 scroll-mt-24"
         >
-          <div class="space-y-2.5">
+          <div class="space-y-3">
             <div class="flex items-center justify-between gap-2">
               <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
                 {item.category}
@@ -79,7 +79,7 @@ const categories = ['Tous', ...Array.from(new Set(GLOSSAIRE.map((g) => g.categor
               <button
                 type="button"
                 class="tts-button inline-flex items-center gap-1 px-2.5 py-1 rounded-btn bg-paper hover:bg-republic-100 text-ink border border-line text-xs font-bold min-h-[34px] no-print"
-                data-tts-text={`${item.term}. ${item.definition} Exemple : ${item.example}`}
+                data-tts-text={`${item.term}. En mots d'enfant : ${item.simpleDef}. Définition précise : ${item.preciseDef}`}
                 aria-label={`Écouter la définition de ${item.term}`}
               >
                 <Icon name="Volume2" size={13} />
@@ -90,13 +90,22 @@ const categories = ['Tous', ...Array.from(new Set(GLOSSAIRE.map((g) => g.categor
             <h2 class="font-display font-bold text-xl text-ink">
               {item.term}
             </h2>
-            <p class="text-sm sm:text-base text-ink leading-relaxed">
-              {item.definition}
-            </p>
-          </div>
 
-          <div class="p-3 rounded-xl bg-paper border border-line text-xs sm:text-sm text-ink-muted">
-            <strong class="text-republic-900">Exemple :</strong> {item.example}
+            <!-- Niveau 1 : En mots d'enfant -->
+            <div class="p-3.5 rounded-xl bg-gold-light/60 border border-gold/60 text-xs sm:text-sm text-ink leading-relaxed">
+              <strong class="font-display font-bold text-republic-900 block mb-0.5">
+                💡 En mots d’enfant (CM2) :
+              </strong>
+              <span>{item.simpleDef}</span>
+            </div>
+
+            <!-- Niveau 2 : Le mot juridique précis -->
+            <div class="p-3.5 rounded-xl bg-paper border border-line text-xs sm:text-sm text-ink leading-relaxed">
+              <strong class="font-display font-bold text-ink-muted block mb-0.5">
+                ⚖️ Le vrai mot juridique :
+              </strong>
+              <span>{item.preciseDef}</span>
+            </div>
           </div>
         </article>
       ))}

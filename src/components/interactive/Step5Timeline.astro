@@ -176,6 +176,12 @@ const firstEvent = timelineClientData[0];
           {firstEvent.title}
         </h3>
 
+        <!-- Key Figure or Historical Document Pill -->
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-line text-xs sm:text-sm font-bold text-republic-900">
+          <span>📜</span>
+          <span id="tl-key-figure">{firstEvent.keyFigureOrDoc}</span>
+        </div>
+
         <p id="tl-desc" class="text-sm sm:text-base text-ink leading-relaxed">
           {firstEvent.description}
         </p>
@@ -189,6 +195,31 @@ const firstEvent = timelineClientData[0];
           <p id="tl-why-today" class="text-xs sm:text-sm text-ink leading-relaxed">
             {firstEvent.whyImportantToday}
           </p>
+        </div>
+
+        <!-- Interactive 1-Question Check on the active Timeline Date -->
+        <div id="tl-quick-quiz-box" class="p-4 rounded-xl bg-surface border-2 border-line space-y-2.5 no-print">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs font-display font-bold uppercase tracking-wider text-velvet">
+              🎯 Question-repère éclair ({firstEvent.year})
+            </span>
+          </div>
+          <p id="tl-quick-q" class="font-display font-bold text-sm sm:text-base text-ink leading-snug">
+            {firstEvent.quickQuestion}
+          </p>
+          <div id="tl-quick-options" class="grid grid-cols-1 gap-2">
+            {firstEvent.quickOptions.map((opt, oIdx) => (
+              <button
+                type="button"
+                data-tl-qopt={oIdx}
+                class="tl-quick-opt text-left px-3.5 py-2.5 rounded-btn bg-paper hover:bg-republic-100 border border-line text-xs sm:text-sm font-semibold text-ink transition min-h-[42px]"
+              >
+                <strong class="text-republic-900 mr-1">{String.fromCharCode(65 + oIdx)}.</strong>
+                <span class="tl-opt-text">{opt}</span>
+              </button>
+            ))}
+          </div>
+          <div id="tl-quick-feedback" class="hidden p-2.5 rounded-lg text-xs font-medium leading-relaxed" aria-live="polite"></div>
         </div>
 
         <!-- En savoir plus (Official Institutional Source Link) -->
@@ -292,10 +323,15 @@ const firstEvent = timelineClientData[0];
 
     const badgeEl = document.getElementById('tl-year-badge');
     const titleEl = document.getElementById('tl-title');
+    const keyFigureEl = document.getElementById('tl-key-figure');
     const descEl = document.getElementById('tl-desc');
     const whyTodayEl = document.getElementById('tl-why-today');
     const officialLinkEl = document.getElementById('tl-official-link') as HTMLAnchorElement | null;
     const officialLabelEl = document.getElementById('tl-official-label');
+
+    const quickQEl = document.getElementById('tl-quick-q');
+    const quickOptBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.tl-quick-opt'));
+    const quickFeedEl = document.getElementById('tl-quick-feedback');
 
     const napoleonWrapper = document.getElementById('tl-napoleon-zoom-wrapper');
     const napoleonToggleBtn = document.getElementById('tl-napoleon-toggle-btn');
@@ -363,16 +399,58 @@ const firstEvent = timelineClientData[0];
       // Update Text Content
       if (badgeEl) badgeEl.textContent = `${ev.year} · ${ev.dateLabel}`;
       if (titleEl) titleEl.textContent = ev.title;
+      if (keyFigureEl) keyFigureEl.textContent = ev.keyFigureOrDoc || '';
       if (descEl) descEl.textContent = ev.description;
       if (whyTodayEl) whyTodayEl.textContent = ev.whyImportantToday;
       if (officialLinkEl) officialLinkEl.href = ev.officialSourceUrl;
       if (officialLabelEl) officialLabelEl.textContent = ev.officialSourceLabel;
+
+      // Update Quick Question for this date
+      if (quickQEl) quickQEl.textContent = ev.quickQuestion || '';
+      if (quickFeedEl) {
+        quickFeedEl.className = 'hidden p-2.5 rounded-lg text-xs font-medium leading-relaxed';
+        quickFeedEl.textContent = '';
+      }
+      quickOptBtns.forEach((btn, oIdx) => {
+        const span = btn.querySelector('.tl-opt-text');
+        if (span && Array.isArray(ev.quickOptions) && ev.quickOptions[oIdx]) {
+          span.textContent = ev.quickOptions[oIdx];
+        }
+        btn.className =
+          'tl-quick-opt text-left px-3.5 py-2.5 rounded-btn bg-paper hover:bg-republic-100 border border-line text-xs sm:text-sm font-semibold text-ink transition min-h-[42px]';
+      });
 
       // Show Napoleon Zoom ONLY on 1804
       if (napoleonWrapper) {
         napoleonWrapper.classList.toggle('hidden', ev.year !== '1804');
       }
     }
+
+    quickOptBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const ev = events[currentIndex];
+        if (!ev) return;
+        const chosen = Number(btn.getAttribute('data-tl-qopt'));
+        const correct = Number(ev.quickCorrect ?? 0);
+        if (chosen === correct) {
+          btn.className =
+            'tl-quick-opt text-left px-3.5 py-2.5 rounded-btn bg-success-light border-2 border-success text-success text-xs sm:text-sm font-bold transition min-h-[42px]';
+          if (quickFeedEl) {
+            quickFeedEl.className =
+              'p-2.5 rounded-lg bg-success-light border border-success/40 text-ink text-xs font-medium leading-relaxed';
+            quickFeedEl.textContent = `✓ ${ev.quickExplanation}`;
+          }
+        } else {
+          btn.className =
+            'tl-quick-opt text-left px-3.5 py-2.5 rounded-btn bg-error-light border-2 border-error text-error text-xs sm:text-sm font-bold transition min-h-[42px]';
+          if (quickFeedEl) {
+            quickFeedEl.className =
+              'p-2.5 rounded-lg bg-error-light border border-error/40 text-ink text-xs font-medium leading-relaxed';
+            quickFeedEl.textContent = `✗ Essaie encore ! Relis bien le texte de ${ev.year}.`;
+          }
+        }
+      });
+    });
 
     btns.forEach((btn, idx) => {
       btn.addEventListener('click', () => {

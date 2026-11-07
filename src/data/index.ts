@@ -21,6 +21,9 @@ export interface EtapeItem {
   shortTitle: string;
   subtitle: string;
   duration: string;
+  durationMinutes: number;
+  readingMinutes: number;
+  activityMinutes: number;
   xp: number;
   badgeId: string | null;
   heroPhoto: string;
@@ -57,6 +60,8 @@ export interface GlossaireItem {
   id: string;
   term: string;
   category: string;
+  simpleDef: string;
+  preciseDef: string;
   definition: string;
   example: string;
 }
@@ -82,6 +87,8 @@ export const GLOSSAIRE: GlossaireItem[] = glossaireRaw.map((g) => ({
   id: g.id,
   term: g.term,
   category: g.category,
+  simpleDef: (g as { simpleDef?: string }).simpleDef || g.shortDef,
+  preciseDef: g.shortDef,
   definition: g.shortDef,
   example: `Retrouve ce mot dans le parcours d’EMC sur l’Assemblée nationale (catégorie : ${g.category}).`
 }));
@@ -110,6 +117,9 @@ export const ETAPES: EtapeItem[] = etapesRaw.map((e) => ({
   shortTitle: e.shortTitle,
   subtitle: e.subtitle,
   duration: e.duration,
+  durationMinutes: (e as { durationMinutes?: number }).durationMinutes ?? ( parseInt(e.duration, 10) || 5 ),
+  readingMinutes: (e as { readingMinutes?: number }).readingMinutes ?? 2,
+  activityMinutes: (e as { activityMinutes?: number }).activityMinutes ?? 3,
   xp: e.xpReward,
   badgeId: e.badgeId,
   heroPhoto: e.heroPhotoId,
@@ -137,6 +147,105 @@ export function getPhotoById(id: string): PhotoItem {
 export function getGlossaryById(id: string): GlossaireItem | undefined {
   return GLOSSAIRE.find((g) => g.id === id);
 }
+
+export function getSourceLinkLabel(url: string): string {
+  if (!url) return 'Consulter la source officielle';
+  if (url.includes('commons.wikimedia.org') || url.includes('wikipedia.org')) {
+    return 'Voir la fiche Wikimedia Commons';
+  }
+  if (url.includes('legifrance.gouv.fr')) {
+    return 'Consulter le texte sur Légifrance';
+  }
+  if (url.includes('parlementdesenfants.fr')) {
+    return 'Site officiel Parlement des enfants';
+  }
+  if (url.includes('conseil-constitutionnel.fr')) {
+    return 'Voir sur conseil-constitutionnel.fr';
+  }
+  if (url.includes('assemblee-nationale.fr')) {
+    return 'Voir sur assemblee-nationale.fr';
+  }
+  return 'Consulter la source officielle';
+}
+
+const sumStepsMinutes = (steps: EtapeItem[]) =>
+  steps.reduce((acc, s) => acc + s.durationMinutes, 0);
+const sumReadingMinutes = (steps: EtapeItem[]) =>
+  steps.reduce((acc, s) => acc + s.readingMinutes, 0);
+const sumActivityMinutes = (steps: EtapeItem[]) =>
+  steps.reduce((acc, s) => acc + s.activityMinutes, 0);
+
+const part1Steps = ETAPES.filter((e) => e.partNumber === 1);
+const part2Steps = ETAPES.filter((e) => e.partNumber === 2);
+const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
+
+export const PARCOURS_STATS = {
+  totalSteps: ETAPES.length,
+  totalMinutes: sumStepsMinutes(ETAPES),
+  totalReadingMinutes: sumReadingMinutes(ETAPES),
+  totalActivityMinutes: sumActivityMinutes(ETAPES),
+  part1Minutes: sumStepsMinutes(part1Steps),
+  part1ReadingMinutes: sumReadingMinutes(part1Steps),
+  part1ActivityMinutes: sumActivityMinutes(part1Steps),
+  part2Minutes: sumStepsMinutes(part2Steps),
+  part2ReadingMinutes: sumReadingMinutes(part2Steps),
+  part2ActivityMinutes: sumActivityMinutes(part2Steps),
+  part3Minutes: sumStepsMinutes(part3Steps),
+  part3ReadingMinutes: sumReadingMinutes(part3Steps),
+  part3ActivityMinutes: sumActivityMinutes(part3Steps),
+  sessions: [
+    {
+      number: 1,
+      title: 'Séance 1 · Le Palais Bourbon & l’Hémicycle',
+      stepsLabel: 'Étapes 1 à 3',
+      stepNumbers: [1, 2, 3],
+      durationMinutes: sumStepsMinutes(ETAPES.filter((e) => [1, 2, 3].includes(e.number))),
+      readingMinutes: sumReadingMinutes(ETAPES.filter((e) => [1, 2, 3].includes(e.number))),
+      activityMinutes: sumActivityMinutes(ETAPES.filter((e) => [1, 2, 3].includes(e.number))),
+      summary: '577 députés, Perchoir, Tribune, architecture néoclassique et traditions républicaines.'
+    },
+    {
+      number: 2,
+      title: 'Séance 2 · La Loi, la Justice & l’Histoire (1789–2026)',
+      stepsLabel: 'Étapes 4 et 5',
+      stepNumbers: [4, 5],
+      durationMinutes: sumStepsMinutes(ETAPES.filter((e) => [4, 5].includes(e.number))),
+      readingMinutes: sumReadingMinutes(ETAPES.filter((e) => [4, 5].includes(e.number))),
+      activityMinutes: sumActivityMinutes(ETAPES.filter((e) => [4, 5].includes(e.number))),
+      summary: 'Pyramide de Kelsen, ordres de juridiction, Conseil constitutionnel et Grande Frise illustrée.'
+    },
+    {
+      number: 3,
+      title: 'Séance 3 · Citoyenneté, Navette & Vidéos',
+      stepsLabel: 'Étapes 6 à 8',
+      stepNumbers: [6, 7, 8],
+      durationMinutes: sumStepsMinutes(ETAPES.filter((e) => [6, 7, 8].includes(e.number))),
+      readingMinutes: sumReadingMinutes(ETAPES.filter((e) => [6, 7, 8].includes(e.number))),
+      activityMinutes: sumActivityMinutes(ETAPES.filter((e) => [6, 7, 8].includes(e.number))),
+      summary: 'Parlement des enfants (atelier prise de parole), Sénat, navette parlementaire et capsules vidéo.'
+    },
+    {
+      number: 4,
+      title: 'Séance 4 · Révision, Mini-Jeux, Grand Quiz & Diplôme',
+      stepsLabel: 'Étapes 9 à 12',
+      stepNumbers: [9, 10, 11, 12],
+      durationMinutes: sumStepsMinutes(ETAPES.filter((e) => [9, 10, 11, 12].includes(e.number))),
+      readingMinutes: sumReadingMinutes(ETAPES.filter((e) => [9, 10, 11, 12].includes(e.number))),
+      activityMinutes: sumActivityMinutes(ETAPES.filter((e) => [9, 10, 11, 12].includes(e.number))),
+      summary: 'Carte mentale Cache-Cache, simulation de vote de loi, Grand Quiz final (6/8) et sources.'
+    }
+  ],
+  expressPath: {
+    title: 'Parcours Express « L’Essentiel en 15 minutes » (1 séance TBI)',
+    durationMinutes: 15,
+    steps: [
+      { number: 1, slug: '1-hemicycle', title: 'L’Hémicycle & le vote des 577 députés', minutes: 5 },
+      { number: 4, slug: '4-constitution-justice', title: 'La Pyramide des lois (Constitution)', minutes: 4 },
+      { number: 7, slug: '7-contre-pouvoir-senat', title: 'La Navette avec le Sénat', minutes: 3 },
+      { number: 11, slug: '11-quiz-diplome', title: 'Grand Quiz collectif & Diplôme de la classe', minutes: 3 }
+    ]
+  }
+};
 
 export const HOTSPOTS_DATA = [
   {
@@ -199,10 +308,10 @@ export const SECRETS_DATA = [
   {
     id: 1,
     title: 'Les 577 circonscriptions',
-    frontQuestion: 'Pourquoi y a-t-il exactement 577 députés (et pas 500 ou 600) ?',
-    backTitle: 'Un nombre impair pour les 577 circonscriptions !',
+    frontQuestion: 'Pourquoi la France compte-t-elle 577 députés et comment calcule-t-on une majorité ?',
+    backTitle: '577 circonscriptions législatives à travers toute la République !',
     backText:
-      "La France est découpée en 577 circonscriptions législatives (environ 125 000 habitants chacune). Une loi ordinaire passe dès qu'il y a plus de POUR que de CONTRE parmi les votants, et une motion de censure exige 289 voix."
+      "Chaque député représente l'une des 577 circonscriptions législatives (Hexagone, Corse, Outre-mer et Français établis hors de France), un plafond fixé par l'article 24 de la Constitution. Une loi ordinaire est adoptée à la majorité des suffrages exprimés (plus de POUR que de CONTRE), tandis qu'une motion de censure exige la majorité absolue des 577 députés (289 voix)."
   },
   {
     id: 2,
@@ -411,6 +520,11 @@ export interface TimelineEventItem {
   shortDescription: string;
   description: string;
   whyImportantToday: string;
+  keyFigureOrDoc: string;
+  quickQuestion: string;
+  quickOptions: string[];
+  quickCorrect: number;
+  quickExplanation: string;
   photoId: string;
   baseName: string;
   imageAlt: string;
@@ -438,6 +552,11 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Le 17 juin 1789, les députés du Tiers-État se constituent en Assemblée nationale. Trois jours plus tard, le 20 juin 1789, trouvant leur salle fermée, ils prêtent le Serment du Jeu de paume et jurent de ne pas se séparer avant d'avoir donné une Constitution à la France. Le 26 août 1789, ils adoptent la Déclaration des droits de l'homme et du citoyen.",
     whyImportantToday:
       "C'est l'acte de naissance de notre démocratie parlementaire : depuis 1789, la souveraineté appartient à la Nation et la Déclaration du 26 août 1789 protège toujours nos libertés fondamentales.",
+    keyFigureOrDoc: 'Document repère : Déclaration des droits de l’homme et du citoyen (26 août 1789)',
+    quickQuestion: 'À quelle date précise les députés se sont-ils constitués en « Assemblée nationale » avant de prêter le Serment du Jeu de paume le 20 juin ?',
+    quickOptions: ['Le 17 juin 1789', 'Le 14 juillet 1900', 'Le 4 octobre 1958'],
+    quickCorrect: 0,
+    quickExplanation: 'Exact ! Les députés du Tiers-État se constituent en Assemblée nationale le 17 juin 1789, puis prêtent le Serment du Jeu de paume le 20 juin 1789.',
     photoId: 'jeu-de-paume',
     baseName: 'jeu-de-paume',
     imageAlt:
@@ -464,6 +583,11 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Sous la Première République (Directoire), les architectes Jacques-Pierre Gisors et Étienne-Chérubin Leconte aménagent un premier hémicycle dans le Palais Bourbon, au bord de la Seine. Le 21 janvier 1798, les députés du Conseil des Cinq-Cents y tiennent leur première séance.",
     whyImportantToday:
       "Depuis le 21 janvier 1798, le Palais Bourbon est resté le cœur de la vie parlementaire française et la « maison des députés » à Paris.",
+    keyFigureOrDoc: 'Lieu repère : Première salle en hémicycle du Conseil des Cinq-Cents (Palais Bourbon)',
+    quickQuestion: 'Quelle assemblée de députés inaugure la toute première salle en hémicycle du Palais Bourbon le 21 janvier 1798 ?',
+    quickOptions: ['Le Conseil des Cinq-Cents', 'Le Parlement européen', 'Le Conseil municipal'],
+    quickCorrect: 0,
+    quickExplanation: 'Bravo ! Le 21 janvier 1798, le Conseil des Cinq-Cents inaugure la première salle des séances en hémicycle du Palais Bourbon.',
     photoId: 'conseil-cinq-cents-1798',
     baseName: 'conseil-cinq-cents-1798',
     imageAlt:
@@ -490,6 +614,11 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Le 21 mars 1804, Napoléon promulgue le Code civil des Français (2 281 articles) qui unifie les règles du droit civil dans tout le pays. Il confie ensuite à l'architecte Bernard Poyet la construction de la célèbre façade néoclassique à 12 colonnes du Palais Bourbon, dont les travaux s'étendent de 1806 à 1810 face à l'église de la Madeleine.",
     whyImportantToday:
       "Le Code civil règle toujours notre vie quotidienne (famille, contrats, propriété), et les 12 colonnes bâties de 1806 à 1810 sont devenues le symbole visuel de l'Assemblée nationale.",
+    keyFigureOrDoc: 'Document & Architecture : Code civil (21 mars 1804) et Colonnade de Poyet (1806–1810)',
+    quickQuestion: 'Qu’unifie le Code civil promulgué le 21 mars 1804 dans toute la France ?',
+    quickOptions: ['Les règles de la vie civile entre citoyens (famille, contrats, propriété)', 'Les horaires des trains', 'Le règlement de la Ligue des champions'],
+    quickCorrect: 0,
+    quickExplanation: 'Exact ! Le Code civil du 21 mars 1804 unifie les règles du droit civil pour tous les Français.',
     photoId: 'napoleon',
     baseName: 'napoleon',
     imageAlt:
@@ -516,6 +645,15 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Au printemps 1848, la IIe République prend deux grandes décisions historiques distinctes : d'une part, le décret du 5 mars 1848 abolit le suffrage censitaire (réservé aux plus riches) et instaure le suffrage universel masculin direct ; d'autre part, le décret du 27 avril 1848, préparé sous l'impulsion de Victor Schœlcher, abolit définitivement l'esclavage dans les colonies françaises.",
     whyImportantToday:
       "1848 proclame que la liberté et la dignité humaine appartiennent à tous et que le droit de vote ne dépend jamais de la fortune d'un citoyen.",
+    keyFigureOrDoc: 'Personnage & Textes : Victor Schœlcher · Décrets des 5 mars et 27 avril 1848',
+    quickQuestion: 'Quelles sont les deux grandes décisions distinctes prises au printemps 1848 par la IIe République ?',
+    quickOptions: [
+      'Le suffrage universel masculin (5 mars) et l’abolition définitive de l’esclavage (27 avril)',
+      'La construction des 12 colonnes et le sacre de Napoléon',
+      'La création de la télévision et d’Internet'
+    ],
+    quickCorrect: 0,
+    quickExplanation: 'Parfait ! Le 5 mars 1848 établit le suffrage universel masculin, et le décret du 27 avril 1848 abolit définitivement l’esclavage.',
     photoId: 'schoelcher-1848',
     baseName: 'schoelcher-1848',
     imageAlt:
@@ -542,6 +680,15 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Par l'ordonnance du 21 avril 1944 signée à Alger par le général de Gaulle, la République accorde aux femmes le droit de vote et d'éligibilité : « Les femmes sont électrices et éligibles dans les mêmes conditions que les hommes. » Les Françaises votent pour la première fois aux élections municipales du 29 avril 1945, puis élisent les 33 premières femmes députées le 21 octobre 1945.",
     whyImportantToday:
       "Sans le vote et l'éligibilité des femmes, le suffrage n'était pas réellement universel : depuis 1944–1945, femmes et hommes ont exactement les mêmes droits politiques.",
+    keyFigureOrDoc: 'Document repère : Article 17 de l’ordonnance du 21 avril 1944 & 33 premières députées (1945)',
+    quickQuestion: 'Que décide l’article 17 de l’ordonnance du 21 avril 1944 ?',
+    quickOptions: [
+      'Les femmes deviennent électrices et éligibles dans les mêmes conditions que les hommes',
+      'Le vote devient obligatoire dès l’âge de 8 ans',
+      'Le Sénat est supprimé'
+    ],
+    quickCorrect: 0,
+    quickExplanation: 'Exact ! Les Françaises obtiennent le droit de vote et d’éligibilité le 21 avril 1944 et votent pour la première fois en 1945.',
     photoId: 'vote-femmes-1944',
     baseName: 'vote-femmes-1944',
     imageAlt:
@@ -560,14 +707,23 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
     id: 'tl-1958',
     year: '1958',
     buttonLabel: '1958',
-    dateLabel: '4 octobre 1958',
-    title: 'Naissance de la Ve République et adoption de la Constitution',
+    dateLabel: '28 septembre & 4 octobre 1958',
+    title: 'Naissance de la Ve République et promulgation de la Constitution',
     shortDescription:
       'Exemplaire scellé de la Constitution du 4 octobre 1958 accompagné du Grand Sceau de la République française.',
     description:
       "Approuvée par les citoyens lors du référendum du 28 septembre 1958 et promulguée le 4 octobre 1958, la Constitution fonde la Ve République. Elle définit l'équilibre entre le Président de la République, le Gouvernement, le Parlement bicaméral (Assemblée nationale et Sénat) et le Conseil constitutionnel.",
     whyImportantToday:
       "C'est la Constitution qui nous gouverne aujourd'hui : située tout au sommet de la pyramide des normes, elle organise le vote des lois et protège nos droits.",
+    keyFigureOrDoc: 'Document repère : Constitution de la Ve République (référendum du 28 sept. · promulguée le 4 oct. 1958)',
+    quickQuestion: 'Comment la Constitution de la Ve République a-t-elle été adoptée en 1958 ?',
+    quickOptions: [
+      'Approuvée par les Français par référendum le 28 septembre 1958, puis promulguée le 4 octobre 1958',
+      'Décidée par un roi sans vote',
+      'Tirée au sort dans un chapeau'
+    ],
+    quickCorrect: 0,
+    quickExplanation: 'Bravo ! Le peuple français l’a approuvée par référendum le 28 septembre 1958 avant sa promulgation officielle le 4 octobre 1958.',
     photoId: 'constitution-1958',
     baseName: 'constitution-1958',
     imageAlt:
@@ -594,6 +750,15 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Créé en 1994 à l'initiative de Philippe Séguin (Président de l'Assemblée nationale) avec le ministère de l'Éducation nationale, le Parlement des enfants réunit pour la première fois 577 délégués de CM2 dans l'Hémicycle le 4 juin 1994. Les classes rédigent une proposition de loi pédagogique : ce texte est un exercice citoyen qui n'a pas valeur de loi officielle, même s'il a parfois inspiré de vrais députés.",
     whyImportantToday:
       "Le Parlement des enfants permet aux élèves de Cycle 3 de pratiquer le débat argumenté, la rédaction collective et le vote démocratique dès l'école.",
+    keyFigureOrDoc: 'Initiative citoyenne : Philippe Séguin & Éducation nationale (1re séance le 4 juin 1994)',
+    quickQuestion: 'Quel est le but du Parlement des enfants créé en 1994 ?',
+    quickOptions: [
+      'Initier les élèves à la démocratie en rédigeant et en votant une proposition de loi pédagogique',
+      'Remplacer définitivement les 577 députés adultes',
+      'Faire passer le permis de conduire aux CM2'
+    ],
+    quickCorrect: 0,
+    quickExplanation: 'Exact ! C’est une opération civique qui permet aux classes de découvrir le rôle du député et le débat démocratique.',
     photoId: 'parlement-enfants-1994',
     baseName: 'parlement-enfants-1994',
     imageAlt:
@@ -620,6 +785,15 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
       "Aujourd'hui, les 577 députés débattent, votent les lois et contrôlent le Gouvernement en direct au Palais Bourbon. Parallèlement, la 30e édition du Parlement des enfants (année scolaire 2026–2027) associe les classes de CM2 et de 6e autour du thème « Favoriser l'accès à la culture pour toutes et tous », avec un calendrier programmé : jury national prévu les 3 ou 4 février 2027, fin des votes le 5 mars 2027 et accueil des classes finalistes prévu le 10 mars 2027.",
     whyImportantToday:
       "La démocratie est vivante : chaque citoyen peut suivre les séances de l'Assemblée, et les élèves de CM2 et de 6e participent directement à la réflexion civique !",
+    keyFigureOrDoc: 'Repère 2026–2027 : 30e édition CM2 / 6e « Favoriser l’accès à la culture pour toutes et tous »',
+    quickQuestion: 'Quels élèves peuvent aujourd’hui participer à la 30e édition (2026–2027) du Parlement des enfants ?',
+    quickOptions: [
+      'Les classes de CM2 et les classes de 6e (Cycle 3)',
+      'Uniquement les lycéens de Terminale',
+      'Uniquement les habitants de Paris'
+    ],
+    quickCorrect: 0,
+    quickExplanation: 'Parfait ! L’opération s’adresse aux classes de CM2 et de 6e sur toute la France et dans les écoles françaises à l’étranger.',
     photoId: 'assemblee-2026',
     baseName: 'assemblee-2026',
     imageAlt:

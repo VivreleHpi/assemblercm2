@@ -624,7 +624,22 @@ export function initAppClient() {
     if (captionEl) captionEl.textContent = photo.caption;
     if (authorEl) authorEl.textContent = photo.author;
     if (licenseEl) licenseEl.textContent = photo.license;
-    if (sourceLinkEl) sourceLinkEl.href = photo.sourceUrl;
+    if (sourceLinkEl) {
+      sourceLinkEl.href = photo.sourceUrl;
+      const spanEl = sourceLinkEl.querySelector('span');
+      if (spanEl) {
+        const u = photo.sourceUrl || '';
+        if (u.includes('commons.wikimedia.org') || u.includes('wikipedia.org')) {
+          spanEl.textContent = 'Source Wikimedia Commons';
+        } else if (u.includes('legifrance.gouv.fr')) {
+          spanEl.textContent = 'Source officielle Légifrance';
+        } else if (u.includes('parlementdesenfants.fr')) {
+          spanEl.textContent = 'Site Parlement des enfants';
+        } else {
+          spanEl.textContent = 'Consulter la source officielle';
+        }
+      }
+    }
   }
 
   // Event Listeners Setup
@@ -911,7 +926,53 @@ export function initAppClient() {
       const questionEls = quizEl.querySelectorAll<HTMLElement>('.microquiz-question');
       const summaryEl = quizEl.querySelector<HTMLElement>('.microquiz-summary');
       const resetBtn = quizEl.querySelector<HTMLButtonElement>('.microquiz-reset-btn');
+      const classroomRevealBtn = quizEl.querySelector<HTMLButtonElement>('.microquiz-classroom-reveal-btn');
       const solvedSet = new Set<number>();
+      let classroomRevealed = false;
+
+      classroomRevealBtn?.addEventListener('click', () => {
+        classroomRevealed = !classroomRevealed;
+        const span = classroomRevealBtn.querySelector('span');
+        if (span) {
+          span.textContent = classroomRevealed
+            ? '🙈 Mode Classe : Masquer le corrigé'
+            : '👁️ Mode Classe : Afficher le corrigé';
+        }
+        questionEls.forEach((qEl) => {
+          const correctIndex = Number(qEl.getAttribute('data-correct-index'));
+          const explanation = qEl.getAttribute('data-explanation') || '';
+          const feedbackEl = qEl.querySelector<HTMLElement>('.microquiz-feedback');
+          const options = qEl.querySelectorAll<HTMLButtonElement>('.microquiz-option');
+          if (classroomRevealed) {
+            options.forEach((b) => {
+              const idx = Number(b.getAttribute('data-option-index'));
+              const statusIcon = b.querySelector('.option-status-icon');
+              if (idx === correctIndex) {
+                b.className =
+                  'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-success-light border-2 border-success text-ink font-bold text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+                if (statusIcon) statusIcon.textContent = '✓ Réponse exacte';
+              } else {
+                b.className =
+                  'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-surface opacity-60 border border-line text-ink-muted text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+                if (statusIcon) statusIcon.textContent = '';
+              }
+            });
+            if (feedbackEl) {
+              feedbackEl.className =
+                'microquiz-feedback mt-3.5 p-3.5 rounded-xl bg-success-light border border-success/40 text-ink text-sm font-medium leading-relaxed';
+              feedbackEl.innerHTML = `<strong class="text-success">✓ Corrigé Enseignant :</strong> ${explanation}`;
+            }
+          } else {
+            feedbackEl?.classList.add('hidden');
+            options.forEach((b) => {
+              b.className =
+                'microquiz-option text-left w-full px-4 py-3 rounded-btn bg-surface hover:bg-republic-100/70 border-2 border-line text-ink font-medium text-sm sm:text-base transition flex items-center justify-between gap-3 min-h-[48px]';
+              const statusIcon = b.querySelector('.option-status-icon');
+              if (statusIcon) statusIcon.textContent = '';
+            });
+          }
+        });
+      });
 
       questionEls.forEach((qEl) => {
         const qIndex = Number(qEl.getAttribute('data-q-index'));

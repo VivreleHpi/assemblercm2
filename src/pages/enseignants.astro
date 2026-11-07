@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ETAPES, FINAL_QUIZ_QUESTIONS } from '../data';
+import { ETAPES, FINAL_QUIZ_QUESTIONS, PARCOURS_STATS, TIMELINE_EVENTS } from '../data';
 import Icon from '../components/ui/Icon.astro';
 ---
 
@@ -43,51 +43,163 @@ import Icon from '../components/ui/Icon.astro';
       </p>
     </header>
 
-    <!-- Découpage en 4 séances de 15 minutes -->
-    <section class="surface-card p-6 sm:p-8 space-y-5">
-      <h2 class="font-display font-bold text-2xl text-ink">
-        1. Proposition de découpage en 4 séances de classe (15 minutes chacune)
-      </h2>
+    <!-- Découpage en 4 séances de 15 minutes + Parcours Express 15 minutes -->
+    <section class="surface-card p-6 sm:p-8 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
+            Durées centralisées & calibrées pour la classe
+          </span>
+          <h2 class="font-display font-bold text-2xl text-ink mt-0.5">
+            1. Parcours Complet ({PARCOURS_STATS.totalMinutes} min : 4 séances de 15 min) ou Parcours Express (15 min)
+          </h2>
+        </div>
+        <span class="px-3.5 py-1.5 rounded-full bg-paper border border-line text-xs font-bold text-ink">
+          Total des 12 fiches : {PARCOURS_STATS.totalMinutes} min ({PARCOURS_STATS.totalReadingMinutes} min lecture · {PARCOURS_STATS.totalActivityMinutes} min activités)
+        </span>
+      </div>
+
+      <!-- 4 Séances de 15 minutes (60 min au total) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="p-4 rounded-card bg-paper border border-line space-y-2">
-          <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
-            Séance 1 (15 min)
-          </span>
-          <h3 class="font-display font-bold text-lg text-ink">Le Palais Bourbon</h3>
-          <p class="text-xs sm:text-sm text-ink-muted">
-            <strong>Étapes 1, 2 et 3 :</strong> Découverte visuelle de l’Hémicycle, des 577 sièges, du Perchoir et du scrutin électronique.
-          </p>
-        </div>
+        {PARCOURS_STATS.sessions.map((s) => (
+          <div class="p-4 rounded-card bg-paper border border-line space-y-2 flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-republic-100 text-republic-900 text-xs font-bold">
+                  Séance {s.number} ({s.durationMinutes} min)
+                </span>
+                <span class="text-[11px] font-bold text-ink-muted">
+                  {s.stepsLabel}
+                </span>
+              </div>
+              <h3 class="font-display font-bold text-base sm:text-lg text-ink leading-snug">
+                {s.title.replace(/^Séance \d+ · /, '')}
+              </h3>
+              <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+                {s.summary}
+              </p>
+            </div>
+            <div class="pt-2 border-t border-line text-[11px] font-bold text-republic-900">
+              📖 {s.readingMinutes} min lecture · 🎮 {s.activityMinutes} min activités
+            </div>
+          </div>
+        ))}
+      </div>
 
-        <div class="p-4 rounded-card bg-paper border border-line space-y-2">
-          <span class="px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
-            Séance 2 (15 min)
+      <!-- Parcours Court / Express 15 minutes -->
+      <div class="p-5 rounded-card bg-gold-light/70 border-2 border-gold space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
+              ⚡ Option gain de temps (1 seule séance)
+            </span>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-ink mt-1">
+              {PARCOURS_STATS.expressPath.title}
+            </h3>
+          </div>
+          <span class="text-xs font-bold text-republic-900">
+            4 étapes clés = {PARCOURS_STATS.expressPath.durationMinutes} minutes au TBI
           </span>
-          <h3 class="font-display font-bold text-lg text-ink">La Loi & la Justice</h3>
-          <p class="text-xs sm:text-sm text-ink-muted">
-            <strong>Étapes 4 et 5 :</strong> La pyramide des normes (Constitution de 1958), Code civil / Code pénal, frise depuis 1789 et tribunaux.
-          </p>
         </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {PARCOURS_STATS.expressPath.steps.map((es) => (
+            <a
+              href={`/etape/${es.slug}/`}
+              class="p-3.5 rounded-xl bg-surface hover:bg-republic-100 border border-line transition flex flex-col justify-between gap-2"
+            >
+              <div class="flex items-center justify-between text-xs font-bold">
+                <span class="text-republic-900">Étape {es.number}</span>
+                <span class="px-2 py-0.5 rounded bg-paper border border-line text-ink-muted">{es.minutes} min</span>
+              </div>
+              <span class="font-display font-bold text-sm text-ink leading-snug">{es.title}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
 
-        <div class="p-4 rounded-card bg-paper border border-line space-y-2">
-          <span class="px-2.5 py-0.5 rounded-full bg-velvet-light text-velvet text-xs font-bold">
-            Séance 3 (15 min)
-          </span>
-          <h3 class="font-display font-bold text-lg text-ink">Débat & Navette</h3>
-          <p class="text-xs sm:text-sm text-ink-muted">
-            <strong>Étapes 6 et 7 :</strong> Le Parlement des enfants, le contrôle du Gouvernement et la navette Assemblée / Sénat.
-          </p>
-        </div>
+    <!-- Kit Imprimable Enseignant & Classe (4 supports au choix) -->
+    <section class="surface-card p-6 sm:p-8 space-y-5 no-print">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+          Supports papier prêts à photocopier (A4)
+        </span>
+        <h2 class="font-display font-bold text-2xl text-ink mt-0.5">
+          2. Kit Imprimable : Choisissez le support à imprimer
+        </h2>
+        <p class="text-sm text-ink-muted mt-1">
+          Sélectionnez le mode d’impression ci-dessous (avec ou sans les réponses corrigées) avant de cliquer sur « Imprimer ».
+        </p>
+      </div>
 
-        <div class="p-4 rounded-card bg-gold-light border-2 border-gold space-y-2">
-          <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
-            Séance 4 (15 min)
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <button
+          type="button"
+          data-print-mode="teacher-key"
+          class="print-mode-btn p-4 rounded-card border-2 border-republic-900 bg-republic-100/50 text-left space-y-1 transition"
+        >
+          <span class="text-xs font-bold text-republic-900 uppercase block">Support 1 · Enseignant</span>
+          <strong class="font-display font-bold text-base text-ink block">Livret Complet & Corrigés</strong>
+          <span class="text-xs text-ink-muted block">Objectifs, traces écrites et toutes les réponses des quiz.</span>
+        </button>
+
+        <button
+          type="button"
+          data-print-mode="student-worksheet"
+          class="print-mode-btn p-4 rounded-card border-2 border-line bg-paper hover:border-republic-900 text-left space-y-1 transition"
+        >
+          <span class="text-xs font-bold text-velvet uppercase block">Support 2 · Élève (sans corrigé)</span>
+          <strong class="font-display font-bold text-base text-ink block">Fiche d’exercices Élève</strong>
+          <span class="text-xs text-ink-muted block">Masque automatiquement les réponses pour évaluer la classe.</span>
+        </button>
+
+        <button
+          type="button"
+          data-print-mode="timeline-sheet"
+          class="print-mode-btn p-4 rounded-card border-2 border-line bg-paper hover:border-republic-900 text-left space-y-1 transition"
+        >
+          <span class="text-xs font-bold text-republic-900 uppercase block">Support 3 · Histoire CM2</span>
+          <strong class="font-display font-bold text-base text-ink block">Frise 1789–2026 (8 dates)</strong>
+          <span class="text-xs text-ink-muted block">Récapitulatif chronologique illustré pour le cahier.</span>
+        </button>
+
+        <a
+          href="/etape/6-parlement-enfants/#atelier-tribune"
+          class="p-4 rounded-card border-2 border-gold bg-gold-light/60 hover:bg-gold-light text-left space-y-1 transition block"
+        >
+          <span class="text-xs font-bold text-republic-900 uppercase block">Support 4 · Oral en binôme</span>
+          <strong class="font-display font-bold text-base text-ink block">Fiche « Parole à la Tribune »</strong>
+          <span class="text-xs text-ink-muted block">Trame en 4 étapes + chronomètre 60s / 90s (Étape 6) →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Support Imprimable Frise Chronologique 1789-2026 (8 repères) -->
+    <section id="printable-timeline-section" class="surface-card p-6 sm:p-8 space-y-4 break-inside-avoid">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-velvet block">
+            Fiche repère Histoire & EMC Cycle 3
           </span>
-          <h3 class="font-display font-bold text-lg text-ink">Révision & Diplôme</h3>
-          <p class="text-xs sm:text-sm text-ink">
-            <strong>Étapes 8 à 11 :</strong> Vidéos, carte mentale en mode cache-cache, Grand Quiz collectif et remise du Diplôme.
-          </p>
+          <h2 class="font-display font-bold text-2xl text-ink">
+            Frise Récapitulative : Les 8 Grandes Dates (1789 – Aujourd’hui)
+          </h2>
         </div>
+        <a href="/etape/5-frise-napoleon/" class="no-print text-xs font-bold text-republic-900 underline">
+          Ouvrir la frise interactive →
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        {TIMELINE_EVENTS.map((ev) => (
+          <div class="p-3.5 rounded-xl bg-paper border border-line space-y-1 text-xs sm:text-sm">
+            <div class="flex items-center justify-between gap-2">
+              <strong class="font-display font-bold text-velvet text-base">{ev.year} · {ev.dateLabel}</strong>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-surface border border-line text-ink-muted">Repère CM2</span>
+            </div>
+            <p class="font-bold text-ink">{ev.title}</p>
+            <p class="text-ink-muted text-xs">{ev.keyFigureOrDoc}</p>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -110,7 +222,7 @@ import Icon from '../components/ui/Icon.astro';
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
               <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-republic-700">
-                  Partie {step.partNumber} · Étape {step.number} / 12 (Durée : {step.duration})
+                  Partie {step.partNumber} · Étape {step.number} / 12 (Durée : {step.duration} — {step.readingMinutes} min lecture · {step.activityMinutes} min activité)
                 </span>
                 <h3 class="font-display font-bold text-xl text-ink">
                   {step.title}
@@ -142,17 +254,23 @@ import Icon from '../components/ui/Icon.astro';
                 </ol>
               </div>
 
-              <!-- Corrigé du mini-quiz -->
+              <!-- Corrigé du mini-quiz (ou questions à compléter en mode Fiche Élève) -->
               <div class="p-4 rounded-xl bg-surface border border-line space-y-2">
-                <h4 class="font-display font-bold text-sm text-success uppercase tracking-wider">
+                <h4 class="teacher-answer-heading font-display font-bold text-sm text-success uppercase tracking-wider">
                   Corrigé du mini-quiz (3 questions)
                 </h4>
-                <ul class="space-y-2 text-xs sm:text-sm text-ink">
+                <ul class="space-y-2.5 text-xs sm:text-sm text-ink">
                   {step.quiz.map((q, qi) => (
                     <li>
                       <strong>Q{qi + 1}. {q.question}</strong>
-                      <br />
-                      <span class="text-success font-bold">→ Réponse : {q.options[q.correctIndex]}</span>
+                      <div class="teacher-answer-key mt-0.5">
+                        <span class="text-success font-bold">→ Réponse : {q.options[q.correctIndex]}</span>
+                      </div>
+                      <div class="student-blank-lines hidden mt-1 space-y-1 text-ink-muted">
+                        {q.options.map((opt, oIdx) => (
+                          <span class="block">☐ {String.fromCharCode(65 + oIdx)}. {opt}</span>
+                        ))}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -191,6 +309,37 @@ import Icon from '../components/ui/Icon.astro';
   });
   document.getElementById('page-toggle-tbi-btn')?.addEventListener('click', () => {
     document.getElementById('toggle-classroom-btn')?.click();
+  });
+
+  const modeBtns = document.querySelectorAll<HTMLButtonElement>('.print-mode-btn');
+  modeBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mode = btn.getAttribute('data-print-mode') || 'teacher-key';
+      modeBtns.forEach((b) => {
+        const active = b.getAttribute('data-print-mode') === mode;
+        b.className = active
+          ? 'print-mode-btn p-4 rounded-card border-2 border-republic-900 bg-republic-100/50 text-left space-y-1 transition'
+          : 'print-mode-btn p-4 rounded-card border-2 border-line bg-paper hover:border-republic-900 text-left space-y-1 transition';
+      });
+
+      const isStudentWorksheet = mode === 'student-worksheet';
+      document.querySelectorAll<HTMLElement>('.teacher-answer-key').forEach((el) => {
+        el.classList.toggle('hidden', isStudentWorksheet);
+      });
+      document.querySelectorAll<HTMLElement>('.student-blank-lines').forEach((el) => {
+        el.classList.toggle('hidden', !isStudentWorksheet);
+      });
+      document.querySelectorAll<HTMLElement>('.teacher-answer-heading').forEach((el) => {
+        el.textContent = isStudentWorksheet
+          ? 'Questions Élève (Coche la bonne réponse)'
+          : 'Corrigé du mini-quiz (3 questions)';
+      });
+
+      if (mode === 'timeline-sheet') {
+        document.getElementById('printable-timeline-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+      window.print();
+    });
   });
 </script>
 
