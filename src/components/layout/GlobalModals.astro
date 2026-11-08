@@ -1,5 +1,5 @@
 ---
-import { ETAPES, GLOSSAIRE, BADGES, PHOTOS } from '../../data';
+import { ETAPES, GLOSSAIRE, BADGES, PHOTOS, PARCOURS_STATS } from '../../data';
 import Icon from '../ui/Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 import BadgeCard from '../ui/BadgeCard.astro';
@@ -481,7 +481,7 @@ const searchIndex = [
               Prêt(e) pour ta mission en 12 étapes !
             </h2>
             <p class="text-xs sm:text-sm text-ink-muted mt-0.5">
-              Chaque étape dure 4 à 6 minutes et se termine par un mini-quiz de 3 questions.
+              Le parcours complet dure {PARCOURS_STATS.totalMinutes} minutes (4 séances de 15 à 20 minutes) et chaque étape se termine par un mini-quiz de 3 questions.
             </p>
           </div>
         </div>

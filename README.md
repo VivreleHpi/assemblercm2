@@ -2,7 +2,7 @@
 
 🌐 **Site en ligne (GitHub Pages)** : **[https://vivrelehpi.github.io/assemblercm2/](https://vivrelehpi.github.io/assemblercm2/)**
 
-Site éducatif gratuit, sans compte, sans cookie et sans publicité conçu par **Malik (CM2)** et **son papa** pour faire découvrir l’Assemblée nationale, la Constitution de 1958, la Justice et le vote des lois aux élèves de **Cycle 3 (9-11 ans)**.
+Site éducatif gratuit, sans compte élève et sans publicité conçu par **Malik (CM2)** et **son papa** pour faire découvrir l’Assemblée nationale, la Constitution de 1958, la Justice et le vote des lois aux élèves de **Cycle 3 (9-11 ans)**.
 
 ---
 
@@ -16,9 +16,9 @@ Site éducatif gratuit, sans compte, sans cookie et sans publicité conçu par *
   - Diplôme : `Cinzel` (700)
 - **Images optimisées (`public/img/`)** : Formats **AVIF** + **WebP** responsives (`480w`, `960w`, `1600w`) + fallback JPEG, avec attributions légales **Wikimedia Commons (CC BY-SA / Domaine public)**.
 - **Contenu séparé du code (`src/content/` & `src/data/`)** :
-  - `src/content/etapes/etapes.json` : Les 12 leçons complètes, bulles de Malik, 3 points « Je retiens », objectifs enseignants et 36 questions de mini-quiz.
-  - `src/content/glossaire/termes.json` : 23 termes civiques et juridiques expliqués à hauteur d’enfant de 10 ans.
-  - `src/content/badges/badges.json` : Les 9 médailles républicaines à collectionner.
+  - `src/content/etapes/etapes.json` : Les 12 leçons complètes (65 minutes au total — 4 séances de 15 à 20 minutes), bulles de Malik, 3 points « Je retiens », objectifs enseignants et 36 questions de mini-quiz.
+  - `src/content/glossaire/termes.json` : 25 termes civiques et juridiques expliqués à hauteur d’enfant de 10 ans.
+  - `src/content/badges/badges.json` : Les 9 médailles républicaines à collectionner (3 en Partie 1, 4 en Partie 2, 2 en Partie 3).
   - `src/content/photos/photos.json` : Les 14 photographies et illustrations historiques (8 lieux/portraits de la galerie + 6 illustrations dédiées à la frise historique) avec leurs métadonnées et licences.
 
 ---
@@ -27,22 +27,22 @@ Site éducatif gratuit, sans compte, sans cookie et sans publicité conçu par *
 
 | URL | Description |
 | :--- | :--- |
-| `/` | Accueil : Hero Hémicycle, Carte illustrée des 12 étapes (3 parties), Histoire de Malik & Papa, Espace Enseignants |
+| `/` | Accueil : Hero Hémicycle, Carte illustrée des 12 étapes (65 min — 4 séances de 15 à 20 min), Histoire de Malik & Papa, Espace Enseignants |
 | `/etape/1-hemicycle/` | Étape 1 : L’Hémicycle et ses 577 députés (Photo à 6 repères, Plan des 577 sièges, Simulateur de vote, Pupitre) |
 | `/etape/2-galerie/` | Étape 2 : La galerie photo des 8 lieux et portraits avec Lightbox |
 | `/etape/3-secrets/` | Étape 3 : Les 6 secrets insolites du Palais Bourbon (Cartes mystères à retourner) |
 | `/etape/4-constitution-justice/` | Étape 4 : Constitution, Codes & Tribunaux (Pyramide des normes, Code civil/pénal, 10 tribunaux, Jeu « Quel tribunal ? ») |
-| `/etape/5-frise-napoleon/` | Étape 5 : Frise historique interactive à 8 dates illustrées (1789 → 2026) & Zoom Histoire CM2 sur Napoléon (1804, colonnade 1806–1810) |
-| `/etape/6-parlement-enfants/` | Étape 6 : Le Parlement des enfants (CM2 & 6e, 30e édition 2026–2027) + atelier pédagogique d’entraînement |
+| `/etape/5-frise-napoleon/` | Étape 5 : Frise historique interactive à 8 dates illustrées (1789 → 2026) & Zoom Histoire CM2 sur Napoléon Bonaparte (Code civil du 21 mars 1804 sous le Consulat, colonnade 1806–1810) |
+| `/etape/6-parlement-enfants/` | Étape 6 : Le Parlement des enfants (CM2 & 6e, 30e édition 2026–2027) + atelier oral à la Tribune (chronomètre 60s / 90s) |
 | `/etape/7-contre-pouvoir-senat/` | Étape 7 : Contre-pouvoir, Gouvernement & Sénat + simulateur de la navette parlementaire |
-| `/etape/8-videos/` | Étape 8 : 4 vidéos « 1 jour, 1 question » en façade sans cookie (`youtube-nocookie`) + 6 portails officiels |
+| `/etape/8-videos/` | Étape 8 : 4 vidéos « 1 jour, 1 question » chargées uniquement sur clic (`youtube-nocookie.com`) + 6 portails officiels |
 | `/etape/9-carte-mentale/` | Étape 9 : Carte mentale à 6 branches + Mode « Cache-Cache » de révision |
 | `/etape/10-mini-jeux/` | Étape 10 : 3 mini-jeux (« Fais voter ta loi », « Qui fait quoi ? », « Vrai ou Faux Express ») |
 | `/etape/11-quiz-diplome/` | Étape 11 : Grand Quiz final (8 questions) + Diplôme de Député Junior CM2 imprimable en A4 paysage |
-| `/etape/12-sources-credits/` | Étape 12 : Sources officielles, crédits des 14 photos/illustrations & charte de confidentialité |
-| `/enseignants/` | Guide EMC Cycle 3, découpage en 4 séances de 15 min, Mode Classe TBI, traces écrites et corrigés imprimables |
-| `/glossaire/` | Dictionnaire citoyen interactif des 23 mots clés avec recherche et synthèse vocale |
-| `/credits/` | Crédits complets Wikimedia Commons, vidéos et mentions pédagogiques |
+| `/etape/12-sources-credits/` | Étape 12 : Sources officielles, crédits des 14 photos/illustrations & informations sur la confidentialité |
+| `/enseignants/` | Guide EMC Cycle 3, découpage en 4 séances de 15 à 20 min (65 min) + Parcours Express (15 min d'extraits), Mode Classe TBI et kit imprimable |
+| `/glossaire/` | Dictionnaire citoyen interactif des 25 mots clés avec recherche et synthèse vocale |
+| `/credits/` | Crédits complets Wikimedia Commons, vidéos et mentions sur la sauvegarde locale et les services externes |
 | `/styleguide/` | Documentation vivante du Design System et des 16 composants accessibles |
 
 ---

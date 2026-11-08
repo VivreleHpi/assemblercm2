@@ -43,7 +43,7 @@ import Icon from '../components/ui/Icon.astro';
       </p>
     </header>
 
-    <!-- Découpage en 4 séances de 15 minutes + Parcours Express 15 minutes -->
+    <!-- Découpage en 4 séances de 15 à 20 minutes + Parcours Express 15 minutes -->
     <section class="surface-card p-6 sm:p-8 space-y-6">
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
         <div>
@@ -51,7 +51,7 @@ import Icon from '../components/ui/Icon.astro';
             Durées centralisées & calibrées pour la classe
           </span>
           <h2 class="font-display font-bold text-2xl text-ink mt-0.5">
-            1. Parcours Complet ({PARCOURS_STATS.totalMinutes} min : 4 séances de 15 min) ou Parcours Express (15 min)
+            1. Parcours Complet ({PARCOURS_STATS.totalMinutes} minutes — 4 séances de 15 à 20 minutes) ou Parcours Express (15 min)
           </h2>
         </div>
         <span class="px-3.5 py-1.5 rounded-full bg-paper border border-line text-xs font-bold text-ink">
@@ -59,7 +59,7 @@ import Icon from '../components/ui/Icon.astro';
         </span>
       </div>
 
-      <!-- 4 Séances de 15 minutes (60 min au total) -->
+      <!-- 4 Séances de 15 à 20 minutes (65 min au total) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {PARCOURS_STATS.sessions.map((s) => (
           <div class="p-4 rounded-card bg-paper border border-line space-y-2 flex flex-col justify-between">
@@ -86,19 +86,22 @@ import Icon from '../components/ui/Icon.astro';
         ))}
       </div>
 
-      <!-- Parcours Court / Express 15 minutes -->
+      <!-- Parcours Court / Express 15 minutes (sélection d'extraits) -->
       <div class="p-5 rounded-card bg-gold-light/70 border-2 border-gold space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <span class="px-2.5 py-0.5 rounded-full bg-gold text-ink text-xs font-bold">
-              ⚡ Option gain de temps (1 seule séance)
+              ⚡ Option gain de temps (sélection d’extraits pour 1 séance)
             </span>
             <h3 class="font-display font-bold text-lg sm:text-xl text-ink mt-1">
               {PARCOURS_STATS.expressPath.title}
             </h3>
+            <p class="text-xs sm:text-sm text-ink-muted mt-1">
+              {PARCOURS_STATS.expressPath.subtitle}
+            </p>
           </div>
           <span class="text-xs font-bold text-republic-900">
-            4 étapes clés = {PARCOURS_STATS.expressPath.durationMinutes} minutes au TBI
+            4 extraits sélectionnés = {PARCOURS_STATS.expressPath.durationMinutes} minutes au TBI (ou {PARCOURS_STATS.expressPath.fullStepsDurationMinutes} min pour les 4 étapes intégrales)
           </span>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -108,7 +111,7 @@ import Icon from '../components/ui/Icon.astro';
               class="p-3.5 rounded-xl bg-surface hover:bg-republic-100 border border-line transition flex flex-col justify-between gap-2"
             >
               <div class="flex items-center justify-between text-xs font-bold">
-                <span class="text-republic-900">Étape {es.number}</span>
+                <span class="text-republic-900">Étape {es.number} (extrait)</span>
                 <span class="px-2 py-0.5 rounded bg-paper border border-line text-ink-muted">{es.minutes} min</span>
               </div>
               <span class="font-display font-bold text-sm text-ink leading-snug">{es.title}</span>

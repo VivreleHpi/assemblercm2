@@ -431,7 +431,7 @@
       "heading": "Comprendre le Parlement en 4 dessins animés",
       "lead": "Dessinées avec humour par Jacques Azam pour France Télévisions et Milan Presse, les capsules « 1 jour, 1 question » résument l'essentiel en moins de deux minutes.",
       "paragraphs": [
-        "Pour respecter ta vie privée, aucune connexion vers YouTube n'est lancée automatiquement : clique sur le bouton « Lancer la vidéo » de la capsule de ton choix pour démarrer le lecteur sans cookie publicitaire (youtube-nocookie). Une seule capsule (1 min 42) suffit pour valider la séance, mais tu peux regarder les 4 vidéos (environ 7 minutes de visionnage au total) pour approfondir !",
+        "Aucune connexion vers YouTube n'est lancée à l'ouverture de la page : le lecteur externe (en mode de confidentialité renforcée youtube-nocookie.com) ne se charge que si tu cliques sur « Lancer la vidéo », ce qui établit alors une connexion vers les serveurs de YouTube/Google. Une seule capsule (1 min 42) suffit pour valider la séance, ou tu peux regarder les 4 vidéos (environ 7 minutes de visionnage au total) pour approfondir !",
         "Après ton visionnage, réponds aux 3 questions du mini-quiz en bas de page pour valider tes 20 XP !"
       ],
       "glossaryIds": ["parlement", "projet-proposition", "navette"]
@@ -664,7 +664,7 @@
       "lead": "Sur Internet, n'importe qui peut écrire une fausse information (une « infox »). C'est pourquoi Malik et son Papa ont tenu à citer chaque photographe, chaque musée et chaque article de la Constitution utilisés sur ce site !",
       "paragraphs": [
         "Toutes les photographies proviennent de Wikimedia Commons ou des collections publiques (Paris Musées, Assemblée nationale, Sénat) sous licence libre Creative Commons ou dans le Domaine public. Les vidéos sont issues de la série éducative « 1 jour, 1 question » (France Télévisions / Milan Presse).",
-        "Ce site est un projet familial, bénévole et indépendant, sans publicité, sans compte et sans aucun traceur : tout ce que tu fais reste sur ton ordinateur ou ta tablette."
+        "Ce site est un projet familial, bénévole et indépendant, sans compte élève ni régie publicitaire : ta progression (prénom, XP, médailles) est sauvegardée localement dans ton navigateur, et les vidéos externes (Étape 8) ne se chargent qu'après un clic de ta part."
       ],
       "glossaryIds": ["constitution", "parlement"]
     },
@@ -677,7 +677,7 @@
     "keyPoints": [
       "Vérifier ses sources (qui est l'auteur ? quelle est l'institution ? quelle est la date ?) permet de distinguer un fait vérifié d'une rumeur.",
       "Les licences libres Creative Commons (CC BY-SA) permettent de partager la culture à condition de citer obligatoirement l'auteur et la licence.",
-      "Ce site éducatif est indépendant (non affilié à l'Assemblée nationale) et protège 100 % de ta vie privée (zéro cookie, zéro collecte)."
+      "Ce site éducatif est indépendant (non affilié à l'Assemblée nationale) : ta progression reste stockée localement dans ton navigateur (localStorage) et les services tiers comme le lecteur vidéo YouTube ne sont chargés qu'à ta demande."
     ],
     "microQuiz": [
       {

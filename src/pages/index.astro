@@ -135,13 +135,13 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-line pb-6">
       <div>
         <span class="text-xs font-bold uppercase tracking-wider text-republic-700 block">
-          Carnet de voyage républicain · Total : {PARCOURS_STATS.totalMinutes} minutes (4 séances de 15 min)
+          Carnet de voyage républicain · {PARCOURS_STATS.totalMinutes} minutes — 4 séances de 15 à 20 minutes
         </span>
         <h2 class="font-display font-bold text-3xl sm:text-4xl text-ink mt-1">
           La Carte des 12 Étapes du Parcours
         </h2>
         <p class="text-base text-ink-muted mt-1 max-w-2xl">
-          Le parcours complet dure <strong>{PARCOURS_STATS.totalMinutes} minutes</strong> ({PARCOURS_STATS.totalReadingMinutes} min de lecture + {PARCOURS_STATS.totalActivityMinutes} min d’activités et quiz). Tu peux avancer dans l’ordre ou choisir une séance !
+          Le parcours complet dure <strong>{PARCOURS_STATS.totalMinutes} minutes</strong> ({PARCOURS_STATS.totalReadingMinutes} min de lecture + {PARCOURS_STATS.totalActivityMinutes} min d’activités et quiz), réparties en <strong>4 séances de 15 à 20 minutes</strong>.
         </p>
       </div>
 
@@ -417,12 +417,12 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
             Utiliser le parcours en classe sur TBI ou en séance d’EMC
           </h2>
           <p class="text-sm sm:text-base text-ink leading-relaxed">
-            Chaque étape possède sa propre URL directe, une durée calibrée (4 à 6 minutes), 3 phrases de trace écrite (« Je retiens ») à recopier dans le cahier d’EMC et un mini-quiz d’évaluation formative.
+            Chaque étape possède sa propre URL directe, une durée détaillée (distinguant temps de lecture et d’activité), 3 phrases de trace écrite (« Je retiens ») à recopier dans le cahier d’EMC et un mini-quiz d’évaluation formative.
           </p>
           <ul class="space-y-1.5 text-xs sm:text-sm text-ink font-medium">
             <li>✓ <strong>Mode Classe / TBI</strong> (dans le menu Réglages en haut à droite).</li>
             <li>✓ <strong>Fiches récapitulatives & corrigés imprimables</strong> sur la page Enseignants.</li>
-            <li>✓ <strong>Zéro compte élève, zéro profilage publicitaire</strong> (sauvegarde locale dans le navigateur).</li>
+            <li>✓ <strong>Zéro compte élève, zéro régie publicitaire</strong> (progression sauvegardée dans le navigateur ; vidéos externes chargées uniquement sur clic).</li>
           </ul>
         </div>
 

@@ -93,7 +93,11 @@ async function runAuditSuite() {
   try {
     browser = await chromium.launch({ channel: 'msedge', headless: true });
   } catch {
-    browser = await chromium.launch({ channel: 'chrome', headless: true });
+    try {
+      browser = await chromium.launch({ channel: 'chrome', headless: true });
+    } catch {
+      browser = await chromium.launch({ headless: true });
+    }
   }
 
   try {

@@ -236,13 +236,16 @@ export const PARCOURS_STATS = {
     }
   ],
   expressPath: {
-    title: 'Parcours Express « L’Essentiel en 15 minutes » (1 séance TBI)',
+    title: 'Parcours Express « L’Essentiel en 15 minutes » (sélection d’extraits au TBI)',
+    subtitle:
+      'Sélection ciblée de 4 activités clés pour une projection collective rapide en classe (sans la lecture intégrale ni les mini-quiz individuels des 4 fiches, qui représentent 23 minutes au complet).',
     durationMinutes: 15,
+    fullStepsDurationMinutes: 23,
     steps: [
-      { number: 1, slug: '1-hemicycle', title: 'L’Hémicycle & le vote des 577 députés', minutes: 5 },
-      { number: 4, slug: '4-constitution-justice', title: 'La Pyramide des lois (Constitution)', minutes: 4 },
-      { number: 7, slug: '7-contre-pouvoir-senat', title: 'La Navette avec le Sénat', minutes: 3 },
-      { number: 11, slug: '11-quiz-diplome', title: 'Grand Quiz collectif & Diplôme de la classe', minutes: 3 }
+      { number: 1, slug: '1-hemicycle', title: 'Extrait Étape 1 : Carte de l’Hémicycle & vote des 577 députés', minutes: 5 },
+      { number: 4, slug: '4-constitution-justice', title: 'Extrait Étape 4 : Schéma de la Pyramide des lois (Constitution)', minutes: 4 },
+      { number: 7, slug: '7-contre-pouvoir-senat', title: 'Extrait Étape 7 : Animation de la Navette avec le Sénat', minutes: 3 },
+      { number: 11, slug: '11-quiz-diplome', title: 'Extrait Étape 11 : Grand Quiz collectif & Diplôme de la classe', minutes: 3 }
     ]
   }
 };
