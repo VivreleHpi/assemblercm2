@@ -197,7 +197,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
                     Étape {step.number} / 12
                   </span>
                   <span class="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-night/85 text-gold text-xs font-bold">
-                    +{step.xp} XP
+                    {step.number === 11 ? '+20 +50 XP' : `+${step.xp} XP`}
                   </span>
                 </div>
                 <div class="p-5 space-y-2">
@@ -264,7 +264,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
                     Étape {step.number} / 12
                   </span>
                   <span class="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-night/85 text-gold text-xs font-bold">
-                    +{step.xp} XP
+                    {step.number === 11 ? '+20 +50 XP' : `+${step.xp} XP`}
                   </span>
                 </div>
                 <div class="p-4 sm:p-5 space-y-2">
@@ -336,7 +336,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
                     Étape {step.number}
                   </span>
                   <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-night/85 text-gold text-[11px] font-bold">
-                    +{step.xp} XP
+                    {step.number === 11 ? '+20 +50 XP' : `+${step.xp} XP`}
                   </span>
                 </div>
                 <div class="p-4 space-y-2">
@@ -417,7 +417,7 @@ const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
             Utiliser le parcours en classe sur TBI ou en séance d’EMC
           </h2>
           <p class="text-sm sm:text-base text-ink leading-relaxed">
-            Chaque étape possède sa propre URL directe, une durée détaillée (distinguant temps de lecture et d’activité), 3 phrases de trace écrite (« Je retiens ») à recopier dans le cahier d’EMC et un mini-quiz d’évaluation formative.
+            Chaque étape possède sa propre URL directe, une durée détaillée (distinguant temps de lecture et d’activité), 3 phrases de trace écrite (« Je retiens ») à recopier dans le cahier d’EMC et un mini-quiz « Je vérifie » de 3 questions (à l’étape 11, s’ajoute le Grand Quiz final de 8 questions).
           </p>
           <ul class="space-y-1.5 text-xs sm:text-sm text-ink font-medium">
             <li>✓ <strong>Mode Classe / TBI</strong> (dans le menu Réglages en haut à droite).</li>

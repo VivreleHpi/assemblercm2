@@ -369,6 +369,17 @@ export function initAppClient() {
     const progressBar = document.getElementById('header-progressbar');
     if (progressBar) progressBar.setAttribute('aria-valuenow', String(doneCount));
 
+    const progressHint = document.getElementById('header-progress-hint');
+    if (progressHint) {
+      progressHint.classList.toggle('hidden', doneCount > 0);
+      if (doneCount > 0) {
+        progressHint.textContent = `${doneCount} étape${doneCount > 1 ? 's' : ''} validée${doneCount > 1 ? 's' : ''} sur 12.`;
+      } else {
+        progressHint.textContent =
+          '0 % tant qu’aucune étape n’est validée : réussis un mini-quiz « Je vérifie ».';
+      }
+    }
+
     // Modal stats
     const modalXp = document.getElementById('modal-xp-total');
     if (modalXp) modalXp.textContent = String(state.xp);
@@ -615,7 +626,10 @@ export function initAppClient() {
         if (imgEl.src !== fallback) imgEl.src = fallback;
       };
       imgEl.src = normalizedSrc;
-      imgEl.alt = photo.alt;
+      imgEl.alt =
+        photo.alt?.trim() ||
+        photo.title?.trim() ||
+        'Illustration du parcours Député Junior sur l’Assemblée nationale';
     }
     if (titleEl) titleEl.textContent = photo.title;
     if (counterEl) counterEl.textContent = `${currentLightboxIndex + 1} / ${photos.length}`;

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vivrelehpi.github.io/assemblercm2/sitemap.xml
+Sitemap: https://depute-junior-cm2.vercel.app/sitemap.xml

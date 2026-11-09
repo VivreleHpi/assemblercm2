@@ -91,7 +91,7 @@
     },
     "keyPoints": [
       "La façade à 12 colonnes du Palais Bourbon a été commandée par Napoléon Ier à l'architecte Bernard Poyet et construite de 1806 à 1810.",
-      "La Bibliothèque de l'Assemblée a été peinte par Eugène Delacroix et conserve plus de 700 000 livres et manuscrits précieux.",
+      "La Bibliothèque de l'Assemblée a été peinte par Eugène Delacroix et conserve près de 700 000 ouvrages et manuscrits précieux.",
       "La Salle des Pas Perdus est la grande galerie où les députés et les journalistes discutent avant d'entrer dans l'Hémicycle."
     ],
     "microQuiz": [
@@ -108,10 +108,10 @@
         "exp": "Exact ! Eugène Delacroix y a travaillé de 1838 à 1847 pour représenter la Philosophie, les Sciences et la Législation."
       },
       {
-        "q": "Quel tableau de Jacques-Louis David montre la naissance de l'Assemblée nationale en 1789 ?",
+        "q": "Quel tableau de Jacques-Louis David illustre un épisode fondateur de l'Assemblée nationale en juin 1789 ?",
         "options": ["La Joconde", "Le Serment du Jeu de Paume", "La Liberté sur la Lune"],
         "correct": 1,
-        "exp": "Bravo ! Le Serment du Jeu de Paume immortalise les députés du 20 juin 1789 jurant de donner une Constitution à la France."
+        "exp": "Bravo ! Le Serment du Jeu de Paume (20 juin 1789) est un épisode clé : les députés avaient déjà constitué l'Assemblée nationale le 17 juin et jurent de donner une Constitution à la France."
       }
     ],
     "teacherObjective": "Histoire des Arts & Histoire Cycle 3 — Lire l'architecture néoclassique (1806) et la peinture historique (David, Delacroix) comme expressions symboliques de la République."
@@ -245,7 +245,7 @@
     "partLabel": "Partie 2 • Les Institutions",
     "title": "La Grande Frise (1789 – Aujourd'hui) & l'Histoire Républicaine",
     "shortTitle": "5. Frise & Histoire",
-    "subtitle": "Voyage à travers 8 grandes dates illustrées, de la naissance de l'Assemblée en juin 1789 jusqu'au droit de vote des femmes et à aujourd'hui.",
+    "subtitle": "Voyage à travers 8 grandes dates illustrées, de la constitution de l'Assemblée et du Serment du Jeu de paume (juin 1789) jusqu'au droit de vote des femmes et à aujourd'hui.",
     "duration": "7 min",
     "durationMinutes": 7,
     "readingMinutes": 3,

@@ -353,7 +353,7 @@ rowCounts.forEach((count, rowIndex) => {
           </span>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
           <div class="p-3 rounded-xl bg-white/10">
             <span id="vote-count-votants" class="font-display font-bold text-2xl text-white block">545</span>
             <span class="text-xs text-white/80">Votants</span>
@@ -370,10 +370,14 @@ rowCounts.forEach((count, rowIndex) => {
             <span id="vote-count-abst" class="font-display font-bold text-2xl text-gold block">35</span>
             <span class="text-xs text-white/90 font-bold">ABSTENTION</span>
           </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/20 col-span-2 sm:col-span-1">
+            <span id="vote-count-absent" class="font-display font-bold text-2xl text-white/90 block">32</span>
+            <span class="text-xs text-white/75">Non-participants (sur 577)</span>
+          </div>
         </div>
 
         <p id="vote-sim-explanation" class="text-xs sm:text-sm text-white/90 leading-relaxed">
-          Suffrages exprimés : 510 (412 Pour + 98 Contre). Comme il y a plus de voix POUR que CONTRE, l’Assemblée nationale adopte le texte !
+          Sur 577 députés : 545 ont voté (412 Pour, 98 Contre, 35 abstentions) et 32 sont non-participants. Suffrages exprimés : 510 (412 + 98) : comme il y a plus de voix POUR que CONTRE, l’Assemblée nationale adopte le texte !
         </p>
       </div>
     </div>
@@ -582,13 +586,16 @@ rowCounts.forEach((count, rowIndex) => {
         const pEl = document.getElementById('vote-count-pour');
         const cEl = document.getElementById('vote-count-contre');
         const aEl = document.getElementById('vote-count-abst');
+        const absentEl = document.getElementById('vote-count-absent');
         const verdictEl = document.getElementById('vote-sim-verdict');
         const expEl = document.getElementById('vote-sim-explanation');
+        const nonParticipants = Math.max(0, 577 - votants);
 
         if (vEl) vEl.textContent = String(votants);
         if (pEl) pEl.textContent = String(s.pour);
         if (cEl) cEl.textContent = String(s.contre);
         if (aEl) aEl.textContent = String(s.abst);
+        if (absentEl) absentEl.textContent = String(nonParticipants);
 
         if (verdictEl) {
           verdictEl.textContent = adopted ? 'LOI ADOPTÉE ✓' : 'LOI REJETÉE ✗';
@@ -598,8 +605,8 @@ rowCounts.forEach((count, rowIndex) => {
         }
         if (expEl) {
           expEl.textContent = adopted
-            ? `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre, hors ${s.abst} abstentions). Même si ${s.pour} est inférieur à 289, POUR > CONTRE parmi les suffrages exprimés : la loi ordinaire est donc adoptée !`
-            : `Suffrages exprimés : ${exprimes} (${s.pour} Pour contre ${s.contre} Contre). Comme il y a plus de voix CONTRE que POUR, le texte n’est pas adopté.`;
+            ? `Sur 577 députés : ${votants} ont voté (${s.pour} Pour, ${s.contre} Contre, ${s.abst} abstentions) et ${nonParticipants} sont non-participants. Suffrages exprimés : ${exprimes}. Même si ${s.pour} < 289, POUR > CONTRE : la loi ordinaire est adoptée !`
+            : `Sur 577 députés : ${votants} ont voté et ${nonParticipants} sont non-participants. Suffrages exprimés : ${exprimes} (${s.pour} Pour, ${s.contre} Contre). Plus de CONTRE que POUR : le texte n’est pas adopté.`;
         }
       });
     });
