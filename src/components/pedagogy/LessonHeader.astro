@@ -61,7 +61,11 @@ const speechText = `${etape.title}. ${etape.subtitle}. ${etape.discoverText.join
       </span>
       <span class="student-xp-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gold-light text-ink border border-gold">
         <Icon name="Award" size={14} />
-        <span>+{etape.xp} XP à gagner</span>
+        <span>
+          {etape.number === 11
+            ? '+20 XP (mini-quiz) + 50 XP (Grand Quiz)'
+            : `+${etape.xp} XP à gagner`}
+        </span>
       </span>
     </div>
 

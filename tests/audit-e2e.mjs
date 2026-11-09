@@ -386,10 +386,17 @@ async function runAuditSuite() {
     assert(totalViolations === 0, `0 violation axe-core WCAG 2.2 AA (trouvé: ${totalViolations})`);
     logPass(12, 'Navigation au clavier & Accessibilité WCAG 2.2 AA', `Flèches clavier opérationnelles sur les onglets/frise/modales et 0 violation axe-core sur ${axePages.length} pages clés.`);
 
-    // 13. Affichage mobile (320px / 390px) et ordinateur (1440px)
+    // 13. Affichage mobile (320px / 390px) et ordinateur (1440px) + parcours 12 étapes (390 / 1280)
+    const consoleErrors = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') consoleErrors.push(msg.text());
+    });
+    page.on('pageerror', (err) => consoleErrors.push(err.message));
+
     for (const vp of [
       { width: 320, height: 700, label: 'Mobile 320px' },
       { width: 390, height: 844, label: 'Mobile 390px' },
+      { width: 1280, height: 800, label: 'Desktop 1280px' },
       { width: 1440, height: 900, label: 'Desktop 1440px' }
     ]) {
       await page.setViewportSize({ width: vp.width, height: vp.height });
@@ -401,7 +408,29 @@ async function runAuditSuite() {
         assert(overflow <= 0, `Aucun débordement horizontal sur ${route} en ${vp.label} (overflow=${overflow}px)`);
       }
     }
-    logPass(13, 'Affichage mobile et ordinateur', '0 débordement horizontal en 320px, 390px et 1440px sur Accueil, Étape 5 et Étape 11.');
+
+    for (const vp of [
+      { width: 390, height: 844, label: '390px' },
+      { width: 1280, height: 800, label: '1280px' }
+    ]) {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      for (const slug of stepSlugs) {
+        await page.goto(`${baseUrlRoot}/etape/${slug}/`, { waitUntil: 'networkidle' });
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+        );
+        assert(overflow <= 0, `Pas de débordement sur /etape/${slug}/ en ${vp.label}`);
+      }
+    }
+    assert(
+      consoleErrors.length === 0,
+      `Aucune erreur console sur le parcours (trouvé: ${consoleErrors.slice(0, 5).join(' | ')})`
+    );
+    logPass(
+      13,
+      'Affichage mobile et ordinateur',
+      '12 étapes à 390px et 1280px sans débordement horizontal ni erreur console (échantillon étendu + 320/1440px).'
+    );
 
     await context.close();
   } finally {
@@ -476,10 +505,16 @@ async function runAuditSuite() {
     assert(swContent.includes("'/assemblercm2/etape/5-frise-napoleon/'"), 'sw.js pré-cache les 12 étapes avec le préfixe /assemblercm2');
 
     const robotsContent = fs.readFileSync(path.join(DIST_DIR, 'robots.txt'), 'utf8');
-    assert(robotsContent.includes('https://vivrelehpi.github.io/assemblercm2/sitemap.xml'), 'robots.txt pointe vers vivrelehpi.github.io/assemblercm2');
+    assert(
+      robotsContent.includes('https://depute-junior-cm2.vercel.app/sitemap.xml'),
+      'robots.txt pointe vers le sitemap Vercel officiel'
+    );
 
     const sitemapContent = fs.readFileSync(path.join(DIST_DIR, 'sitemap.xml'), 'utf8');
-    assert(sitemapContent.includes('https://vivrelehpi.github.io/assemblercm2/etape/5-frise-napoleon/'), 'sitemap.xml utilise le domaine GitHub Pages');
+    assert(
+      sitemapContent.includes('depute-junior-cm2.vercel.app'),
+      'sitemap.xml utilise le domaine Vercel du projet'
+    );
 
     logPass(15, 'PWA (manifest & service worker) et métadonnées SEO', 'manifest.webmanifest, sw.js, robots.txt et sitemap.xml cohérents avec /assemblercm2/.');
 

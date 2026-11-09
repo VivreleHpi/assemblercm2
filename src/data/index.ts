@@ -179,6 +179,14 @@ const part1Steps = ETAPES.filter((e) => e.partNumber === 1);
 const part2Steps = ETAPES.filter((e) => e.partNumber === 2);
 const part3Steps = ETAPES.filter((e) => e.partNumber === 3);
 
+/** Barème réel : 12 mini-quiz « Je vérifie » à +20 XP (une fois chacun) + Grand Quiz final +50 XP (une fois). */
+export const PARCOURS_XP = {
+  perMiniQuiz: 20,
+  miniQuizCount: ETAPES.length,
+  grandQuizBonus: 50,
+  maxTotal: ETAPES.length * 20 + 50
+};
+
 export const PARCOURS_STATS = {
   totalSteps: ETAPES.length,
   totalMinutes: sumStepsMinutes(ETAPES),
@@ -346,7 +354,7 @@ export const SECRETS_DATA = [
     frontQuestion: 'Quels trésors extraordinaires sont gardés dans la Bibliothèque du Palais ?',
     backTitle: 'Jeanne d’Arc, Rousseau et les plafonds de Delacroix !',
     backText:
-      "Sous les 5 coupoles peintes par Eugène Delacroix, la Bibliothèque conserve 700 000 livres ainsi que le manuscrit original du procès de Jeanne d'Arc (1431) et le Serment du Jeu de Paume (1789)."
+      "Sous les 5 coupoles peintes par Eugène Delacroix, la Bibliothèque conserve près de 700 000 ouvrages ainsi que le manuscrit original du procès de Jeanne d'Arc (1431) et le Serment du Jeu de Paume (1789)."
   },
   {
     id: 6,
@@ -548,7 +556,7 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
     year: '1789',
     buttonLabel: '1789',
     dateLabel: '17 juin, 20 juin & 26 août 1789',
-    title: "Naissance de l'Assemblée nationale, Serment du Jeu de paume & Déclaration des droits",
+    title: "Constitution de l'Assemblée (17 juin), Serment du Jeu de paume (20 juin) & Déclaration des droits",
     shortDescription:
       'Le 20 juin 1789 à Versailles, les députés réunis dans la salle du Jeu de paume jurent de rédiger une Constitution pour la France.',
     description:
@@ -629,7 +637,7 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
     author: 'François Gérard (1770–1837)',
     institution: "Musée de l'Armée / RMN-Grand Palais / Wikimedia Commons",
     license: 'Domaine public',
-    artworkUrl: 'https://commons.wikimedia.org/wiki/Category:Napoleon_I_in_Coronation_Robes_by_Fran%C3%A7ois_G%C3%A9rard',
+    artworkUrl: 'https://commons.wikimedia.org/wiki/File:Napoleon_in_Coronation_Robes_by_Fran%C3%A7ois_G%C3%A9rard.jpg',
     officialSourceUrl: 'https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006070721/',
     officialSourceLabel: 'Le Code civil sur Légifrance',
     objectPosition: 'top center',

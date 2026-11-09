@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { ETAPES } from '../data';
 
 export const GET: APIRoute = () => {
-  const baseUrl = 'https://vivrelehpi.github.io/assemblercm2';
+  const baseUrl = (import.meta.env.SITE || 'https://depute-junior-cm2.vercel.app').replace(/\/$/, '');
   const staticUrls = ['/', '/enseignants/', '/glossaire/', '/credits/', '/styleguide/'];
   const stepUrls = ETAPES.map((e) => `/etape/${e.slug}/`);
   const allUrls = [...staticUrls, ...stepUrls];

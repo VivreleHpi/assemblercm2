@@ -19,7 +19,7 @@ const {
   ogImage = '/og/og-default.jpg'
 } = Astro.props;
 
-const siteOrigin = 'https://vivrelehpi.github.io/assemblercm2';
+const siteOrigin = (import.meta.env.SITE || 'https://depute-junior-cm2.vercel.app').replace(/\/$/, '');
 const normalizedPath = Astro.url.pathname.replace(/^\/assemblercm2/, '') || '/';
 const canonicalUrl = `${siteOrigin}${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`;
 const absoluteOgImage = ogImage.startsWith('http')
