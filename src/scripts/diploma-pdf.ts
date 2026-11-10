@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas-pro';
 import { diplomaFilename } from './ui-helpers.ts';
 
 export interface DiplomaPdfInput {
@@ -137,8 +137,7 @@ function canvasToJpeg(canvas: HTMLCanvasElement, quality: number): Promise<Uint8
   });
 }
 
-async function fetchAsDataUrl(url: string): Promise<string> {
-  const res = await fetch(url);
+async function responseToDataUrl(res: Response): Promise<string> {
   const blob = await res.blob();
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -146,6 +145,35 @@ async function fetchAsDataUrl(url: string): Promise<string> {
     reader.onerror = () => reject(reader.error);
     reader.readAsDataURL(blob);
   });
+}
+
+async function fetchAsDataUrl(url: string): Promise<string> {
+  try {
+    const res = await fetch(url);
+    if (res.ok) return responseToDataUrl(res);
+  } catch {
+    // hors-ligne : on tente le cache du service worker
+  }
+  if ('caches' in window) {
+    const cached = await caches.match(url);
+    if (cached) return responseToDataUrl(cached);
+  }
+  throw new Error(`Avatar indisponible : ${url}`);
+}
+
+async function loadAvatarDataUrl(url: string): Promise<string | null> {
+  const absolute = new URL(url, document.baseURI).href;
+  const candidates = [absolute];
+  if (absolute.endsWith('.webp')) candidates.push(absolute.replace(/\.webp(\?.*)?$/, '.png$1'));
+  if (absolute.endsWith('.png')) candidates.push(absolute.replace(/\.png(\?.*)?$/, '.webp$1'));
+  for (const candidate of candidates) {
+    try {
+      return await fetchAsDataUrl(candidate);
+    } catch {
+      // essai suivant (png/webp / cache)
+    }
+  }
+  return null;
 }
 
 async function rasterizeVisibleAvatars(card: HTMLElement): Promise<Array<{ canvas: HTMLCanvasElement; html: string }>> {
@@ -157,29 +185,34 @@ async function rasterizeVisibleAvatars(card: HTMLElement): Promise<Array<{ canva
   const swaps: Array<{ canvas: HTMLCanvasElement; html: string }> = [];
 
   for (const pic of pictures) {
-    const img = pic.querySelector('img');
-    if (!img) continue;
-    const url = img.currentSrc || img.src;
-    if (!url) continue;
-    const dataUrl = url.startsWith('data:') ? url : await fetchAsDataUrl(new URL(url, document.baseURI).href);
-    const bitmap = new Image();
-    bitmap.src = dataUrl;
-    await bitmap.decode();
-    const rect = pic.getBoundingClientRect();
-    const size = Math.max(Math.round(rect.width) || 68, 68);
-    const canvas = document.createElement('canvas');
-    canvas.width = size * 2;
-    canvas.height = size * 2;
-    canvas.className = pic.className;
-    canvas.style.width = `${size}px`;
-    canvas.style.height = `${size}px`;
-    canvas.setAttribute('aria-hidden', 'true');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) continue;
-    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const html = pic.outerHTML;
-    pic.replaceWith(canvas);
-    swaps.push({ canvas, html });
+    try {
+      const img = pic.querySelector('img');
+      if (!img) continue;
+      const url = img.currentSrc || img.src;
+      if (!url) continue;
+      const dataUrl = url.startsWith('data:') ? url : await loadAvatarDataUrl(url);
+      if (!dataUrl) continue;
+      const bitmap = new Image();
+      bitmap.src = dataUrl;
+      await bitmap.decode();
+      const rect = pic.getBoundingClientRect();
+      const size = Math.max(Math.round(rect.width) || 68, 68);
+      const canvas = document.createElement('canvas');
+      canvas.width = size * 2;
+      canvas.height = size * 2;
+      canvas.className = pic.className;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      canvas.setAttribute('aria-hidden', 'true');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) continue;
+      ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      const html = pic.outerHTML;
+      pic.replaceWith(canvas);
+      swaps.push({ canvas, html });
+    } catch {
+      // PDF sans cet avatar plutôt qu'un échec global
+    }
   }
 
   return swaps;
@@ -202,19 +235,34 @@ export async function captureDiplomaCardJpeg(): Promise<Uint8Array> {
 
   const noPrint = Array.from(card.querySelectorAll('.no-print')) as HTMLElement[];
   const prevDisplay = noPrint.map((el) => el.style.display);
-  const swaps = await rasterizeVisibleAvatars(card);
+  let swaps: Array<{ canvas: HTMLCanvasElement; html: string }> = [];
 
   try {
+    await Promise.race([
+      document.fonts?.ready ?? Promise.resolve(),
+      new Promise((resolve) => window.setTimeout(resolve, 2000))
+    ]);
+    card.classList.add('pdf-capture');
+    card.classList.remove('pointer-events-none', 'opacity-50');
+    card.style.opacity = '1';
     noPrint.forEach((el) => {
       el.style.display = 'none';
     });
-    card.classList.remove('pointer-events-none', 'opacity-50');
-    card.style.opacity = '1';
+
+    swaps = await rasterizeVisibleAvatars(card);
+
+    const cardRect = card.getBoundingClientRect();
+    const a4LandscapeInches = 11.69;
+    const dpi = 300;
+    const scale = Math.min(4, Math.max(2.5, (a4LandscapeInches * dpi) / Math.max(cardRect.width, 1)));
 
     const canvas = await html2canvas(card, {
-      scale: 2,
+      scale,
       backgroundColor: '#FFFFFF',
-      logging: false
+      logging: false,
+      onclone(clonedDoc) {
+        clonedDoc.getElementById('diploma-printable-card')?.classList.add('pdf-capture');
+      }
     });
     const ctx = canvas.getContext('2d');
     if (ctx && swaps.length > 0) {
@@ -232,8 +280,9 @@ export async function captureDiplomaCardJpeg(): Promise<Uint8Array> {
         );
       });
     }
-    return canvasToJpeg(canvas, 0.9);
+    return canvasToJpeg(canvas, 0.92);
   } finally {
+    card.classList.remove('pdf-capture');
     noPrint.forEach((el, i) => {
       el.style.display = prevDisplay[i];
     });
@@ -255,8 +304,28 @@ function triggerPdfDownload(bytes: Uint8Array, filename: string): void {
   window.setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
+function notifyPdfFailure(message: string): void {
+  const app = (window as unknown as { ANApp?: { showToast?: (title: string, desc: string) => void } }).ANApp;
+  if (app?.showToast) {
+    app.showToast('Diplôme PDF', message);
+    return;
+  }
+  const toast = document.getElementById('xp-toast');
+  const titleEl = document.getElementById('xp-toast-title');
+  const descEl = document.getElementById('xp-toast-desc');
+  if (!toast || !titleEl || !descEl) return;
+  titleEl.textContent = 'Diplôme PDF';
+  descEl.textContent = message;
+  toast.classList.remove('hidden');
+}
+
 export async function downloadDiplomaPdf(studentName: string): Promise<void> {
-  const pageJpeg = await captureDiplomaCardJpeg();
-  const { bytes, filename } = buildDiplomaPdf({ studentName, pageJpeg });
-  triggerPdfDownload(bytes, filename);
+  try {
+    const pageJpeg = await captureDiplomaCardJpeg();
+    const { bytes, filename } = buildDiplomaPdf({ studentName, pageJpeg });
+    triggerPdfDownload(bytes, filename);
+  } catch {
+    notifyPdfFailure('Le PDF n’a pas pu être préparé. Réessaie, ou utilise « Imprimer (A4) ».');
+    throw new Error('diploma-pdf-failed');
+  }
 }

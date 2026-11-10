@@ -30,6 +30,22 @@ function extractJpeg(pdf) {
   return pdf.subarray(start, end + 2);
 }
 
+async function crop300dpi(jpeg, relBox, dest, pad = 0.035) {
+  if (!relBox) return;
+  const meta = await sharp(jpeg).metadata();
+  const w = meta.width || 1;
+  const h = meta.height || 1;
+  const left = Math.max(0, Math.floor((relBox.x - pad) * w));
+  const top = Math.max(0, Math.floor((relBox.y - pad) * h));
+  const width = Math.min(w - left, Math.max(1, Math.ceil((relBox.w + pad * 2) * w)));
+  const height = Math.min(h - top, Math.max(1, Math.ceil((relBox.h + pad * 2) * h)));
+  await sharp(jpeg)
+    .extract({ left, top, width, height })
+    .withMetadata({ density: 300 })
+    .png()
+    .toFile(dest);
+}
+
 async function sideBySide(leftPng, rightPng, dest, leftLabel, rightLabel) {
   const height = 720;
   const left = await sharp(leftPng).resize({ height, fit: 'inside' }).png().toBuffer();
@@ -124,16 +140,46 @@ try {
       localStorage.setItem('an_cm2_v2_state', JSON.stringify(st));
     }, profile);
     await page.reload({ waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts?.ready);
     await page.fill('#diploma-student-name', profile.name);
     await page.fill('#diploma-school-name', profile.school);
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(300);
 
     const card = page.locator('#diploma-printable-card');
     await card.scrollIntoViewIfNeeded();
     const refPath = path.join(OUT, `diplome-reference-${profile.key}.png`);
     await card.screenshot({ path: refPath });
 
-    const downloadPromise = page.waitForEvent('download', { timeout: 20000 });
+    const boxes = await page.evaluate(() => {
+      const cardEl = document.getElementById('diploma-printable-card');
+      if (!cardEl) return {};
+      const hidden = Array.from(cardEl.querySelectorAll('.no-print'));
+      hidden.forEach((el) => {
+        el.style.display = 'none';
+      });
+      const cardBox = cardEl.getBoundingClientRect();
+      const rel = (el) => {
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return {
+          x: (r.left - cardBox.left) / cardBox.width,
+          y: (r.top - cardBox.top) / cardBox.height,
+          w: r.width / cardBox.width,
+          h: Math.max(r.height / cardBox.height, 0.06)
+        };
+      };
+      const measured = {
+        name: rel(document.getElementById('diploma-name-row')),
+        medals: rel(document.getElementById('diploma-medals-row')),
+        score: rel(document.getElementById('diploma-score-block'))
+      };
+      hidden.forEach((el) => {
+        el.style.display = '';
+      });
+      return measured;
+    });
+
+    const downloadPromise = page.waitForEvent('download', { timeout: 45000 });
     await page.locator('#download-diploma-pdf-btn').click();
     const download = await downloadPromise;
     const pdfPath = path.join(OUT, `diplome-${profile.key}.pdf`);
@@ -142,7 +188,11 @@ try {
     const pdf = fs.readFileSync(pdfPath);
     const jpeg = extractJpeg(pdf);
     const previewPath = path.join(OUT, `diplome-preview-${profile.key}.png`);
-    await sharp(jpeg).png().toFile(previewPath);
+    await sharp(jpeg).withMetadata({ density: 300 }).png().toFile(previewPath);
+
+    await crop300dpi(jpeg, boxes.name, path.join(OUT, `diplome-zoom-prenom-avatar-${profile.key}.png`));
+    await crop300dpi(jpeg, boxes.medals, path.join(OUT, `diplome-zoom-pastilles-${profile.key}.png`));
+    await crop300dpi(jpeg, boxes.score, path.join(OUT, `diplome-zoom-score-${profile.key}.png`));
 
     await sideBySide(
       refPath,
@@ -152,7 +202,7 @@ try {
       'Aperçu PDF généré'
     );
 
-    console.log('OK', profile.key, 'pdf', pdf.length, 'jpeg', jpeg.length);
+    console.log('OK', profile.key, 'pdf', pdf.length, 'jpeg', jpeg.length, 'size', await sharp(jpeg).metadata().then((m) => `${m.width}x${m.height}`));
     await context.close();
   }
 } finally {

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { formatProgressLabel, diplomaFilename, medalShortLabels } from '../src/scripts/ui-helpers.ts';
+import fs from 'node:fs';
+import { formatProgressLabel, diplomaFilename, medalShortLabels, formatDiplomaQuizScore } from '../src/scripts/ui-helpers.ts';
 import { buildDiplomaPdf } from '../src/scripts/diploma-pdf.ts';
 
 function test(name, fn) {
@@ -17,6 +18,22 @@ test('diplomaFilename slugifie le prénom avec accents', () => {
   assert.equal(diplomaFilename('Léa'), 'diplome-depute-junior-lea.pdf');
   assert.equal(diplomaFilename('Jean-Étienne'), 'diplome-depute-junior-jean-etienne.pdf');
   assert.equal(diplomaFilename('   '), 'diplome-depute-junior-eleve.pdf');
+});
+
+test('formatDiplomaQuizScore évite la redondance « au Grand Quiz »', () => {
+  assert.equal(formatDiplomaQuizScore(8), '8 / 8');
+  assert.equal(formatDiplomaQuizScore(6), '6 / 8');
+  assert.equal(formatDiplomaQuizScore('6 / 8 au Grand Quiz'), '6 / 8');
+  assert.equal(formatDiplomaQuizScore('Validé en classe ✓'), 'Validé en classe ✓');
+});
+
+test('service worker précache les avatars PNG et WebP', () => {
+  const sw = fs.readFileSync(new URL('../public/sw.js', import.meta.url), 'utf8');
+  assert.match(sw, /assemblee-cm2-v7/);
+  ['depute', 'deputee', 'malik', 'papa', 'duo'].forEach((id) => {
+    assert.ok(sw.includes(`/img/avatars/avatar-${id}.png`), `précache PNG ${id}`);
+    assert.ok(sw.includes(`/img/avatars/avatar-${id}.webp`), `précache WebP ${id}`);
+  });
 });
 
 test('medalShortLabels ne garde que les médailles obtenues', () => {

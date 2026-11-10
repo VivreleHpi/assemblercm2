@@ -22,6 +22,15 @@ export function medalShortLabels(badgeIds: string[] | undefined): string[] {
     .filter((label): label is string => Boolean(label));
 }
 
+export function formatDiplomaQuizScore(score: number | string | undefined): string {
+  if (typeof score === 'number' && Number.isFinite(score)) {
+    return `${score} / 8`;
+  }
+  const text = String(score || '').trim();
+  if (!text) return '';
+  return text.replace(/\s*au Grand Quiz\s*$/i, '').trim();
+}
+
 export function diplomaFilename(name: string): string {
   const slug = (name || '')
     .normalize('NFD')

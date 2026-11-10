@@ -215,7 +215,7 @@ import Avatar from '../ui/Avatar.astro';
       </p>
 
       <div class="py-2 flex flex-col items-center gap-2.5">
-        <div class="flex items-center justify-center gap-4">
+        <div id="diploma-name-row" class="flex items-center justify-center gap-4">
           <span id="diploma-avatar-deputee" class="hidden">
             <Avatar character="deputee" size={68} />
           </span>
@@ -230,7 +230,7 @@ import Avatar from '../ui/Avatar.astro';
           </span>
           <span
             id="diploma-rendered-name"
-            class="inline-block font-display font-bold text-2xl sm:text-4xl text-republic-900 border-b-2 border-gold px-6 pb-1"
+            class="inline-flex items-center font-display font-bold text-2xl sm:text-4xl text-republic-900 leading-none border-b-2 border-gold px-6 pb-2"
           >
             Jeune Citoyen(ne) de CM2
           </span>
@@ -256,7 +256,7 @@ import Avatar from '../ui/Avatar.astro';
       </div>
 
       <div class="pt-4 grid grid-cols-3 gap-4 items-center text-xs text-ink border-t border-line max-w-2xl mx-auto">
-        <div class="text-left">
+        <div id="diploma-score-block" class="text-left">
           <strong class="block text-republic-900">Score au Grand Quiz :</strong>
           <span id="diploma-rendered-score">Validé avec succès ✓</span>
         </div>
@@ -282,7 +282,7 @@ import Avatar from '../ui/Avatar.astro';
 
 <script>
   import { downloadDiplomaPdf } from '../../scripts/diploma-pdf.ts';
-  import { medalShortLabels } from '../../scripts/ui-helpers.ts';
+  import { medalShortLabels, formatDiplomaQuizScore } from '../../scripts/ui-helpers.ts';
 
   interface StoredState {
     userName?: string;
@@ -301,6 +301,7 @@ import Avatar from '../ui/Avatar.astro';
     completeFinalQuiz: (score: number) => void;
     unlockDiplomaByTeacher: () => void;
     setDiplomaDetails: (userName?: string, schoolName?: string) => void;
+    showToast?: (title: string, desc: string) => void;
   }
 
   function readStoredState(): StoredState {
@@ -349,7 +350,7 @@ import Avatar from '../ui/Avatar.astro';
         medalShortLabels(st.unlockedBadges).forEach((label) => {
           const pill = document.createElement('span');
           pill.className =
-            'px-2 py-0.5 rounded-full bg-gold-light border border-gold text-[10px] sm:text-xs font-bold text-ink';
+            'diploma-medal-pill inline-flex items-center justify-center px-3 rounded-full bg-gold-light border border-gold text-[10px] sm:text-xs font-bold text-ink leading-none';
           pill.textContent = label;
           medalsRow.appendChild(pill);
         });
@@ -404,7 +405,7 @@ import Avatar from '../ui/Avatar.astro';
       if (isUnlocked) {
         const label =
           bestScore >= 6
-            ? `${bestScore} / 8 au Grand Quiz`
+            ? formatDiplomaQuizScore(bestScore)
             : st.diplomaUnlockMode === 'teacher'
               ? 'Validé en classe ✓'
               : 'Validé avec succès ✓';
@@ -450,7 +451,7 @@ import Avatar from '../ui/Avatar.astro';
               if (app?.completeFinalQuiz) {
                 app.completeFinalQuiz(count);
               }
-              unlockDiplomaUI(`${count} / 8 au Grand Quiz`);
+              unlockDiplomaUI(formatDiplomaQuizScore(count));
             }
           } else {
             btn.className =
@@ -554,13 +555,9 @@ import Avatar from '../ui/Avatar.astro';
       const name = nameInput?.value.trim() || st.userName || '';
       const btn = document.getElementById('download-diploma-pdf-btn') as HTMLButtonElement | null;
       if (btn) btn.disabled = true;
-      downloadDiplomaPdf(name)
-        .catch(() => {
-          window.alert('Le PDF n’a pas pu être préparé. Réessaie, ou utilise « Imprimer (A4) ».');
-        })
-        .finally(() => {
-          if (btn) btn.disabled = false;
-        });
+      downloadDiplomaPdf(name).finally(() => {
+        if (btn) btn.disabled = false;
+      });
     });
   }
 

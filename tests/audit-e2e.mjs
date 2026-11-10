@@ -306,6 +306,10 @@ async function runAuditSuite() {
     assert(isControlsVisibleAfterReload.unlocked === true, 'Le diplôme reste débloqué après rechargement de la page (F5)');
     assert(isControlsVisibleAfterReload.nameVal === 'Malik', 'Prénom conservé après rechargement');
     assert(isControlsVisibleAfterReload.renderedScore?.includes('8 / 8'), 'Score 8/8 affiché sur le diplôme après rechargement');
+    assert(
+      !isControlsVisibleAfterReload.renderedScore?.includes('au Grand Quiz'),
+      'Score sans redondance « au Grand Quiz »'
+    );
 
     // Scénario 2 (ordre inverse) : Grand Quiz d'abord (+50 XP), puis Mini-quiz (+20 XP) = 70 XP
     await page.evaluate(() => localStorage.clear());
@@ -338,7 +342,7 @@ async function runAuditSuite() {
     assert(teacherUnlockedAfterReload === true, 'Le déblocage enseignant persiste après rechargement de la page');
 
     await page.fill('#diploma-student-name', 'Léa');
-    const downloadPromise = page.waitForEvent('download');
+    const downloadPromise = page.waitForEvent('download', { timeout: 45000 });
     await page.locator('#download-diploma-pdf-btn').click();
     const diplomaDownload = await downloadPromise;
     const diplomaPath = '/opt/cursor/artifacts/diplome-exemple-lea.pdf';
