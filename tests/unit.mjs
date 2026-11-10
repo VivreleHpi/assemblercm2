@@ -1,12 +1,17 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { formatProgressLabel, diplomaFilename, medalShortLabels, formatDiplomaQuizScore } from '../src/scripts/ui-helpers.ts';
+import { formatProgressLabel, diplomaFilename, medalShortLabels, formatDiplomaQuizScore, homeDiplomaCtaLabel } from '../src/scripts/ui-helpers.ts';
 import { buildDiplomaPdf } from '../src/scripts/diploma-pdf.ts';
 
 function test(name, fn) {
   fn();
   console.log(`✅ ${name}`);
 }
+
+test('homeDiplomaCtaLabel accorde Députée / Député', () => {
+  assert.equal(homeDiplomaCtaLabel(true), 'Voir mon diplôme de Députée');
+  assert.equal(homeDiplomaCtaLabel(false), 'Voir mon diplôme de Député');
+});
 
 test('formatProgressLabel affiche le nombre d’étapes validées', () => {
   assert.equal(formatProgressLabel(0), 'Parcours : 0 / 12');

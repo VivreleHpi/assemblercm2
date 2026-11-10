@@ -127,6 +127,15 @@
   filter: contrast(1.03) saturate(1.04) sepia(0.04);
 }
 
+/* Retours à la ligne entre les mots (évite la coupure au milieu dans les flex étroits) */
+@layer utilities {
+  .text-wrap-words-only {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: manual;
+  }
+}
+
 .hotspot-pin {
   left: var(--pin-x);
   top: var(--pin-y);
