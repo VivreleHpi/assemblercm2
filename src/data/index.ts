@@ -263,6 +263,7 @@ export const HOTSPOTS_DATA = [
     id: 1,
     x: 50,
     y: 36,
+    yMobile: 40,
     badge: 'Point Clé n°1 • Au sommet à 3 mètres',
     title: 'Le Perchoir (Présidence de séance)',
     description:
@@ -272,6 +273,7 @@ export const HOTSPOTS_DATA = [
     id: 2,
     x: 50,
     y: 50,
+    yMobile: 72,
     badge: 'Point Clé n°2 • Juste sous le Perchoir',
     title: "La Tribune de l'Orateur",
     description:
@@ -281,6 +283,7 @@ export const HOTSPOTS_DATA = [
     id: 3,
     x: 31,
     y: 65,
+    yMobile: 80,
     badge: 'Point Clé n°3 • Les 2 premiers rangs du bas',
     title: 'Les Bancs du Gouvernement',
     description:
@@ -290,6 +293,7 @@ export const HOTSPOTS_DATA = [
     id: 4,
     x: 69,
     y: 74,
+    yMobile: 84,
     badge: 'Point Clé n°4 • Les gradins en demi-cercle',
     title: 'Les 577 Fauteuils des Députés',
     description:
@@ -299,6 +303,7 @@ export const HOTSPOTS_DATA = [
     id: 5,
     x: 48,
     y: 16,
+    yMobile: 10,
     badge: 'Point Clé n°5 • Le grand décor du fond',
     title: "La Tapisserie de L'École d'Athènes",
     description:
@@ -308,6 +313,7 @@ export const HOTSPOTS_DATA = [
     id: 6,
     x: 83,
     y: 18,
+    yMobile: 16,
     badge: 'Point Clé n°6 • Les galeries en hauteur',
     title: 'Les Tribunes du Public & des Journalistes',
     description:
@@ -354,7 +360,7 @@ export const SECRETS_DATA = [
     frontQuestion: 'Quels trésors extraordinaires sont gardés dans la Bibliothèque du Palais ?',
     backTitle: 'Jeanne d’Arc, Rousseau et les plafonds de Delacroix !',
     backText:
-      "Sous les 5 coupoles peintes par Eugène Delacroix, la Bibliothèque conserve près de 700 000 ouvrages ainsi que le manuscrit original du procès de Jeanne d'Arc (1431) et le Serment du Jeu de Paume (1789)."
+      "Sous les 5 coupoles peintes par Eugène Delacroix, la Bibliothèque conserve près de 700 000 ouvrages ainsi que le manuscrit original du procès de Jeanne d'Arc (1431) et le Serment du Jeu de paume (1789)."
   },
   {
     id: 6,
@@ -571,7 +577,7 @@ export const TIMELINE_EVENTS: TimelineEventItem[] = [
     photoId: 'jeu-de-paume',
     baseName: 'jeu-de-paume',
     imageAlt:
-      'Tableau Le Serment du Jeu de Paume par Jacques-Louis David montrant les députés du 20 juin 1789 levant la main à Versailles',
+      'Tableau Le Serment du Jeu de paume par Jacques-Louis David montrant les députés du 20 juin 1789 levant la main à Versailles',
     author: 'Jacques-Louis David (1748–1825)',
     institution: 'Musée Carnavalet – Histoire de Paris / Paris Musées',
     license: 'CC0 Domaine public',

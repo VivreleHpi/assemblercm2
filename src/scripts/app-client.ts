@@ -1,3 +1,5 @@
+import { formatProgressLabel } from './ui-helpers.ts';
+
 export type AvatarType = 'deputee' | 'depute' | 'malik' | 'papa';
 
 export interface AppState {
@@ -246,7 +248,7 @@ export function initAppClient() {
         playSound('bell');
         showToast(
           isFirstFinalQuizReward ? '🎓 Grand Quiz réussi (+50 XP) !' : `🎓 Grand Quiz : ${score} / 8 !`,
-          'Médaille « Grand Lauréat du Quiz Final » et Diplôme CM2 débloqués !'
+          'Médaille « Super Député Junior » et Diplôme CM2 débloqués !'
         );
       }
     } else {
@@ -360,6 +362,9 @@ export function initAppClient() {
         : 'DIPLÔME DE DÉPUTÉ JUNIOR CM2';
     }
 
+    const stepLabelEl = document.getElementById('header-step-label');
+    if (stepLabelEl) stepLabelEl.textContent = formatProgressLabel(doneCount);
+
     const pctEl = document.getElementById('header-progress-pct');
     if (pctEl) pctEl.textContent = `${pct}%`;
 
@@ -371,13 +376,10 @@ export function initAppClient() {
 
     const progressHint = document.getElementById('header-progress-hint');
     if (progressHint) {
-      progressHint.classList.toggle('hidden', doneCount > 0);
-      if (doneCount > 0) {
-        progressHint.textContent = `${doneCount} étape${doneCount > 1 ? 's' : ''} validée${doneCount > 1 ? 's' : ''} sur 12.`;
-      } else {
-        progressHint.textContent =
-          '0 % tant qu’aucune étape n’est validée : réussis un mini-quiz « Je vérifie ».';
-      }
+      progressHint.textContent =
+        doneCount > 0
+          ? `${doneCount} étape${doneCount > 1 ? 's' : ''} validée${doneCount > 1 ? 's' : ''} sur 12.`
+          : '0 % tant qu’aucune étape n’est validée : réussis un mini-quiz « Je vérifie ».';
     }
 
     // Modal stats
@@ -472,7 +474,7 @@ export function initAppClient() {
         homeHeroCtaText.textContent = 'Voir mon Diplôme de Député Junior';
       } else {
         homeHeroCta.href = '/etape/1-hemicycle/';
-        homeHeroCtaText.textContent = 'Commencer le parcours (Étape 1)';
+        homeHeroCtaText.textContent = 'Commencer (étape 1)';
       }
     }
 

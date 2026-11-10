@@ -127,6 +127,24 @@
   filter: contrast(1.03) saturate(1.04) sepia(0.04);
 }
 
+.hotspot-pin {
+  left: var(--pin-x);
+  top: var(--pin-y);
+  transform: translate(-50%, -50%);
+}
+
+.hotspot-pin.is-active-pin,
+.hotspot-pin:hover,
+.hotspot-pin:focus-visible {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+@media (max-width: 639px) {
+  .hotspot-pin {
+    top: var(--pin-y-mobile, var(--pin-y));
+  }
+}
+
 /* Tailles de texte personnalisables (100% / 115% / 130%) */
 html[data-font-size="large"] {
   --font-scale: 1.15;
@@ -165,6 +183,32 @@ html[data-classroom="true"] .classroom-only-btn {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Capture PDF : line-height explicite pour html2canvas (baseline / trait / pastilles) */
+#diploma-printable-card.pdf-capture #diploma-name-row {
+  display: flex;
+  align-items: center;
+}
+#diploma-printable-card.pdf-capture #diploma-rendered-name {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  padding: 0.1rem 1.5rem 0.55rem;
+  border-bottom: 3px solid #E8B21A;
+  text-decoration: none;
+  box-sizing: content-box;
+}
+#diploma-printable-card.pdf-capture .diploma-medal-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0.45rem 0.75rem;
+  min-height: 1.9rem;
+  height: 1.9rem;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Impression parfaite du Diplôme A4 paysage et des fiches enseignants */

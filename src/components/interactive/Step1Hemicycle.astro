@@ -117,10 +117,10 @@ rowCounts.forEach((count, rowIndex) => {
           <button
             type="button"
             data-spot-id={spot.id}
-            style={`left: ${spot.x}%; top: ${spot.y}%; transform: translate(-50%, -50%);`}
-            class={`hotspot-pin absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full font-display font-bold text-sm flex items-center justify-center shadow-elevated border-2 transition-transform hover:scale-110 ${
+            style={`--pin-x: ${spot.x}%; --pin-y: ${spot.y}%; --pin-y-mobile: ${spot.yMobile}%;`}
+            class={`hotspot-pin absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full font-display font-bold text-sm flex items-center justify-center shadow-elevated border-2 transition-transform ${
               spot.id === 1
-                ? 'bg-gold text-ink border-white scale-110 ring-4 ring-gold/50'
+                ? 'is-active-pin bg-gold text-ink border-white ring-4 ring-gold/50'
                 : 'bg-republic-900 text-white border-white'
             }`}
             aria-label={`Repère ${spot.id} : ${spot.title}`}
@@ -509,9 +509,9 @@ rowCounts.forEach((count, rowIndex) => {
 
       document.querySelectorAll<HTMLButtonElement>('.hotspot-pin').forEach((pin) => {
         const active = Number(pin.getAttribute('data-spot-id')) === id;
-        pin.className = `hotspot-pin absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full font-display font-bold text-sm flex items-center justify-center shadow-elevated border-2 transition-transform hover:scale-110 ${
+        pin.className = `hotspot-pin absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full font-display font-bold text-sm flex items-center justify-center shadow-elevated border-2 transition-transform ${
           active
-            ? 'bg-gold text-ink border-white scale-110 ring-4 ring-gold/50'
+            ? 'is-active-pin bg-gold text-ink border-white ring-4 ring-gold/50'
             : 'bg-republic-900 text-white border-white'
         }`;
       });

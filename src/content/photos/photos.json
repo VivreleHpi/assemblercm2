@@ -97,8 +97,8 @@
   {
     "id": "jeu-de-paume",
     "order": 6,
-    "title": "Le Serment du Jeu de Paume (20 juin 1789)",
-    "shortTitle": "Serment du Jeu de Paume",
+    "title": "Le Serment du Jeu de paume (20 juin 1789)",
+    "shortTitle": "Serment du Jeu de paume",
     "baseName": "jeu-de-paume",
     "width": 1280,
     "height": 845,
@@ -109,7 +109,7 @@
     "institution": "Musée Carnavalet – Histoire de Paris / Paris Musées",
     "license": "CC0 Domaine public",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Le_Serment_du_Jeu_de_paume.jpg",
-    "alt": "Tableau Le Serment du Jeu de Paume par Jacques-Louis David montrant les députés du 20 juin 1789 levant la main à Versailles",
+    "alt": "Tableau Le Serment du Jeu de paume par Jacques-Louis David montrant les députés du 20 juin 1789 levant la main à Versailles",
     "caption": "Après s'être constitués en Assemblée nationale le 17 juin 1789, les députés prêtent le Serment du Jeu de paume le 20 juin 1789 à Versailles, puis adoptent la Déclaration des droits de l'homme et du citoyen le 26 août 1789.",
     "malikNote": "Le jeu de paume est l'ancêtre du tennis ! Comme le roi Louis XVI avait fermé leur salle habituelle, les députés se sont réunis dans cette salle de sport."
   },

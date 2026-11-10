@@ -117,7 +117,12 @@ async function runAuditSuite() {
     assert(h1Text && h1Text.includes('Assemblée nationale'), 'H1 accueil présent');
     const stepCardsCount = await page.locator('[data-map-step-card]').count();
     assert(stepCardsCount === 12, `12 cartes d'étapes sur l'accueil (trouvé: ${stepCardsCount})`);
-    logPass(1, "Ouverture de la page d'accueil", 'H1, Hero et 12 cartes du parcours chargés sans erreur.');
+    const homeCta = (await page.locator('#home-hero-primary-cta-text').textContent()) || '';
+    assert(
+      homeCta.includes('Commencer (étape 1)'),
+      `CTA accueil « Commencer (étape 1) » (obtenu: ${homeCta.trim()})`
+    );
+    logPass(1, "Ouverture de la page d'accueil", 'H1, Hero, CTA étape 1 et 12 cartes du parcours chargés sans erreur.');
 
     // 2 & 3. Navigation dans les 12 étapes + Chargement de toutes les illustrations
     const stepSlugs = [
@@ -253,6 +258,11 @@ async function runAuditSuite() {
     assert(stAfterMq.xp === 20, `XP après mini-quiz Étape 11 = 20 (obtenu: ${stAfterMq.xp})`);
     assert(stAfterMq.completedSteps.includes(11), 'Étape 11 marquée complétée');
     assert(!stAfterMq.unlockedBadges.includes('quiz'), "Le mini-quiz ne débloque pas prématurément le badge 'quiz' du Grand Quiz");
+    const headerAfterOneStep = ((await page.locator('#header-step-label').textContent()) || '').trim();
+    assert(
+      headerAfterOneStep === 'Parcours : 1 / 12',
+      `Compteur header mis à jour après une étape validée (obtenu: ${headerAfterOneStep})`
+    );
 
     // Maintenant répondre à 6 questions sur 8 du Grand Quiz
     const fqCards = page.locator('.final-q-card');
@@ -296,6 +306,10 @@ async function runAuditSuite() {
     assert(isControlsVisibleAfterReload.unlocked === true, 'Le diplôme reste débloqué après rechargement de la page (F5)');
     assert(isControlsVisibleAfterReload.nameVal === 'Malik', 'Prénom conservé après rechargement');
     assert(isControlsVisibleAfterReload.renderedScore?.includes('8 / 8'), 'Score 8/8 affiché sur le diplôme après rechargement');
+    assert(
+      !isControlsVisibleAfterReload.renderedScore?.includes('au Grand Quiz'),
+      'Score sans redondance « au Grand Quiz »'
+    );
 
     // Scénario 2 (ordre inverse) : Grand Quiz d'abord (+50 XP), puis Mini-quiz (+20 XP) = 70 XP
     await page.evaluate(() => localStorage.clear());
@@ -326,6 +340,23 @@ async function runAuditSuite() {
       return bar && !bar.classList.contains('hidden');
     });
     assert(teacherUnlockedAfterReload === true, 'Le déblocage enseignant persiste après rechargement de la page');
+
+    await page.fill('#diploma-student-name', 'Léa');
+    const downloadPromise = page.waitForEvent('download', { timeout: 45000 });
+    await page.locator('#download-diploma-pdf-btn').click();
+    const diplomaDownload = await downloadPromise;
+    const diplomaPath = '/opt/cursor/artifacts/diplome-exemple-lea.pdf';
+    try {
+      await diplomaDownload.saveAs(diplomaPath);
+    } catch {
+      const suggested = diplomaDownload.suggestedFilename();
+      assert(suggested.includes('.pdf'), `Nom de fichier PDF (obtenu: ${suggested})`);
+    }
+    const downloadedName = diplomaDownload.suggestedFilename();
+    assert(
+      downloadedName.endsWith('.pdf'),
+      `Téléchargement PDF (fichier: ${downloadedName})`
+    );
 
     logPass(5, 'Fonctionnement des mini-quiz', 'Validation des 3 questions, feedback explicatif et bouton Recommencer fonctionnels.');
     logPass(6, 'Calcul et persistance des XP', 'Indépendance totale Mini-quiz (+20 XP) et Grand Quiz (+50 XP) dans les deux ordres (= 70 XP sans doublon).');
@@ -400,10 +431,12 @@ async function runAuditSuite() {
       { width: 1440, height: 900, label: 'Desktop 1440px' }
     ]) {
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      for (const route of ['/', '/etape/5-frise-napoleon/', '/etape/11-quiz-diplome/']) {
+      for (const route of ['/', '/etape/1-hemicycle/', '/etape/5-frise-napoleon/', '/etape/11-quiz-diplome/', '/etape/12-sources-credits/', '/credits/']) {
         await page.goto(`${baseUrlRoot}${route}`, { waitUntil: 'networkidle' });
         const overflow = await page.evaluate(() => {
-          return document.documentElement.scrollWidth - document.documentElement.clientWidth;
+          const html = document.documentElement.scrollWidth - document.documentElement.clientWidth;
+          const body = document.body.scrollWidth - document.body.clientWidth;
+          return Math.max(html, body);
         });
         assert(overflow <= 0, `Aucun débordement horizontal sur ${route} en ${vp.label} (overflow=${overflow}px)`);
       }
@@ -416,12 +449,59 @@ async function runAuditSuite() {
       await page.setViewportSize({ width: vp.width, height: vp.height });
       for (const slug of stepSlugs) {
         await page.goto(`${baseUrlRoot}/etape/${slug}/`, { waitUntil: 'networkidle' });
-        const overflow = await page.evaluate(
-          () => document.documentElement.scrollWidth - document.documentElement.clientWidth
-        );
-        assert(overflow <= 0, `Pas de débordement sur /etape/${slug}/ en ${vp.label}`);
+        const overflow = await page.evaluate(() => {
+          const html = document.documentElement.scrollWidth - document.documentElement.clientWidth;
+          const body = document.body.scrollWidth - document.body.clientWidth;
+          return Math.max(html, body);
+        });
+        assert(overflow <= 0, `Pas de débordement sur /etape/${slug}/ en ${vp.label} (overflow=${overflow}px)`);
+        if (slug === '8-videos') {
+          const explanations = await page
+            .locator('[data-explanation]')
+            .evaluateAll((els) => els.map((el) => el.getAttribute('data-explanation') || '').join('\n'));
+          assert(explanations.includes('G comme Gouvernement'), 'Moyen mnémotechnique projet de loi = G comme Gouvernement');
+          assert(!explanations.includes('J comme Gouvernement'), 'Ancien moyen mnémotechnique J comme Gouvernement absent');
+        }
       }
     }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${baseUrlRoot}/etape/1-hemicycle/`, { waitUntil: 'networkidle' });
+    const pinGap = await page.evaluate(() => {
+      const pins = Array.from(document.querySelectorAll('.hotspot-pin'));
+      const boxes = pins.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { id: el.getAttribute('data-spot-id'), x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height };
+      });
+      const byId = (id) => boxes.find((b) => b.id === String(id));
+      const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+      const p1 = byId(1);
+      const p2 = byId(2);
+      const p5 = byId(5);
+      if (!p1 || !p2 || !p5) return { ok: false, reason: 'pastilles 1/2/5 introuvables' };
+      const minSep = (a, b) => (a.w + b.w) / 2;
+      const pairs = [
+        [p1, p2],
+        [p1, p5],
+        [p2, p5]
+      ];
+      for (const [a, b] of pairs) {
+        if (dist(a, b) < minSep(a, b) - 0.5) {
+          return { ok: false, reason: `chevauchement ${a.id}/${b.id} dist=${dist(a, b).toFixed(1)}` };
+        }
+      }
+      return { ok: true, reason: 'ok' };
+    });
+    assert(pinGap.ok, `Pastilles 1/2/5 sans chevauchement à 390px (${pinGap.reason})`);
+
+    await page.goto(`${baseUrlRoot}/etape/2-galerie/`, { waitUntil: 'networkidle' });
+    const agrandirH = await page.locator('.lightbox-trigger').first().evaluate((el) => el.getBoundingClientRect().height);
+    assert(agrandirH >= 44, `Bouton Agrandir ≥ 44px (obtenu: ${agrandirH})`);
+    const ecouterH = await page.locator('.tts-button').first().evaluate((el) => el.getBoundingClientRect().height);
+    assert(ecouterH >= 44, `Bouton Écouter ≥ 44px (obtenu: ${ecouterH})`);
+
+    const logoBox = await page.locator('header a[href="/"]').first().boundingBox();
+    assert(logoBox && logoBox.width >= 40 && logoBox.height >= 40, 'Logo header cliquable et non écrasé');
+
     assert(
       consoleErrors.length === 0,
       `Aucune erreur console sur le parcours (trouvé: ${consoleErrors.slice(0, 5).join(' | ')})`

@@ -9,12 +9,14 @@
     "build": "astro build && node scripts/apply-base-path.mjs",
     "preview": "astro preview",
     "start": "node server.js",
+    "test:unit": "node --experimental-strip-types tests/unit.mjs",
     "test:e2e": "node tests/audit-e2e.mjs",
     "deploy:gh": "node scripts/deploy-gh.mjs"
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
     "astro": "^5.18.2",
+    "html2canvas-pro": "^2.5.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.19"
   },
