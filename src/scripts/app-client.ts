@@ -1,4 +1,4 @@
-import { formatProgressLabel } from './ui-helpers.ts';
+import { formatProgressLabel, homeDiplomaCtaLabel } from './ui-helpers.ts';
 
 export type AvatarType = 'deputee' | 'depute' | 'malik' | 'papa';
 
@@ -471,7 +471,7 @@ export function initAppClient() {
         homeHeroCtaText.textContent = `Continuer — Étape ${nextStepObj.number} : ${nextStepObj.title}`;
       } else if (doneCount >= 12) {
         homeHeroCta.href = '/etape/11-quiz-diplome/';
-        homeHeroCtaText.textContent = 'Voir mon Diplôme de Député Junior';
+        homeHeroCtaText.textContent = homeDiplomaCtaLabel(state.avatar === 'deputee');
       } else {
         homeHeroCta.href = '/etape/1-hemicycle/';
         homeHeroCtaText.textContent = 'Commencer (étape 1)';

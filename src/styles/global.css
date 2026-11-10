@@ -127,6 +127,15 @@
   filter: contrast(1.03) saturate(1.04) sepia(0.04);
 }
 
+/* Retours à la ligne entre les mots (évite la coupure au milieu dans les flex étroits) */
+@layer utilities {
+  .text-wrap-words-only {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: manual;
+  }
+}
+
 .hotspot-pin {
   left: var(--pin-x);
   top: var(--pin-y);
@@ -185,12 +194,48 @@ html[data-classroom="true"] .classroom-only-btn {
   }
 }
 
+/* Capture PDF : carte toujours en largeur A4 paysage (hors écran sur mobile) */
+#diploma-printable-card.pdf-capture,
+#diploma-pdf-capture-card.pdf-capture {
+  width: 1122px !important;
+  max-width: 1122px !important;
+  padding: 2.5rem !important;
+  box-sizing: border-box;
+}
+#diploma-printable-card.pdf-capture #diploma-main-heading,
+#diploma-pdf-capture-card.pdf-capture #diploma-main-heading {
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+#diploma-printable-card.pdf-capture #diploma-rendered-name,
+#diploma-pdf-capture-card.pdf-capture #diploma-rendered-name {
+  font-size: 2.25rem;
+}
+#diploma-printable-card.pdf-capture .diploma-medal-pill,
+#diploma-pdf-capture-card.pdf-capture .diploma-medal-pill {
+  font-size: 0.75rem;
+}
+#diploma-printable-card.pdf-capture .pt-4.grid,
+#diploma-pdf-capture-card.pdf-capture .pt-4.grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  max-width: 48rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+#diploma-printable-card.pdf-capture .pt-4.grid > div:last-child span:last-child,
+#diploma-pdf-capture-card.pdf-capture .pt-4.grid > div:last-child span:last-child {
+  white-space: nowrap;
+}
+
 /* Capture PDF : line-height explicite pour html2canvas (baseline / trait / pastilles) */
-#diploma-printable-card.pdf-capture #diploma-name-row {
+#diploma-printable-card.pdf-capture #diploma-name-row,
+#diploma-pdf-capture-card.pdf-capture #diploma-name-row {
   display: flex;
   align-items: center;
 }
-#diploma-printable-card.pdf-capture #diploma-rendered-name {
+#diploma-printable-card.pdf-capture #diploma-rendered-name,
+#diploma-pdf-capture-card.pdf-capture #diploma-rendered-name {
   display: inline-flex;
   align-items: center;
   line-height: 1;
@@ -199,7 +244,8 @@ html[data-classroom="true"] .classroom-only-btn {
   text-decoration: none;
   box-sizing: content-box;
 }
-#diploma-printable-card.pdf-capture .diploma-medal-pill {
+#diploma-printable-card.pdf-capture .diploma-medal-pill,
+#diploma-pdf-capture-card.pdf-capture .diploma-medal-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;

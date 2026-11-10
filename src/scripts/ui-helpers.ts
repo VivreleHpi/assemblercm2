@@ -1,3 +1,8 @@
+/** Libellé court du CTA accueil une fois les 12 étapes terminées (accord féminin/masculin). */
+export function homeDiplomaCtaLabel(isDeputee: boolean): string {
+  return isDeputee ? 'Voir mon diplôme de Députée' : 'Voir mon diplôme de Député';
+}
+
 export function formatProgressLabel(doneCount: number): string {
   const safe = Number.isFinite(doneCount) ? Math.max(0, Math.min(12, Math.floor(doneCount))) : 0;
   return `Parcours : ${safe} / 12`;

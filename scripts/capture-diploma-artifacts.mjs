@@ -21,6 +21,12 @@ const MIME = {
   '.woff2': 'font/woff2'
 };
 
+function assertPdfFilename(name) {
+  if (!name?.endsWith('.pdf') || !name.includes('diplome-depute-junior')) {
+    throw new Error(`Nom PDF inattendu : ${name}`);
+  }
+}
+
 function extractJpeg(pdf) {
   const start = pdf.indexOf(Buffer.from([0xff, 0xd8, 0xff]));
   const end = pdf.lastIndexOf(Buffer.from([0xff, 0xd9]));
@@ -205,6 +211,68 @@ try {
     console.log('OK', profile.key, 'pdf', pdf.length, 'jpeg', jpeg.length, 'size', await sharp(jpeg).metadata().then((m) => `${m.width}x${m.height}`));
     await context.close();
   }
+
+  const lea = profiles[0];
+  const mobileContext = await browser.newContext({
+    viewport: { width: 375, height: 667 },
+    acceptDownloads: true
+  });
+  const mobilePage = await mobileContext.newPage();
+  await mobilePage.goto('http://127.0.0.1:8988/etape/11-quiz-diplome/', { waitUntil: 'networkidle' });
+  await mobilePage.evaluate((p) => {
+    const st = {
+      userName: p.name,
+      avatar: p.avatar,
+      xp: p.xp,
+      completedSteps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      unlockedBadges: p.badges,
+      fontSize: 'normal',
+      dysMode: false,
+      classroomMode: false,
+      soundEnabled: true,
+      onboardingDone: true,
+      finalQuizBestScore: p.score,
+      finalQuizXpAwarded: true,
+      diplomaUnlocked: true,
+      diplomaUnlockMode: 'quiz',
+      diplomaSchoolName: p.school
+    };
+    localStorage.setItem('an_cm2_v2_state', JSON.stringify(st));
+  }, lea);
+  await mobilePage.reload({ waitUntil: 'networkidle' });
+  await mobilePage.evaluate(() => document.fonts?.ready);
+  await mobilePage.fill('#diploma-student-name', lea.name);
+  await mobilePage.fill('#diploma-school-name', lea.school);
+  await mobilePage.waitForTimeout(400);
+
+  const mobileDownloadPromise = mobilePage.waitForEvent('download', { timeout: 60000 });
+  await mobilePage.locator('#download-diploma-pdf-btn').click();
+  const mobileDownload = await mobileDownloadPromise;
+  const mobilePdfPath = path.join(OUT, 'diplome-lea-9medailles-mobile-375.pdf');
+  await mobileDownload.saveAs(mobilePdfPath);
+  assertPdfFilename(mobileDownload.suggestedFilename());
+
+  const mobilePdf = fs.readFileSync(mobilePdfPath);
+  const mobileJpeg = extractJpeg(mobilePdf);
+  const mobilePreviewPath = path.join(OUT, 'diplome-preview-lea-9medailles-mobile-375.png');
+  await sharp(mobileJpeg).withMetadata({ density: 300 }).png().toFile(mobilePreviewPath);
+
+  const mobileMeta = await sharp(mobileJpeg).metadata();
+  if ((mobileMeta.width || 0) < 1800) {
+    throw new Error(`JPEG PDF mobile trop étroit : ${mobileMeta.width}px`);
+  }
+
+  const desktopPreviewPath = path.join(OUT, 'diplome-preview-lea-9medailles.png');
+  await sideBySide(
+    mobilePreviewPath,
+    desktopPreviewPath,
+    path.join(OUT, 'diplome-comparaison-lea-mobile375-vs-desktop1280.png'),
+    'PDF capturé (viewport 375×667)',
+    'PDF capturé (viewport 1280×900)'
+  );
+
+  console.log('OK mobile Léa', mobilePdf.length, 'jpeg', mobileMeta.width, 'x', mobileMeta.height);
+  await mobileContext.close();
 } finally {
   await browser.close();
   server.close();
