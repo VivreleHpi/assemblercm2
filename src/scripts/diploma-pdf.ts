@@ -1,128 +1,56 @@
+import html2canvas from 'html2canvas';
 import { diplomaFilename } from './ui-helpers.ts';
 
 export interface DiplomaPdfInput {
   studentName: string;
-  schoolName?: string;
-  xp: number;
-  badgesEarned: number;
-  badgesTotal: number;
-  quizScore?: string;
-  date: Date;
-  isGirl?: boolean;
+  pageJpeg: Uint8Array;
 }
 
-const WINANSI_EXTRA: Record<number, number> = {
-  0x0152: 0x8c, // Œ
-  0x0153: 0x9c, // œ
-  0x0160: 0x8a,
-  0x0161: 0x9a,
-  0x0178: 0x9f,
-  0x017d: 0x8e,
-  0x017e: 0x9e,
-  0x20ac: 0x80, // €
-  0x2018: 0x91,
-  0x2019: 0x92, // ’
-  0x201a: 0x82,
-  0x201c: 0x93,
-  0x201d: 0x94,
-  0x201e: 0x84,
-  0x2013: 0x96, // –
-  0x2014: 0x97, // —
-  0x2022: 0x95,
-  0x2026: 0x85,
-  0x02c6: 0x88,
-  0x2030: 0x89,
-  0x2039: 0x8b,
-  0x203a: 0x9b
-};
+const PAGE_W = 842;
+const PAGE_H = 595;
 
-function toWinAnsi(text: string): string {
-  let out = '';
-  for (const ch of text) {
-    const code = ch.codePointAt(0) || 0;
-    if (code === 10 || code === 13) {
-      out += ' ';
-      continue;
-    }
-    if (code < 128) {
-      out += ch;
-      continue;
-    }
-    if (code >= 0xa0 && code <= 0xff) {
-      out += String.fromCharCode(code);
-      continue;
-    }
-    const mapped = WINANSI_EXTRA[code];
-    out += mapped ? String.fromCharCode(mapped) : '?';
+function latin1(text: string): Uint8Array {
+  const out = new Uint8Array(text.length);
+  for (let i = 0; i < text.length; i++) {
+    out[i] = text.charCodeAt(i) & 0xff;
   }
   return out;
 }
 
-function pdfLiteral(text: string): string {
-  return `(${toWinAnsi(text).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)')})`;
+function concat(parts: Uint8Array[]): Uint8Array {
+  let total = 0;
+  for (const part of parts) total += part.length;
+  const out = new Uint8Array(total);
+  let offset = 0;
+  for (const part of parts) {
+    out.set(part, offset);
+    offset += part.length;
+  }
+  return out;
 }
 
-function formatFrenchDate(date: Date): string {
-  return new Intl.DateTimeFormat('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    timeZone: 'UTC'
-  }).format(date);
-}
-
-function buildContentStream(input: DiplomaPdfInput): string {
-  const name = (input.studentName || '').trim() || 'Jeune citoyen(ne) de CM2';
-  const school = (input.schoolName || '').trim();
-  const headingAccent = input.isGirl ? 'DIPLÔME DE DÉPUTÉE JUNIOR CM2' : 'DIPLÔME DE DÉPUTÉ JUNIOR CM2';
-  const initial = name.charAt(0).toUpperCase();
-  const dateLabel = formatFrenchDate(input.date);
-  const xp = Number.isFinite(input.xp) ? input.xp : 0;
-  const earned = Number.isFinite(input.badgesEarned) ? input.badgesEarned : 0;
-  const total = input.badgesTotal || 9;
-  const score = (input.quizScore || '').trim();
-  const fill = input.isGirl ? '0.91 0.70 0.10' : '0 0.15 0.33';
-
-  const lines = [
-    'q',
-    '0 0.15 0.33 rg 36 555 256 16 re f',
-    '0.98 0.97 0.94 rg 292 555 258 16 re f',
-    '0.81 0.07 0.15 rg 550 555 256 16 re f',
-    'Q',
-    'BT',
-    '/F1 11 Tf 0 0.15 0.33 rg',
-    `36 530 Td ${pdfLiteral('Parcours citoyen Cycle 3  ·  Enseignement Moral et Civique')} Tj`,
-    '/F2 26 Tf 0 0.06 0.16 rg',
-    `0 -36 Td ${pdfLiteral(headingAccent)} Tj`,
-    '/F1 13 Tf 0.45 0.35 0.08 rg',
-    `0 -22 Td ${pdfLiteral('Parcours citoyen par Malik & son Papa')} Tj`,
-    '/F1 12 Tf 0.2 0.2 0.25 rg',
-    `0 -28 Td ${pdfLiteral('Décerné avec les félicitations de Malik & son Papa à :')} Tj`,
-    'ET',
-    'q',
-    `${fill} rg 36 350 54 54 re f`,
-    '1 1 1 rg',
-    'BT /F2 22 Tf 54 368 Td',
-    `${pdfLiteral(initial)} Tj ET`,
-    'Q',
-    'BT',
-    '/F2 28 Tf 0 0.15 0.33 rg',
-    `102 366 Td ${pdfLiteral(name)} Tj`,
-    '/F1 11 Tf 0.25 0.25 0.3 rg',
-    school
-      ? `0 -20 Td ${pdfLiteral(school)} Tj`
-      : `0 -20 Td ${pdfLiteral("A validé le parcours Député Junior CM2 sur l'Assemblée nationale")} Tj`,
-    '/F1 12 Tf 0.1 0.1 0.15 rg',
-    `0 -36 Td ${pdfLiteral(`Date : ${dateLabel}`)} Tj`,
-    `0 -20 Td ${pdfLiteral(`Total : ${xp} XP   ·   Médailles : ${earned}/${total}`)} Tj`,
-    score ? `0 -20 Td ${pdfLiteral(`Grand Quiz : ${score}`)} Tj` : '',
-    '/F1 11 Tf 0.2 0.2 0.25 rg',
-    `0 -32 Td ${pdfLiteral("L'Assemblée nationale — le parcours de Malik & son Papa")} Tj`,
-    `0 -16 Td ${pdfLiteral('Projet pédagogique indépendant, non affilié à l’Assemblée nationale.')} Tj`,
-    'ET'
-  ];
-
-  return lines.filter(Boolean).join('\n');
+function readJpegSize(bytes: Uint8Array): { width: number; height: number } {
+  let i = 2;
+  while (i + 8 < bytes.length) {
+    if (bytes[i] !== 0xff) {
+      i += 1;
+      continue;
+    }
+    const marker = bytes[i + 1];
+    if (marker === 0xd8 || marker === 0xd9 || (marker >= 0xd0 && marker <= 0xd7)) {
+      i += 2;
+      continue;
+    }
+    const len = (bytes[i + 2] << 8) | bytes[i + 3];
+    if (marker === 0xc0 || marker === 0xc1 || marker === 0xc2) {
+      return {
+        height: (bytes[i + 5] << 8) | bytes[i + 6],
+        width: (bytes[i + 7] << 8) | bytes[i + 8]
+      };
+    }
+    i += 2 + len;
+  }
+  return { width: PAGE_W, height: PAGE_H };
 }
 
 function xrefTable(offsets: number[]): string {
@@ -138,38 +66,182 @@ function xrefTable(offsets: number[]): string {
 }
 
 export function buildDiplomaPdf(input: DiplomaPdfInput): { bytes: Uint8Array; filename: string } {
-  const stream = buildContentStream(input);
+  const jpeg = input.pageJpeg;
+  const { width, height } = readJpegSize(jpeg);
+  const margin = 18;
+  const scale = Math.min((PAGE_W - margin * 2) / width, (PAGE_H - margin * 2) / height);
+  const drawW = width * scale;
+  const drawH = height * scale;
+  const x = (PAGE_W - drawW) / 2;
+  const y = (PAGE_H - drawH) / 2;
+  const content = [
+    '0.98 0.97 0.94 rg 0 0 842 595 re f',
+    'q',
+    `${drawW.toFixed(2)} 0 0 ${drawH.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)} cm`,
+    '/Im1 Do',
+    'Q',
+    ''
+  ].join('\n');
 
-  const objects = [
-    '',
-    '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n',
-    '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n',
-    '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >> endobj\n',
-    `4 0 obj << /Length ${stream.length} >> stream\n${stream}\nendstream endobj\n`,
-    '5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >> endobj\n',
-    '6 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >> endobj\n'
-  ];
-
-  let pdf = '%PDF-1.4\n';
+  const parts: Uint8Array[] = [];
   const offsets = [0];
-  for (let i = 1; i < objects.length; i++) {
-    offsets[i] = pdf.length;
-    pdf += objects[i];
-  }
-  const xrefStart = pdf.length;
-  pdf += xrefTable(offsets);
-  pdf += `trailer << /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF\n`;
+  const pushObj = (bytes: Uint8Array) => {
+    offsets.push(parts.reduce((n, p) => n + p.length, 0));
+    parts.push(bytes);
+  };
 
-  const bytes = new Uint8Array(pdf.length);
-  for (let i = 0; i < pdf.length; i++) {
-    bytes[i] = pdf.charCodeAt(i) & 0xff;
-  }
+  parts.push(latin1('%PDF-1.4\n'));
+  pushObj(latin1('1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n'));
+  pushObj(latin1('2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n'));
+  pushObj(
+    latin1(
+      '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Contents 4 0 R /Resources << /XObject << /Im1 5 0 R >> >> >> endobj\n'
+    )
+  );
+  pushObj(latin1(`4 0 obj << /Length ${content.length} >> stream\n${content}endstream endobj\n`));
+  pushObj(
+    concat([
+      latin1(
+        `5 0 obj << /Type /XObject /Subtype /Image /Width ${width} /Height ${height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >> stream\n`
+      ),
+      jpeg,
+      latin1('\nendstream endobj\n')
+    ])
+  );
+
+  const body = concat(parts);
+  const xrefStart = body.length;
+  const xref = xrefTable(offsets);
+  const trailer = `trailer << /Size ${offsets.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF\n`;
+  const bytes = concat([body, latin1(xref), latin1(trailer)]);
 
   return { bytes, filename: diplomaFilename(input.studentName) };
 }
 
-export function downloadDiplomaPdf(input: DiplomaPdfInput): void {
-  const { bytes, filename } = buildDiplomaPdf(input);
+function canvasToJpeg(canvas: HTMLCanvasElement, quality: number): Promise<Uint8Array> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error('JPEG du diplôme indisponible'));
+          return;
+        }
+        blob
+          .arrayBuffer()
+          .then((buffer) => resolve(new Uint8Array(buffer)))
+          .catch(reject);
+      },
+      'image/jpeg',
+      quality
+    );
+  });
+}
+
+async function fetchAsDataUrl(url: string): Promise<string> {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function rasterizeVisibleAvatars(card: HTMLElement): Promise<Array<{ canvas: HTMLCanvasElement; html: string }>> {
+  const pictures = Array.from(card.querySelectorAll('picture')).filter((pic) => {
+    const wrap = pic.closest('[id^="diploma-avatar-"]');
+    return !wrap || !wrap.classList.contains('hidden');
+  });
+
+  const swaps: Array<{ canvas: HTMLCanvasElement; html: string }> = [];
+
+  for (const pic of pictures) {
+    const img = pic.querySelector('img');
+    if (!img) continue;
+    const url = img.currentSrc || img.src;
+    if (!url) continue;
+    const dataUrl = url.startsWith('data:') ? url : await fetchAsDataUrl(new URL(url, document.baseURI).href);
+    const bitmap = new Image();
+    bitmap.src = dataUrl;
+    await bitmap.decode();
+    const rect = pic.getBoundingClientRect();
+    const size = Math.max(Math.round(rect.width) || 68, 68);
+    const canvas = document.createElement('canvas');
+    canvas.width = size * 2;
+    canvas.height = size * 2;
+    canvas.className = pic.className;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+    canvas.setAttribute('aria-hidden', 'true');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) continue;
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const html = pic.outerHTML;
+    pic.replaceWith(canvas);
+    swaps.push({ canvas, html });
+  }
+
+  return swaps;
+}
+
+function restoreAvatarSwaps(swaps: Array<{ canvas: HTMLCanvasElement; html: string }>): void {
+  swaps.forEach(({ canvas, html }) => {
+    const holder = document.createElement('div');
+    holder.innerHTML = html;
+    const restored = holder.firstElementChild;
+    if (restored) canvas.replaceWith(restored);
+  });
+}
+
+export async function captureDiplomaCardJpeg(): Promise<Uint8Array> {
+  const card = document.getElementById('diploma-printable-card') as HTMLElement | null;
+  if (!card) {
+    throw new Error('Carte diplôme introuvable');
+  }
+
+  const noPrint = Array.from(card.querySelectorAll('.no-print')) as HTMLElement[];
+  const prevDisplay = noPrint.map((el) => el.style.display);
+  const swaps = await rasterizeVisibleAvatars(card);
+
+  try {
+    noPrint.forEach((el) => {
+      el.style.display = 'none';
+    });
+    card.classList.remove('pointer-events-none', 'opacity-50');
+    card.style.opacity = '1';
+
+    const canvas = await html2canvas(card, {
+      scale: 2,
+      backgroundColor: '#FFFFFF',
+      logging: false
+    });
+    const ctx = canvas.getContext('2d');
+    if (ctx && swaps.length > 0) {
+      const cardRect = card.getBoundingClientRect();
+      const scaleX = canvas.width / cardRect.width;
+      const scaleY = canvas.height / cardRect.height;
+      swaps.forEach(({ canvas: avatar }) => {
+        const r = avatar.getBoundingClientRect();
+        ctx.drawImage(
+          avatar,
+          (r.left - cardRect.left) * scaleX,
+          (r.top - cardRect.top) * scaleY,
+          r.width * scaleX,
+          r.height * scaleY
+        );
+      });
+    }
+    return canvasToJpeg(canvas, 0.9);
+  } finally {
+    noPrint.forEach((el, i) => {
+      el.style.display = prevDisplay[i];
+    });
+    restoreAvatarSwaps(swaps);
+  }
+}
+
+function triggerPdfDownload(bytes: Uint8Array, filename: string): void {
   const blob = new Blob([bytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -181,4 +253,10 @@ export function downloadDiplomaPdf(input: DiplomaPdfInput): void {
   link.click();
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+export async function downloadDiplomaPdf(studentName: string): Promise<void> {
+  const pageJpeg = await captureDiplomaCardJpeg();
+  const { bytes, filename } = buildDiplomaPdf({ studentName, pageJpeg });
+  triggerPdfDownload(bytes, filename);
 }

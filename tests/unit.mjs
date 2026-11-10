@@ -1,7 +1,5 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import path from 'node:path';
-import { formatProgressLabel, diplomaFilename } from '../src/scripts/ui-helpers.ts';
+import { formatProgressLabel, diplomaFilename, medalShortLabels } from '../src/scripts/ui-helpers.ts';
 import { buildDiplomaPdf } from '../src/scripts/diploma-pdf.ts';
 
 function test(name, fn) {
@@ -21,37 +19,39 @@ test('diplomaFilename slugifie le prénom avec accents', () => {
   assert.equal(diplomaFilename('   '), 'diplome-depute-junior-eleve.pdf');
 });
 
-test('buildDiplomaPdf produit un PDF A4 paysage avec accents français', () => {
+test('medalShortLabels ne garde que les médailles obtenues', () => {
+  assert.deepEqual(medalShortLabels(['hemi', 'galerie', 'quiz']), ['Hémicycle', 'Palais', 'Quiz']);
+  assert.deepEqual(medalShortLabels(['hemi', 'inconnu', 'secrets']), ['Hémicycle', 'Coulisses']);
+});
+
+function tinyJpeg() {
+  return Uint8Array.from([
+    0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01,
+    0x00, 0x01, 0x00, 0x00, 0xff, 0xdb, 0x00, 0x43, 0x00, 0x08, 0x06, 0x06, 0x07, 0x06, 0x05, 0x08,
+    0x07, 0x07, 0x07, 0x09, 0x09, 0x08, 0x0a, 0x0c, 0x14, 0x0d, 0x0c, 0x0b, 0x0b, 0x0c, 0x19, 0x12,
+    0x13, 0x0f, 0x14, 0x1d, 0x1a, 0x1f, 0x1e, 0x1d, 0x1a, 0x1c, 0x1c, 0x20, 0x24, 0x2e, 0x27, 0x20,
+    0x22, 0x2c, 0x23, 0x1c, 0x1c, 0x28, 0x37, 0x29, 0x2c, 0x30, 0x31, 0x34, 0x34, 0x34, 0x1f, 0x27,
+    0x39, 0x3d, 0x38, 0x32, 0x3c, 0x2e, 0x33, 0x34, 0x32, 0xff, 0xc0, 0x00, 0x0b, 0x08, 0x00, 0x01,
+    0x00, 0x01, 0x01, 0x01, 0x11, 0x00, 0xff, 0xc4, 0x00, 0x14, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xff, 0xc4, 0x00, 0x14,
+    0x10, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0xff, 0xda, 0x00, 0x08, 0x01, 0x01, 0x00, 0x00, 0x3f, 0x00, 0x7f, 0x3f, 0xff, 0xd9
+  ]);
+}
+
+test('buildDiplomaPdf embarque la capture JPEG du diplôme HTML en A4 paysage', () => {
+  const jpeg = tinyJpeg();
   const { bytes, filename } = buildDiplomaPdf({
     studentName: 'Léa',
-    schoolName: 'CM2 Victor-Schœlcher',
-    xp: 290,
-    badgesEarned: 9,
-    badgesTotal: 9,
-    quizScore: '8 / 8',
-    date: new Date('2026-11-10T12:00:00Z'),
-    isGirl: true
+    pageJpeg: jpeg
   });
 
   assert.equal(filename, 'diplome-depute-junior-lea.pdf');
-  assert.ok(bytes.byteLength > 500, `PDF trop court (${bytes.byteLength})`);
+  assert.ok(bytes.byteLength > jpeg.byteLength, 'PDF contient plus que le JPEG seul');
   const ascii = Buffer.from(bytes).toString('latin1');
   assert.ok(ascii.startsWith('%PDF-1.'), 'en-tête %PDF');
   assert.ok(ascii.includes('/MediaBox [0 0 842 595]'), 'A4 paysage 842×595 pts');
-  assert.ok(ascii.includes('/Encoding /WinAnsiEncoding'), 'encodage WinAnsi pour les accents');
-  assert.ok(ascii.includes('Parcours citoyen par Malik'), 'mention Malik & Papa');
-  // Léa → WinAnsi E9 pour é
-  assert.ok(ascii.includes('L\xE9a') || ascii.includes('Léa'), 'prénom Léa avec accent');
-  assert.ok(ascii.includes('290'), 'total XP');
-  assert.ok(ascii.includes('9/9') || ascii.includes('9 / 9'), 'médailles');
-
-  const artifactDirs = ['/opt/cursor/artifacts', '/cursor/stores/self/artifacts'];
-  for (const dir of artifactDirs) {
-    try {
-      fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, 'diplome-exemple-lea.pdf'), bytes);
-    } catch {
-      // dossier artifacts indisponible dans cet environnement
-    }
-  }
+  assert.ok(ascii.includes('/Subtype /Image'), 'page = image du composant HTML');
+  assert.ok(ascii.includes('/DCTDecode'), 'JPEG DCTDecode');
+  assert.ok(ascii.includes('\xff\xd8\xff'), 'octets JPEG SOI présents');
 });

@@ -244,6 +244,13 @@ import Avatar from '../ui/Avatar.astro';
         Pour avoir étudié le Palais Bourbon et l’Hémicycle des 577 députés, compris la Constitution de 1958, la séparation des pouvoirs, l’organisation de la Justice et le vote de la loi par la navette parlementaire.
       </p>
 
+      <p id="diploma-rendered-meta" class="text-xs sm:text-sm font-semibold text-republic-900">
+        <span id="diploma-rendered-xp">0 XP</span>
+        <span aria-hidden="true"> · </span>
+        <span id="diploma-rendered-date"></span>
+      </p>
+      <div id="diploma-medals-row" class="flex flex-wrap justify-center gap-1.5 empty:hidden"></div>
+
       <div id="diploma-step12-hint" class="no-print p-3 rounded-xl bg-paper border border-line text-xs text-ink-muted max-w-xl mx-auto">
         💡 <strong>Astuce parcours 12/12 :</strong> N’oublie pas de visiter ensuite l’<a href="/etape/12-sources-credits/" class="font-bold text-republic-900 underline">Étape 12 (Sources & Crédits)</a> pour compléter 100 % des 12 étapes du parcours !
       </div>
@@ -275,6 +282,7 @@ import Avatar from '../ui/Avatar.astro';
 
 <script>
   import { downloadDiplomaPdf } from '../../scripts/diploma-pdf.ts';
+  import { medalShortLabels } from '../../scripts/ui-helpers.ts';
 
   interface StoredState {
     userName?: string;
@@ -321,6 +329,32 @@ import Avatar from '../ui/Avatar.astro';
     const renderedName = document.getElementById('diploma-rendered-name');
     const renderedSchool = document.getElementById('diploma-rendered-school');
     const renderedScore = document.getElementById('diploma-rendered-score');
+    const renderedXp = document.getElementById('diploma-rendered-xp');
+    const renderedDate = document.getElementById('diploma-rendered-date');
+    const medalsRow = document.getElementById('diploma-medals-row');
+
+    const fillDiplomaExtras = (st: StoredState) => {
+      if (renderedXp) {
+        renderedXp.textContent = `${typeof st.xp === 'number' ? st.xp : 0} XP`;
+      }
+      if (renderedDate) {
+        renderedDate.textContent = new Intl.DateTimeFormat('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        }).format(new Date());
+      }
+      if (medalsRow) {
+        medalsRow.replaceChildren();
+        medalShortLabels(st.unlockedBadges).forEach((label) => {
+          const pill = document.createElement('span');
+          pill.className =
+            'px-2 py-0.5 rounded-full bg-gold-light border border-gold text-[10px] sm:text-xs font-bold text-ink';
+          pill.textContent = label;
+          medalsRow.appendChild(pill);
+        });
+      }
+    };
 
     const unlockDiplomaUI = (scoreLabel: string) => {
       controlsBar?.classList.remove('hidden');
@@ -337,6 +371,7 @@ import Avatar from '../ui/Avatar.astro';
         lockDesc.textContent = 'Écris ton prénom ci-dessous puis clique sur « Télécharger mon diplôme (PDF) » ou « Imprimer (A4) ».';
       }
       if (renderedScore) renderedScore.textContent = scoreLabel;
+      fillDiplomaExtras(readStoredState());
 
       const st = readStoredState();
       const doneStepsCount = Array.isArray(st.completedSteps) ? st.completedSteps.length : 0;
@@ -363,6 +398,7 @@ import Avatar from '../ui/Avatar.astro';
 
     const syncFromStoredState = () => {
       const st = readStoredState();
+      fillDiplomaExtras(st);
       const bestScore = typeof st.finalQuizBestScore === 'number' ? st.finalQuizBestScore : 0;
       const isUnlocked = Boolean(st.diplomaUnlocked || bestScore >= 6);
       if (isUnlocked) {
@@ -514,21 +550,17 @@ import Avatar from '../ui/Avatar.astro';
 
     document.getElementById('download-diploma-pdf-btn')?.addEventListener('click', () => {
       const st = readStoredState();
+      fillDiplomaExtras(st);
       const name = nameInput?.value.trim() || st.userName || '';
-      const school = schoolInput?.value.trim() || st.diplomaSchoolName || '';
-      const xp = typeof st.xp === 'number' ? st.xp : 0;
-      const badges = Array.isArray(st.unlockedBadges) ? st.unlockedBadges.length : 0;
-      const best = typeof st.finalQuizBestScore === 'number' ? st.finalQuizBestScore : 0;
-      downloadDiplomaPdf({
-        studentName: name,
-        schoolName: school,
-        xp,
-        badgesEarned: badges,
-        badgesTotal: 9,
-        quizScore: best > 0 ? `${best} / 8` : '',
-        date: new Date(),
-        isGirl: st.avatar === 'deputee'
-      });
+      const btn = document.getElementById('download-diploma-pdf-btn') as HTMLButtonElement | null;
+      if (btn) btn.disabled = true;
+      downloadDiplomaPdf(name)
+        .catch(() => {
+          window.alert('Le PDF n’a pas pu être préparé. Réessaie, ou utilise « Imprimer (A4) ».');
+        })
+        .finally(() => {
+          if (btn) btn.disabled = false;
+        });
     });
   }
 

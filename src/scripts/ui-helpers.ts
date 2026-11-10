@@ -3,6 +3,25 @@ export function formatProgressLabel(doneCount: number): string {
   return `Parcours : ${safe} / 12`;
 }
 
+export const BADGE_SHORT_LABELS: Record<string, string> = {
+  hemi: 'Hémicycle',
+  galerie: 'Palais',
+  secrets: 'Coulisses',
+  justice: 'Justice',
+  histoire: 'Histoire',
+  enfants: 'Enfants',
+  pouvoirs: 'Sénat',
+  mindmap: 'Carte',
+  quiz: 'Quiz'
+};
+
+export function medalShortLabels(badgeIds: string[] | undefined): string[] {
+  if (!Array.isArray(badgeIds)) return [];
+  return badgeIds
+    .map((id) => BADGE_SHORT_LABELS[id])
+    .filter((label): label is string => Boolean(label));
+}
+
 export function diplomaFilename(name: string): string {
   const slug = (name || '')
     .normalize('NFD')
