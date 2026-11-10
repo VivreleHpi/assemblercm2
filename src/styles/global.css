@@ -127,6 +127,24 @@
   filter: contrast(1.03) saturate(1.04) sepia(0.04);
 }
 
+.hotspot-pin {
+  left: var(--pin-x);
+  top: var(--pin-y);
+  transform: translate(-50%, -50%);
+}
+
+.hotspot-pin.is-active-pin,
+.hotspot-pin:hover,
+.hotspot-pin:focus-visible {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+@media (max-width: 639px) {
+  .hotspot-pin {
+    top: var(--pin-y-mobile, var(--pin-y));
+  }
+}
+
 /* Tailles de texte personnalisables (100% / 115% / 130%) */
 html[data-font-size="large"] {
   --font-scale: 1.15;

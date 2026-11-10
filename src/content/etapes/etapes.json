@@ -109,9 +109,9 @@
       },
       {
         "q": "Quel tableau de Jacques-Louis David illustre un épisode fondateur de l'Assemblée nationale en juin 1789 ?",
-        "options": ["La Joconde", "Le Serment du Jeu de Paume", "La Liberté sur la Lune"],
+        "options": ["La Joconde", "Le Serment du Jeu de paume", "La Liberté sur la Lune"],
         "correct": 1,
-        "exp": "Bravo ! Le Serment du Jeu de Paume (20 juin 1789) est un épisode clé : les députés avaient déjà constitué l'Assemblée nationale le 17 juin et jurent de donner une Constitution à la France."
+        "exp": "Bravo ! Le Serment du Jeu de paume (20 juin 1789) est un épisode clé : les députés avaient déjà constitué l'Assemblée nationale le 17 juin et jurent de donner une Constitution à la France."
       }
     ],
     "teacherObjective": "Histoire des Arts & Histoire Cycle 3 — Lire l'architecture néoclassique (1806) et la peinture historique (David, Delacroix) comme expressions symboliques de la République."
@@ -301,7 +301,7 @@
     "legacyId": "enfants",
     "part": "institutions",
     "partLabel": "Partie 2 • Les Institutions",
-    "title": "Le Parlement des Enfants (De 1994 à la 30e édition 2026–2027)",
+    "title": "Le Parlement des Enfants (de 1994 à la 30e édition 2026–2027)",
     "shortTitle": "6. Parlement des Enfants",
     "subtitle": "Découvre comment les classes de CM2 et de 6e s'initient au métier de député en rédigeant et en votant une proposition de loi pédagogique !",
     "duration": "5 min",
@@ -452,7 +452,7 @@
         "q": "Comment appelle-t-on un texte de loi lorsqu'il est proposé par un ou plusieurs députés ?",
         "options": ["Une proposition de loi", "Un projet de loi", "Un arrêté municipal"],
         "correct": 0,
-        "exp": "Exact ! « Proposition de loi » = vient des parlementaires (P comme Parlement) ; « Projet de loi » = vient du Gouvernement (J comme Gouvernement)."
+        "exp": "Exact ! « Proposition de loi » = vient des parlementaires (P comme Parlement) ; « Projet de loi » = vient du Gouvernement (G comme Gouvernement)."
       },
       {
         "q": "Comment s'appelle une modification proposée par un député pour améliorer un article de loi ?",

@@ -27,7 +27,7 @@ import Avatar from '../ui/Avatar.astro';
         <Icon name="Shield" size={18} />
         <span>Confidentialité & Services externes</span>
       </div>
-      <ul class="space-y-1.5 text-ink-muted">
+      <ul class="space-y-1.5 text-ink-muted break-words">
         <li>✓ <strong>Progression stockée en local</strong> : ton prénom, tes XP et tes badges sont enregistrés dans le <code>localStorage</code> de ton navigateur (aucun compte élève ni traceur analytique propre au site).</li>
         <li>✓ <strong>Hébergement & vidéos externes (Étape 8)</strong> : la consultation du site implique des échanges réseau techniques standards avec l’hébergeur. Les vidéos YouTube (<code>youtube-nocookie.com</code>) ne sont chargées qu’après un clic volontaire ; leur lecture établit alors une connexion vers les serveurs de YouTube/Google susceptible d’utiliser des cookies ou stockages techniques nécessaires au lecteur vidéo.</li>
         <li>✓ <strong>Réinitialisation</strong> : bouton « Tout effacer » accessible à tout moment dans les Réglages.</li>
@@ -51,7 +51,7 @@ import Avatar from '../ui/Avatar.astro';
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {PHOTOS.map((photo, i) => (
-        <div class="p-4 rounded-card bg-paper border border-line flex items-start gap-4">
+        <div class="p-4 rounded-card bg-paper border border-line flex items-start gap-4 min-w-0 overflow-hidden">
           <img
             src={photo.src}
             alt={photo.alt}
@@ -59,8 +59,8 @@ import Avatar from '../ui/Avatar.astro';
             class="w-20 h-20 rounded-xl object-cover shrink-0 border border-line"
           />
           <div class="min-w-0 flex-1 space-y-1">
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-display font-bold text-sm sm:text-base text-ink truncate">
+            <div class="flex items-start justify-between gap-2 min-w-0">
+              <span class="font-display font-bold text-sm sm:text-base text-ink min-w-0 flex-1 leading-snug break-words">
                 {i + 1}. {photo.title}
               </span>
               <span class="px-2 py-0.5 rounded bg-surface border border-line text-[11px] font-bold text-republic-900 shrink-0">
@@ -94,7 +94,7 @@ import Avatar from '../ui/Avatar.astro';
       <h3 class="font-display font-bold text-lg text-ink">
         Textes constitutionnels & institutionnels vérifiés
       </h3>
-      <ul class="space-y-2 text-xs sm:text-sm text-ink bg-paper p-4 rounded-card border border-line">
+      <ul class="space-y-2 text-xs sm:text-sm text-ink bg-paper p-4 rounded-card border border-line break-words">
         <li>📜 <strong>Constitution du 4 octobre 1958</strong> : Articles 3 (souveraineté nationale), 24 (rôle du Parlement, 577 députés, 348 sénateurs), 34 (domaine de la loi), 45 (navette parlementaire), 49 (responsabilité du Gouvernement) et 61 (Conseil constitutionnel).</li>
         <li>⚖️ <strong>Déclaration des droits de l’homme et du citoyen (26 août 1789)</strong> : Article 16 (séparation des pouvoirs).</li>
         <li>📘 <strong>Code civil (21 mars 1804)</strong> & <strong>Code pénal</strong> (classification tripartite des infractions : contraventions, délits, crimes).</li>
@@ -105,7 +105,7 @@ import Avatar from '../ui/Avatar.astro';
       <h3 class="font-display font-bold text-lg text-ink">
         Crédits vidéos & Portails publics
       </h3>
-      <ul class="space-y-2 text-xs sm:text-sm text-ink bg-paper p-4 rounded-card border border-line">
+      <ul class="space-y-2 text-xs sm:text-sm text-ink bg-paper p-4 rounded-card border border-line break-words">
         {VIDEOS_DATA.map((v) => (
           <li>
             🎬 <strong>{v.title}</strong> — {v.source} ({v.duration}).
