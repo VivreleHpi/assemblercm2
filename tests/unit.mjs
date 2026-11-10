@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { formatProgressLabel, diplomaFilename, medalShortLabels, formatDiplomaQuizScore, homeDiplomaCtaLabel } from '../src/scripts/ui-helpers.ts';
-import { buildDiplomaPdf } from '../src/scripts/diploma-pdf.ts';
+import { buildDiplomaPdf, DIPLOMA_CAPTURE_WIDTH_PX } from '../src/scripts/diploma-pdf.ts';
 
 function test(name, fn) {
   fn();
@@ -60,6 +60,10 @@ function tinyJpeg() {
     0x00, 0x00, 0xff, 0xda, 0x00, 0x08, 0x01, 0x01, 0x00, 0x00, 0x3f, 0x00, 0x7f, 0x3f, 0xff, 0xd9
   ]);
 }
+
+test('DIPLOMA_CAPTURE_WIDTH_PX correspond au format A4 paysage @ 96 dpi', () => {
+  assert.equal(DIPLOMA_CAPTURE_WIDTH_PX, 1122);
+});
 
 test('buildDiplomaPdf embarque la capture JPEG du diplôme HTML en A4 paysage', () => {
   const jpeg = tinyJpeg();

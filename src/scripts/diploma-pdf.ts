@@ -9,6 +9,12 @@ export interface DiplomaPdfInput {
 const PAGE_W = 842;
 const PAGE_H = 595;
 
+/** Largeur CSS du diplôme pour capture (A4 paysage @ 96 dpi ≈ 11,69 in). */
+export const DIPLOMA_CAPTURE_WIDTH_PX = 1122;
+
+const CAPTURE_MOUNT_ID = 'diploma-pdf-capture-mount';
+const CAPTURE_CARD_ID = 'diploma-pdf-capture-card';
+
 function latin1(text: string): Uint8Array {
   const out = new Uint8Array(text.length);
   for (let i = 0; i < text.length; i++) {
@@ -68,7 +74,7 @@ function xrefTable(offsets: number[]): string {
 export function buildDiplomaPdf(input: DiplomaPdfInput): { bytes: Uint8Array; filename: string } {
   const jpeg = input.pageJpeg;
   const { width, height } = readJpegSize(jpeg);
-  const margin = 18;
+  const margin = 10;
   const scale = Math.min((PAGE_W - margin * 2) / width, (PAGE_H - margin * 2) / height);
   const drawW = width * scale;
   const drawH = height * scale;
@@ -227,14 +233,39 @@ function restoreAvatarSwaps(swaps: Array<{ canvas: HTMLCanvasElement; html: stri
   });
 }
 
+function createOffScreenCaptureCard(source: HTMLElement): { card: HTMLElement; mount: HTMLElement } {
+  document.getElementById(CAPTURE_MOUNT_ID)?.remove();
+
+  const mount = document.createElement('div');
+  mount.id = CAPTURE_MOUNT_ID;
+  mount.setAttribute('aria-hidden', 'true');
+  mount.style.cssText = `position:fixed;left:-12000px;top:0;z-index:-1;width:${DIPLOMA_CAPTURE_WIDTH_PX}px;overflow:visible;pointer-events:none;`;
+
+  const card = source.cloneNode(true) as HTMLElement;
+  card.id = CAPTURE_CARD_ID;
+  card.classList.add('pdf-capture');
+  card.classList.remove('pointer-events-none', 'opacity-50');
+  card.style.opacity = '1';
+  card.style.width = `${DIPLOMA_CAPTURE_WIDTH_PX}px`;
+  card.style.maxWidth = `${DIPLOMA_CAPTURE_WIDTH_PX}px`;
+  card.style.boxSizing = 'border-box';
+
+  card.querySelectorAll<HTMLElement>('.no-print').forEach((el) => {
+    el.style.display = 'none';
+  });
+
+  mount.appendChild(card);
+  document.body.appendChild(mount);
+  return { card, mount };
+}
+
 export async function captureDiplomaCardJpeg(): Promise<Uint8Array> {
-  const card = document.getElementById('diploma-printable-card') as HTMLElement | null;
-  if (!card) {
+  const source = document.getElementById('diploma-printable-card') as HTMLElement | null;
+  if (!source) {
     throw new Error('Carte diplôme introuvable');
   }
 
-  const noPrint = Array.from(card.querySelectorAll('.no-print')) as HTMLElement[];
-  const prevDisplay = noPrint.map((el) => el.style.display);
+  const { card, mount } = createOffScreenCaptureCard(source);
   let swaps: Array<{ canvas: HTMLCanvasElement; html: string }> = [];
 
   try {
@@ -242,26 +273,24 @@ export async function captureDiplomaCardJpeg(): Promise<Uint8Array> {
       document.fonts?.ready ?? Promise.resolve(),
       new Promise((resolve) => window.setTimeout(resolve, 2000))
     ]);
-    card.classList.add('pdf-capture');
-    card.classList.remove('pointer-events-none', 'opacity-50');
-    card.style.opacity = '1';
-    noPrint.forEach((el) => {
-      el.style.display = 'none';
-    });
 
     swaps = await rasterizeVisibleAvatars(card);
 
-    const cardRect = card.getBoundingClientRect();
-    const a4LandscapeInches = 11.69;
-    const dpi = 300;
-    const scale = Math.min(4, Math.max(2.5, (a4LandscapeInches * dpi) / Math.max(cardRect.width, 1)));
-
+    const captureScale = 2;
     const canvas = await html2canvas(card, {
-      scale,
+      scale: captureScale,
       backgroundColor: '#FFFFFF',
       logging: false,
+      width: DIPLOMA_CAPTURE_WIDTH_PX,
+      windowWidth: DIPLOMA_CAPTURE_WIDTH_PX,
+      windowHeight: 900,
       onclone(clonedDoc) {
-        clonedDoc.getElementById('diploma-printable-card')?.classList.add('pdf-capture');
+        clonedDoc.getElementById(CAPTURE_CARD_ID)?.classList.add('pdf-capture');
+        const fallback = clonedDoc.querySelector(`#${CAPTURE_CARD_ID}`) as HTMLElement | null;
+        if (fallback) {
+          fallback.style.width = `${DIPLOMA_CAPTURE_WIDTH_PX}px`;
+          fallback.style.maxWidth = `${DIPLOMA_CAPTURE_WIDTH_PX}px`;
+        }
       }
     });
     const ctx = canvas.getContext('2d');
@@ -282,41 +311,66 @@ export async function captureDiplomaCardJpeg(): Promise<Uint8Array> {
     }
     return canvasToJpeg(canvas, 0.92);
   } finally {
-    card.classList.remove('pdf-capture');
-    noPrint.forEach((el, i) => {
-      el.style.display = prevDisplay[i];
-    });
     restoreAvatarSwaps(swaps);
+    mount.remove();
   }
 }
 
-function triggerPdfDownload(bytes: Uint8Array, filename: string): void {
-  const blob = new Blob([bytes], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  link.rel = 'noopener';
-  link.target = '_blank';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+function isAppleMobile(): boolean {
+  const ua = navigator.userAgent;
+  return /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
-function notifyPdfFailure(message: string): void {
+function notifyPdfToast(title: string, message: string): void {
   const app = (window as unknown as { ANApp?: { showToast?: (title: string, desc: string) => void } }).ANApp;
   if (app?.showToast) {
-    app.showToast('Diplôme PDF', message);
+    app.showToast(title, message);
     return;
   }
   const toast = document.getElementById('xp-toast');
   const titleEl = document.getElementById('xp-toast-title');
   const descEl = document.getElementById('xp-toast-desc');
   if (!toast || !titleEl || !descEl) return;
-  titleEl.textContent = 'Diplôme PDF';
+  titleEl.textContent = title;
   descEl.textContent = message;
   toast.classList.remove('hidden');
+}
+
+function notifyPdfFailure(message: string): void {
+  notifyPdfToast('Diplôme PDF', message);
+}
+
+function notifyPdfIosHint(): void {
+  notifyPdfToast(
+    'Diplôme ouvert',
+    'Sur iPhone/iPad : touche Partager ↑ puis « Enregistrer dans Fichiers » (ou « Sur mon iPhone ») pour garder le PDF.'
+  );
+}
+
+function triggerPdfDownload(bytes: Uint8Array, filename: string): void {
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+
+  if (isAppleMobile()) {
+    const opened = window.open(url, '_blank');
+    if (!opened) {
+      URL.revokeObjectURL(url);
+      notifyPdfFailure('Autorise les fenêtres pop-up, ou utilise « Imprimer (A4) » → Enregistrer en PDF.');
+      throw new Error('diploma-pdf-popup-blocked');
+    }
+    notifyPdfIosHint();
+    window.setTimeout(() => URL.revokeObjectURL(url), 120_000);
+    return;
+  }
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.rel = 'noopener';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 export async function downloadDiplomaPdf(studentName: string): Promise<void> {
@@ -324,7 +378,10 @@ export async function downloadDiplomaPdf(studentName: string): Promise<void> {
     const pageJpeg = await captureDiplomaCardJpeg();
     const { bytes, filename } = buildDiplomaPdf({ studentName, pageJpeg });
     triggerPdfDownload(bytes, filename);
-  } catch {
+  } catch (err) {
+    if (err instanceof Error && err.message === 'diploma-pdf-popup-blocked') {
+      throw err;
+    }
     notifyPdfFailure('Le PDF n’a pas pu être préparé. Réessaie, ou utilise « Imprimer (A4) ».');
     throw new Error('diploma-pdf-failed');
   }
