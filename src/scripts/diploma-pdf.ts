@@ -321,6 +321,13 @@ function isAppleMobile(): boolean {
   return /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
+function isMobileDevice(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent;
+  return /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 function notifyPdfToast(title: string, message: string): void {
   const app = (window as unknown as { ANApp?: { showToast?: (title: string, desc: string) => void } }).ANApp;
   if (app?.showToast) {
@@ -347,16 +354,48 @@ function notifyPdfIosHint(): void {
   );
 }
 
-function triggerPdfDownload(bytes: Uint8Array, filename: string): void {
+export async function triggerPdfDownload(
+  bytes: Uint8Array,
+  filename: string,
+  studentName?: string
+): Promise<void> {
+  // 1. Sur smartphone/tablette : tentative avec Web Share API (iOS Safari 15+, Android Chrome, Edge Mobile)
+  // Ouvre directement la feuille de partage native avec le fichier PDF
+  // (AirDrop, Enregistrer dans Fichiers, Imprimer, WhatsApp, etc.) SANS blocage de pop-up !
+  if (isMobileDevice() && typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+    try {
+      const file = new File([bytes], filename, { type: 'application/pdf' });
+      if (typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Diplôme de Député Junior CM2',
+          text: `Diplôme officiel de ${studentName || 'l’élève'} — Assemblée nationale CM2`
+        });
+        notifyPdfToast('Diplôme prêt', 'Tu peux enregistrer ton diplôme dans Fichiers ou l’imprimer.');
+        return;
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') {
+        // L'utilisateur a fermé la boîte de partage native : action volontaire
+        return;
+      }
+    }
+  }
+
   const blob = new Blob([bytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
 
   if (isAppleMobile()) {
     const opened = window.open(url, '_blank');
     if (!opened) {
-      URL.revokeObjectURL(url);
-      notifyPdfFailure('Autorise les fenêtres pop-up, ou utilise « Imprimer (A4) » → Enregistrer en PDF.');
-      throw new Error('diploma-pdf-popup-blocked');
+      // Repli si Safari bloque window.open après le délai async : ouverture via lien
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     }
     notifyPdfIosHint();
     window.setTimeout(() => URL.revokeObjectURL(url), 120_000);
@@ -377,7 +416,7 @@ export async function downloadDiplomaPdf(studentName: string): Promise<void> {
   try {
     const pageJpeg = await captureDiplomaCardJpeg();
     const { bytes, filename } = buildDiplomaPdf({ studentName, pageJpeg });
-    triggerPdfDownload(bytes, filename);
+    await triggerPdfDownload(bytes, filename, studentName);
   } catch (err) {
     if (err instanceof Error && err.message === 'diploma-pdf-popup-blocked') {
       throw err;
