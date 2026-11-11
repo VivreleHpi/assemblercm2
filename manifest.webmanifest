@@ -1,0 +1,30 @@
+{
+  "name": "L'Assemblée nationale — Le parcours de Malik & son Papa",
+  "short_name": "Assemblée CM2",
+  "description": "Parcours citoyen interactif en 12 étapes pour découvrir l'Assemblée nationale, la Constitution et la justice au CM2 (Cycle 3).",
+  "start_url": "/assemblercm2/",
+  "scope": "/assemblercm2/",
+  "display": "standalone",
+  "background_color": "#FAF7F0",
+  "theme_color": "#002654",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/assemblercm2/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assemblercm2/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assemblercm2/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#002654"/>
+  <rect x="6" y="6" width="52" height="3" rx="1.5" fill="url(#tricolore)"/>
+  <path d="M32 14L12 24V28H52V24L32 14Z" fill="#FAF7F0" stroke="#E8B21A" stroke-width="1.5"/>
+  <rect x="16" y="29" width="4" height="19" rx="1" fill="#FAF7F0"/>
+  <rect x="25" y="29" width="4" height="19" rx="1" fill="#FAF7F0"/>
+  <rect x="35" y="29" width="4" height="19" rx="1" fill="#FAF7F0"/>
+  <rect x="44" y="29" width="4" height="19" rx="1" fill="#FAF7F0"/>
+  <rect x="10" y="49" width="44" height="5" rx="2" fill="#E8B21A"/>
+  <defs>
+    <linearGradient id="tricolore" x1="6" y1="6" x2="58" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="33%" stop-color="#1E3A8A"/>
+      <stop offset="33%" stop-color="#FFFFFF"/>
+      <stop offset="66%" stop-color="#FFFFFF"/>
+      <stop offset="66%" stop-color="#CE1126"/>
+      <stop offset="100%" stop-color="#CE1126"/>
+    </linearGradient>
+  </defs>
+</svg>
+
