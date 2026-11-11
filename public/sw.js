@@ -24,6 +24,7 @@ const PRECACHE_URLS = [
   '/fonts/fredoka-700.woff2',
   '/fonts/atkinson-400.woff2',
   '/fonts/atkinson-700.woff2',
+  '/fonts/cinzel-700.woff2',
   '/img/avatars/avatar-deputee.webp',
   '/img/avatars/avatar-depute.webp',
   '/img/avatars/avatar-malik.webp',
